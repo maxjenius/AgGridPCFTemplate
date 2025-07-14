@@ -17,11 +17,8 @@
       <domain></domain>
       -->
     </external-service-usage>
-    <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
-    <property name="ApiUrl" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
-    <property name="enableRowGroupColumns" display-name-key="enableRowGroupColumns_Key" description-key="enableRowGroupColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
-    <property name="pivotColumns" display-name-key="pivotColumns_Key" description-key="pivotColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
-    <property name="aggFuncColumns" display-name-key="aggFuncColumns_Key" description-key="aggFuncColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true" />
+    <!-- dataset node providing grid data from canvas app -->
+    <data-set name="gridData" display-name-key="gridData" description-key="gridData_Desc" />
     <!--
       Property node's of-type attribute can be of-type-group attribute.
       Example:

@@ -1,16 +1,10 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
-import React, { useMemo } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
-    public width: number;
-    public height: number;
-    private con: HTMLDivElement;
-    private apiUrl: string | null;
-    private enableRowGroupColumns: string | null;
-    private pivotColumns: string | null;
-    private aggFuncColumns: string | null;
+    private container: HTMLDivElement;
     /**
      * Empty constructor.
      */
@@ -29,15 +23,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
         // Add control initialization code
         // Add control initialization code
-        this.con = container;
-
-        const height = context.mode.allocatedHeight;
-        const width = context.mode.allocatedWidth;
-
-        this.apiUrl = context.parameters.ApiUrl.raw;
-        this.enableRowGroupColumns = context.parameters.enableRowGroupColumns.raw;
-        this.pivotColumns = context.parameters.pivotColumns.raw;
-        this.aggFuncColumns = context.parameters.aggFuncColumns.raw;
+        this.container = container;
     }
 
 
@@ -46,15 +32,23 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
      */
     public updateView(context: ComponentFramework.Context<IInputs>): void {
-        this.apiUrl = context.parameters.ApiUrl.raw;
-        this.enableRowGroupColumns = context.parameters.enableRowGroupColumns.raw;
-        this.pivotColumns = context.parameters.pivotColumns.raw;
-        this.aggFuncColumns = context.parameters.aggFuncColumns.raw;
+        const dataset = context.parameters.gridData;
+        const columnDefs = dataset.columns.map(col => ({
+            field: col.name,
+            headerName: col.displayName
+        }));
+        const rowData = dataset.sortedRecordIds.map(id => {
+            const record = dataset.records[id];
+            const row: any = {};
+            dataset.columns.forEach(col => {
+                row[col.name] = record.getValue(col.name);
+            });
+            return row;
+        });
         ReactDOM.render(
-            React.createElement(MyAgGrid, {apiUrl : this.apiUrl,enableRowGroupColumns : this.enableRowGroupColumns,pivotColumns : this.pivotColumns,aggFuncColumns : this.aggFuncColumns}),
-            // React.createElement(MyAgGrid, {apiUrl : this.apiUrl}),
-            this.con
-            );
+            React.createElement(MyAgGrid, {rowData, columnDefs}),
+            this.container
+        );
     }
 
     /**
@@ -71,6 +65,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      */
     public destroy(): void {
         // Add code to cleanup control if necessary
-        ReactDOM.unmountComponentAtNode(this.con);
+        ReactDOM.unmountComponentAtNode(this.container);
     }
 }
