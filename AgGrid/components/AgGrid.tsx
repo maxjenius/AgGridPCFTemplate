@@ -12,7 +12,6 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme CSS
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import 'ag-grid-enterprise';
 import Theme from './Theme';
 import {option} from './Theme';
 import '../css/grid.css'
@@ -45,7 +44,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
     }, [autoDefName]);
 
     const gridOptions = {
-        sideBar: true,
         columnDefs: columnDefs,
         suppressAggFuncInHeader: true,
         defaultColDef: {
@@ -57,15 +55,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
             editable: true,
         },
         enableRangeSelection: true,
-        statusBar: {
-            statusPanels: [
-                { statusPanel: 'agTotalAndFilteredRowCountComponent', align: 'left' },
-                { statusPanel: 'agTotalRowCountComponent', align: 'center' },
-                { statusPanel: 'agFilteredRowCountComponent' },
-                { statusPanel: 'agSelectedRowCountComponent' },
-                { statusPanel: 'agAggregationComponent' },
-            ]
-        },
     };
     const handleThemeChange = (selectedOption: string) => {
         setSelectedOption(selectedOption)
@@ -80,11 +69,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
                 columnDefs={columnDefs}
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
-                rowGroupPanelShow='always'
                 pagination={true}
                 rowSelection={'multiple'}
-                groupSelectsChildren={true}
-                pivotPanelShow='always'
                 tooltipShowDelay={500}
             />
         </div>
