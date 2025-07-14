@@ -9,12 +9,7 @@
 import React, { useState, useEffect, useMemo} from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
-import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme CSS
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import Theme from './Theme';
-import {option} from './Theme';
-import '../css/grid.css'
 
 interface MyAgGridProps {
     rowData: any[];
@@ -23,8 +18,7 @@ interface MyAgGridProps {
 
 const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => {
     console.log('AG Grid')
-    const [divClass, setDivClass] = useState('ag-theme-alpine');
-    const [selectedOption, setSelectedOption] = useState<string>('');
+    const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
 
     useEffect(() => {
@@ -50,20 +44,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
             flex: 1,
             minWidth: 150,
             filter: true,
-            floatingFilter: true,
             resizable: true,
             editable: true,
         },
         enableRangeSelection: true,
     };
-    const handleThemeChange = (selectedOption: string) => {
-        setSelectedOption(selectedOption)
-        setDivClass(selectedOption);
-    };
 
     return (
         <div className={divClass} style={{ width: '100%', height: '80vh' }}>
-            <Theme options={option} onSelect={handleThemeChange} />
             < AgGridReact
                 rowData={rowData}
                 columnDefs={columnDefs}
