@@ -18,52 +18,21 @@ import {option} from './Theme';
 import '../css/grid.css'
 
 interface MyAgGridProps {
-    apiUrl: string | null;
-    enableRowGroupColumns: string | null;
-    pivotColumns: string | null;
-    aggFuncColumns: string | null;
+    rowData: any[];
+    columnDefs: any[];
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ apiUrl, enableRowGroupColumns, pivotColumns, aggFuncColumns }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => {
     console.log('AG Grid')
     const [divClass, setDivClass] = useState('ag-theme-alpine');
     const [selectedOption, setSelectedOption] = useState<string>('');
-    const [rowData, setRowData] = useState<any[]>([]);
-    const [autoDefName, setAutoDefName] = useState("athlete");
-    const [columnDefs, setColumnDefs] = useState([]);
+    const [autoDefName, setAutoDefName] = useState('');
+
     useEffect(() => {
-        const fetchData = async () => {
-            let data;
-            // const response = await fetch('https://www.ag-grid.com/example-assets/olympic-winners.json');
-            try {
-                const response = await fetch(`${apiUrl}`);
-                data = await response.json();
-                setRowData(data);
-            } catch (error) {
-                setRowData([]);
-                console.log('error')
-            }
-
-            if (data && data.length > 0) {
-                const headers = Object.keys(data[0]);
-                setAutoDefName(headers[0]);
-
-                const enableRowGroup: string[] = enableRowGroupColumns?.split(";") || [];
-                const enablePivot: string[] = pivotColumns?.split(";") || [];
-                const aggFunc: string[] = aggFuncColumns?.split(";") || [];
-
-                const dynamicColumnDefs: any = headers.map(header => ({
-                    field: header,
-                    enableRowGroup: enableRowGroup.includes(header),
-                    enablePivot: enablePivot.includes(header),
-                    aggFunc: aggFunc.includes(header) ? 'sum' : null,
-                }));
-                setColumnDefs(dynamicColumnDefs);
-            }
+        if (columnDefs && columnDefs.length > 0) {
+            setAutoDefName(columnDefs[0].field);
         }
-        fetchData();
-
-    }, [apiUrl, enableRowGroupColumns, pivotColumns, aggFuncColumns])
+    }, [columnDefs]);
     const autoGroupColumnDef = useMemo(() => {
         return {
             minWidth: 270,
