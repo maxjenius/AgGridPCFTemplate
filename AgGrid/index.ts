@@ -171,7 +171,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 type: "object",
                 properties: {
                     rowId: { type: "string" },
-                    changes: { type: "object" }
+                    changes: {
+                        type: "object",
+                        // allow arbitrary field names inside the changes object
+                        additionalProperties: true
+                    }
                 }
             }
         };
