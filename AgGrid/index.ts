@@ -18,6 +18,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _rowData: any[] = [];
     private _columnDefs: any[] = [];
     private _editedCells: EditedCell[] = [];
+    private _editedMap: Map<string, EditedCell> = new Map();
+    private _originalRowData: Record<string, any> = {};
     private _context?: ComponentFramework.Context<IInputs>;
     /**
      * Empty constructor.
@@ -74,7 +76,17 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
                 row[col.name] = value;
             });
+            this._originalRowData[id] = { ...row };
             return row;
+        });
+        // Apply pending edits so changes persist across re-renders
+        rowData.forEach(row => {
+            const rowId = row.__id;
+            this._editedMap.forEach(change => {
+                if (change.rowId === rowId) {
+                    (row as any)[change.field] = change.newValue;
+                }
+            });
         });
         this._rowData = rowData;
         this._selectedRowIds = dataset.getSelectedRecordIds();
@@ -98,7 +110,16 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     }
 
     private onCellEdited(change: EditedCell): void {
-        this._editedCells.push(change);
+        const key = `${change.rowId}_${change.field}`;
+        const existing = this._editedMap.get(key);
+        const originalRow = this._originalRowData[change.rowId];
+        const originalValue = originalRow ? originalRow[change.field] : change.oldValue;
+        if (existing) {
+            existing.newValue = change.newValue;
+        } else {
+            this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue });
+        }
+        this._editedCells = Array.from(this._editedMap.values());
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
