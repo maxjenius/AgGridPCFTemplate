@@ -6,6 +6,8 @@
 export interface IInputs {
     EditedCellsSchema: ComponentFramework.PropertyTypes.StringProperty;
     EditedRowsSchema: ComponentFramework.PropertyTypes.StringProperty;
+    HeaderColor: ComponentFramework.PropertyTypes.StringProperty;
+    PaginationColor: ComponentFramework.PropertyTypes.StringProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {

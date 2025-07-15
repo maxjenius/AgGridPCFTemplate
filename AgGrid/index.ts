@@ -54,6 +54,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.gridContainer = document.createElement("div");
         this.gridContainer.style.width = "100%";
         this.gridContainer.style.height = "100%";
+        this.gridContainer.style.backgroundColor = "transparent";
 
         this.container.appendChild(this.gridContainer);
     }
@@ -103,7 +104,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 columnDefs: this._columnDefs,
                 selectedRowIds: this._selectedRowIds,
                 onSelectionChanged: this.onRowsSelected.bind(this),
-                onCellValueChanged: this.onCellEdited.bind(this)
+                onCellValueChanged: this.onCellEdited.bind(this),
+                headerColor: context.parameters.HeaderColor.raw || undefined,
+                paginationColor: context.parameters.PaginationColor.raw || undefined
             }),
             this.gridContainer
         );
