@@ -7,4 +7,5 @@ export interface IInputs {
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {
+    selectedRows?: string;
 }
