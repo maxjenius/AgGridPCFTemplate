@@ -1,0 +1,9 @@
+.ag-theme-balham {
+    background-color: transparent;
+}
+
+.ag-theme-balham .ag-menu {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+}
+.ag-theme-balham .ag-paging-panel { background-color: var(--ag-control-panel-background-color); }

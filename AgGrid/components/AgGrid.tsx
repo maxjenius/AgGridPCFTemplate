@@ -24,9 +24,11 @@ interface MyAgGridProps {
     selectedRowIds?: string[];
     onSelectionChanged?: (rows: any[]) => void;
     onCellValueChanged?: (change: EditedCell) => void;
+    headerColor?: string;
+    paginationColor?: string;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -88,8 +90,19 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         }
     }, [rowData, selectedRowIds]);
 
+    const containerStyle: React.CSSProperties = useMemo(() => {
+        const style: React.CSSProperties = { width: '100%', height: '100%', backgroundColor: 'transparent' };
+        if (headerColor) {
+            (style as any)['--ag-header-background-color'] = headerColor;
+        }
+        if (paginationColor) {
+            (style as any)['--ag-control-panel-background-color'] = paginationColor;
+        }
+        return style;
+    }, [headerColor, paginationColor]);
+
     return (
-        <div className={divClass} style={{ width: '100%', height: '100%' }}>
+        <div className={divClass} style={containerStyle}>
             <AgGridReact
                 ref={gridRef}
                 rowData={rowData}
