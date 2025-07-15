@@ -6,9 +6,8 @@ import ReactDOM from "react-dom";
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
-    private tableContainer: HTMLDivElement;
     private _notifyOutputChanged?: () => void;
-    private _selectedRows: string = "";
+    private _selectedRows: any[] = [];
     private _columnDefs: any[] = [];
     /**
      * Empty constructor.
@@ -34,15 +33,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
         this.gridContainer = document.createElement("div");
         this.gridContainer.style.width = "100%";
-        this.gridContainer.style.height = "70%";
-
-        this.tableContainer = document.createElement("div");
-        this.tableContainer.style.width = "100%";
-        this.tableContainer.style.height = "30%";
-        this.tableContainer.style.overflow = "auto";
+        this.gridContainer.style.height = "100%";
 
         this.container.appendChild(this.gridContainer);
-        this.container.appendChild(this.tableContainer);
     }
 
 
@@ -72,46 +65,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             }),
             this.gridContainer
         );
-        this.renderSelectedRowsTable(JSON.parse(this._selectedRows || "[]"));
     }
 
     private onRowsSelected(rows: any[]): void {
-        this._selectedRows = JSON.stringify(rows);
-        this.renderSelectedRowsTable(rows);
+        this._selectedRows = rows;
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
     }
 
-    private renderSelectedRowsTable(rows: any[]): void {
-        this.tableContainer.innerHTML = "";
-        if (!rows || rows.length === 0) {
-            return;
-        }
-        const table = document.createElement("table");
-        const thead = document.createElement("thead");
-        const headerRow = document.createElement("tr");
-        this._columnDefs.forEach(col => {
-            const th = document.createElement("th");
-            th.innerText = col.headerName;
-            headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow);
-        table.appendChild(thead);
-        const tbody = document.createElement("tbody");
-        rows.forEach(row => {
-            const tr = document.createElement("tr");
-            this._columnDefs.forEach(col => {
-                const td = document.createElement("td");
-                const val = row[col.field];
-                td.innerText = val !== undefined && val !== null ? val.toString() : "";
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-        this.tableContainer.appendChild(table);
-    }
 
     /**
      * It is called by the framework prior to a control receiving new data.
