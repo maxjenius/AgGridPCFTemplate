@@ -3,6 +3,13 @@ import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from "react-dom";
 
+interface EditedCell {
+    rowId: string;
+    field: string;
+    oldValue: unknown;
+    newValue: unknown;
+}
+
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
@@ -10,6 +17,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _selectedRowIds: string[] = [];
     private _rowData: any[] = [];
     private _columnDefs: any[] = [];
+    private _editedCells: EditedCell[] = [];
     private _context?: ComponentFramework.Context<IInputs>;
     /**
      * Empty constructor.
@@ -75,7 +83,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 rowData,
                 columnDefs: this._columnDefs,
                 selectedRowIds: this._selectedRowIds,
-                onSelectionChanged: this.onRowsSelected.bind(this)
+                onSelectionChanged: this.onRowsSelected.bind(this),
+                onCellValueChanged: this.onCellEdited.bind(this)
             }),
             this.gridContainer
         );
@@ -88,13 +97,39 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }
     }
 
+    private onCellEdited(change: EditedCell): void {
+        this._editedCells.push(change);
+        if (this._notifyOutputChanged) {
+            this._notifyOutputChanged();
+        }
+    }
+
 
     /**
      * It is called by the framework prior to a control receiving new data.
      * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
      */
     public getOutputs(): IOutputs {
-        return {};
+        return {
+            EditedCells: this._editedCells
+        };
+    }
+
+    public async getOutputSchema(context: ComponentFramework.Context<IInputs>): Promise<Record<string, unknown>> {
+        const schema = {
+            $schema: "http://json-schema.org/draft-04/schema#",
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    rowId: { type: "string" },
+                    field: { type: "string" },
+                    oldValue: { type: "string" },
+                    newValue: { type: "string" }
+                }
+            }
+        };
+        return Promise.resolve({ EditedCells: schema });
     }
 
     /**

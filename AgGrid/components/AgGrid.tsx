@@ -11,14 +11,22 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
+interface EditedCell {
+    rowId: string;
+    field: string;
+    oldValue: unknown;
+    newValue: unknown;
+}
+
 interface MyAgGridProps {
     rowData: any[];
     columnDefs: any[];
     selectedRowIds?: string[];
     onSelectionChanged?: (rows: any[]) => void;
+    onCellValueChanged?: (change: EditedCell) => void;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -61,6 +69,17 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         }
     }, [onSelectionChanged]);
 
+    const onCellValueChangedHandler = useCallback((params: any) => {
+        if (onCellValueChanged) {
+            onCellValueChanged({
+                rowId: params.node.id,
+                field: params.column.getId(),
+                oldValue: params.oldValue,
+                newValue: params.newValue
+            });
+        }
+    }, [onCellValueChanged]);
+
     useEffect(() => {
         if (gridRef.current?.api && selectedRowIds) {
             gridRef.current.api.forEachNode(node => {
@@ -83,6 +102,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 rowMultiSelectWithClick={true}
                 tooltipShowDelay={500}
                 onSelectionChanged={onSelectionChangedHandler}
+                onCellValueChanged={onCellValueChangedHandler}
             />
         </div>
     );
