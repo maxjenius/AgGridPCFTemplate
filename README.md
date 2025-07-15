@@ -113,3 +113,15 @@ dotnet build
 #### Once the Solution is built you can see a Solutions.zip inside the Solutions/bin/debug directory.  
 ![image](https://github.com/DixitJoshi12/Ag-Grid-In-PCF/assets/44132789/8aab482c-97a4-45ac-8cc0-b9b73778869a)
 
+
+### Automated setup
+The `scripts` folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
+Run the shell script on Linux/macOS:
+```bash
+./scripts/setup-aggrid-pcf.sh
+```
+On Windows, run the PowerShell script:
+```powershell
+./scripts/setup-aggrid-pcf.ps1
+```
+
