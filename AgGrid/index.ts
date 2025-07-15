@@ -10,6 +10,11 @@ interface EditedCell {
     newValue: unknown;
 }
 
+interface RowPatch {
+    rowId: string;
+    changes: Record<string, unknown>;
+}
+
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
@@ -19,6 +24,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _columnDefs: any[] = [];
     private _editedCells: EditedCell[] = [];
     private _editedMap: Map<string, EditedCell> = new Map();
+    private _rowPatchesMap: Map<string, RowPatch> = new Map();
+    private _editedRows: RowPatch[] = [];
     private _originalRowData: Record<string, any> = {};
     private _context?: ComponentFramework.Context<IInputs>;
     /**
@@ -120,6 +127,12 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue });
         }
         this._editedCells = Array.from(this._editedMap.values());
+
+        // Build row-level patch structure for easier Patch usage
+        const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {} };
+        rowPatch.changes[change.field] = change.newValue;
+        this._rowPatchesMap.set(change.rowId, rowPatch);
+        this._editedRows = Array.from(this._rowPatchesMap.values());
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
@@ -132,7 +145,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      */
     public getOutputs(): IOutputs {
         return {
-            EditedCells: this._editedCells
+            EditedCells: this._editedCells,
+            EditedRows: this._editedRows
         };
     }
 
@@ -150,7 +164,18 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
             }
         };
-        return Promise.resolve({ EditedCells: schema });
+        const rowSchema = {
+            $schema: "http://json-schema.org/draft-04/schema#",
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    rowId: { type: "string" },
+                    changes: { type: "object" }
+                }
+            }
+        };
+        return Promise.resolve({ EditedCells: schema, EditedRows: rowSchema });
     }
 
     /**
