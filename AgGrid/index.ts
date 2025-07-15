@@ -8,6 +8,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private gridContainer: HTMLDivElement;
     private _notifyOutputChanged?: () => void;
     private _selectedRows: any[] = [];
+    private _selectedRowIds: string[] = [];
+    private _rowData: any[] = [];
     private _columnDefs: any[] = [];
     /**
      * Empty constructor.
@@ -51,16 +53,18 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }));
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];
-            const row: any = {};
+            const row: any = { __id: id };
             dataset.columns.forEach(col => {
                 row[col.name] = record.getValue(col.name);
             });
             return row;
         });
+        this._rowData = rowData;
         ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData,
                 columnDefs: this._columnDefs,
+                selectedRowIds: this._selectedRowIds,
                 onSelectionChanged: this.onRowsSelected.bind(this)
             }),
             this.gridContainer
@@ -69,6 +73,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
     private onRowsSelected(rows: any[]): void {
         this._selectedRows = rows;
+        this._selectedRowIds = rows.map(r => r.__id);
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
