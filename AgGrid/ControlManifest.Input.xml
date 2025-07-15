@@ -19,6 +19,7 @@
     </external-service-usage>
     <!-- dataset node providing grid data from canvas app -->
     <data-set name="gridData" display-name-key="gridData" description-key="gridData_Desc" />
+    <property name="selectedRows" display-name-key="selectedRows" description-key="selectedRows_Desc" of-type="SingleLine.Text" usage="output" />
     <!--
       Property node's of-type attribute can be of-type-group attribute.
       Example:

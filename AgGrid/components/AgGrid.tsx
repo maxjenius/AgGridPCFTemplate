@@ -6,7 +6,7 @@
  * License: MIT
  */
 
-import React, { useState, useEffect, useMemo} from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
@@ -14,9 +14,10 @@ import 'ag-grid-community/styles/ag-theme-balham.css';
 interface MyAgGridProps {
     rowData: any[];
     columnDefs: any[];
+    onSelectionChanged?: (rows: any[]) => void;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, onSelectionChanged }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -50,9 +51,18 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
         enableRangeSelection: true,
     };
 
+    const gridRef = useRef<AgGridReact<any>>(null);
+    const onSelectionChangedHandler = useCallback(() => {
+        if (onSelectionChanged && gridRef.current?.api) {
+            const selected = gridRef.current.api.getSelectedRows();
+            onSelectionChanged(selected);
+        }
+    }, [onSelectionChanged]);
+
     return (
-        <div className={divClass} style={{ width: '100%', height: '80vh' }}>
-            < AgGridReact
+        <div className={divClass} style={{ width: '100%', height: '100%' }}>
+            <AgGridReact
+                ref={gridRef}
                 rowData={rowData}
                 columnDefs={columnDefs}
                 autoGroupColumnDef={autoGroupColumnDef}
@@ -60,6 +70,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs }) => 
                 pagination={true}
                 rowSelection={'multiple'}
                 tooltipShowDelay={500}
+                onSelectionChanged={onSelectionChangedHandler}
             />
         </div>
     );
