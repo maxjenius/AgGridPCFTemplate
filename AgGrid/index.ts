@@ -7,10 +7,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
     private _notifyOutputChanged?: () => void;
-    private _selectedRows: any[] = [];
     private _selectedRowIds: string[] = [];
     private _rowData: any[] = [];
     private _columnDefs: any[] = [];
+    private _context?: ComponentFramework.Context<IInputs>;
     /**
      * Empty constructor.
      */
@@ -28,6 +28,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      */
     public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container: HTMLDivElement): void {
         this._notifyOutputChanged = notifyOutputChanged;
+        this._context = context;
         this.container = container;
         this.container.style.width = "100%";
         this.container.style.height = "100%";
@@ -46,6 +47,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
      */
     public updateView(context: ComponentFramework.Context<IInputs>): void {
+        this._context = context;
         const dataset = context.parameters.gridData;
         this._columnDefs = dataset.columns.map(col => ({
             field: col.name,
@@ -67,6 +69,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             return row;
         });
         this._rowData = rowData;
+        this._selectedRowIds = dataset.getSelectedRecordIds();
         ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData,
@@ -79,10 +82,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     }
 
     private onRowsSelected(rows: any[]): void {
-        this._selectedRows = rows;
         this._selectedRowIds = rows.map(r => r.__id);
-        if (this._notifyOutputChanged) {
-            this._notifyOutputChanged();
+        if (this._context) {
+            this._context.parameters.gridData.setSelectedRecordIds(this._selectedRowIds);
         }
     }
 
@@ -92,7 +94,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
      */
     public getOutputs(): IOutputs {
-        return { selectedRows: this._selectedRows };
+        return {};
     }
 
     /**
