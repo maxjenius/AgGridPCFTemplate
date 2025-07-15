@@ -116,23 +116,44 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }
     }
 
+    private valuesAreEqual(a: unknown, b: unknown): boolean {
+        // simple equality check for primitives and dates represented as strings
+        return a === b;
+    }
+
     private onCellEdited(change: EditedCell): void {
         const key = `${change.rowId}_${change.field}`;
-        const existing = this._editedMap.get(key);
         const originalRow = this._originalRowData[change.rowId];
         const originalValue = originalRow ? originalRow[change.field] : change.oldValue;
-        if (existing) {
-            existing.newValue = change.newValue;
-        } else {
-            this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue });
-        }
-        this._editedCells = Array.from(this._editedMap.values());
 
-        // Build row-level patch structure for easier Patch usage
-        const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {} };
-        rowPatch.changes[change.field] = change.newValue;
-        this._rowPatchesMap.set(change.rowId, rowPatch);
+        if (this.valuesAreEqual(change.newValue, originalValue)) {
+            // Reverted to original value - remove tracking
+            this._editedMap.delete(key);
+            const rowPatch = this._rowPatchesMap.get(change.rowId);
+            if (rowPatch) {
+                delete rowPatch.changes[change.field];
+                if (Object.keys(rowPatch.changes).length === 0) {
+                    this._rowPatchesMap.delete(change.rowId);
+                } else {
+                    this._rowPatchesMap.set(change.rowId, rowPatch);
+                }
+            }
+        } else {
+            const existing = this._editedMap.get(key);
+            if (existing) {
+                existing.newValue = change.newValue;
+            } else {
+                this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue });
+            }
+
+            const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {} };
+            rowPatch.changes[change.field] = change.newValue;
+            this._rowPatchesMap.set(change.rowId, rowPatch);
+        }
+
+        this._editedCells = Array.from(this._editedMap.values());
         this._editedRows = Array.from(this._rowPatchesMap.values());
+
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
