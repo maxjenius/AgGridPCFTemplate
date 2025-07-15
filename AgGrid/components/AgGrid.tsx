@@ -49,6 +49,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, onSel
             editable: true,
         },
         enableRangeSelection: true,
+        getRowId: (params: any) => params.data.id,
     };
 
     const gridRef = useRef<AgGridReact<any>>(null);

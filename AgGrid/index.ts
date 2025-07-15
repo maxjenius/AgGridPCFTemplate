@@ -51,7 +51,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }));
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];
-            const row: any = {};
+            const row: any = { id };
             dataset.columns.forEach(col => {
                 row[col.name] = record.getValue(col.name);
             });
