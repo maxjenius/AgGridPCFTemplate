@@ -32,7 +32,7 @@
     <property name="HeaderColor" display-name-key="HeaderColor" of-type="SingleLine.Text" usage="input" default-value="" />
     <property name="PaginationColor" display-name-key="PaginationColor" of-type="SingleLine.Text" usage="input" default-value="" />
     <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value="" />
-    <property name="RowSelectionMode" display-name-key="RowSelectionMode" of-type="SingleLine.Text" usage="input" default-value="multiple" />
+    <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true" />
     <property name="RowKey" display-name-key="RowKey" of-type="SingleLine.Text" usage="input" default-value="" />
     <property name="ReadOnly" display-name-key="ReadOnly" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="ShowPagination" display-name-key="ShowPagination" of-type="TwoOptions" usage="input" default-value="true" />

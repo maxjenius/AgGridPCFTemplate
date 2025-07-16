@@ -9,7 +9,7 @@ export interface IInputs {
     HeaderColor: ComponentFramework.PropertyTypes.StringProperty;
     PaginationColor: ComponentFramework.PropertyTypes.StringProperty;
     GridBackgroundColor: ComponentFramework.PropertyTypes.StringProperty;
-    RowSelectionMode: ComponentFramework.PropertyTypes.StringProperty;
+    MultiSelect: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
     ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;
