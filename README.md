@@ -10,6 +10,7 @@ You can customize the appearance of the grid using the following input propertie
 * `HeaderColor` - background color for the column header area.
 * `PaginationColor` - background color for the pagination panel.
 * `GridBackgroundColor` - background color for the main grid body.
+* `ReadOnly` - disables cell editing when set to true.
 
 ### prerequisites:
 * node js.

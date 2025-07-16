@@ -43,4 +43,11 @@
 /* Highlight edited cells */
 .ag-theme-balham .edited-cell {
     border: 1px solid red !important;
+/* Center the checkbox in the selection column with padding */
+.ag-theme-balham .selection-checkbox-cell,
+.ag-theme-balham .selection-checkbox-header {
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
 }
