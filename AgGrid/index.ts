@@ -138,7 +138,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
                 row[col.name] = value;
             });
-            const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : undefined;
+            const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : id;
             row["rowKey"] = rowKeyValue;
             this._originalRowData[id] = { ...row, rowKey: rowKeyValue };
             return row;
@@ -193,7 +193,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         const key = `${change.rowId}_${change.field}`;
         const originalRow = this._originalRowData[change.rowId];
         const originalValue = originalRow ? originalRow[change.field] : change.oldValue;
-        const rowKeyValue = originalRow ? originalRow.rowKey : undefined;
+        const rowKeyValue = originalRow ? originalRow.rowKey : change.rowId;
 
         if (this.valuesAreEqual(change.newValue, originalValue)) {
             // Reverted to original value - remove tracking
@@ -224,7 +224,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._editedCells = Array.from(this._editedMap.values());
         this._editedRows = Array.from(this._rowPatchesMap.values());
         this._editedRowRecords = this._editedRows.map(patch => ({
-            ...this._originalRowData[patch.rowId],
+            rowKey: patch.rowKey !== undefined
+                ? patch.rowKey
+                : this._originalRowData[patch.rowId]?.rowKey,
             ...patch.changes
         }));
 
