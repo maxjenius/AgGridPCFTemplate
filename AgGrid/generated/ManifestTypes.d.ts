@@ -13,6 +13,7 @@ export interface IInputs {
     EnableBlur: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     MultiSelect: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
+    SelectedRowKeys: ComponentFramework.PropertyTypes.StringProperty;
     ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ColumnDefinitions: ComponentFramework.PropertyTypes.StringProperty;
     ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;

@@ -35,6 +35,7 @@
       <property name="EnableBlur" display-name-key="EnableBlur" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true" />
     <property name="RowKey" display-name-key="RowKey" of-type="SingleLine.Text" usage="input" default-value="" />
+    <property name="SelectedRowKeys" display-name-key="SelectedRowKeys" of-type="SingleLine.TextArea" usage="input" default-value="" />
     <property name="ReadOnly" display-name-key="ReadOnly" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="ColumnDefinitions" display-name-key="ColumnDefinitions" of-type="SingleLine.TextArea" usage="input" default-value="" />
     <property name="ShowPagination" display-name-key="ShowPagination" of-type="TwoOptions" usage="input" default-value="true" />

@@ -121,6 +121,18 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw || undefined;
+        let selectedKeyValues: any[] | undefined;
+        const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
+        if (selectedKeysInput) {
+            try {
+                const temp = JSON.parse(selectedKeysInput as any);
+                if (Array.isArray(temp)) {
+                    selectedKeyValues = temp;
+                }
+            } catch (e) {
+                console.error('Failed to parse SelectedRowKeys', e);
+            }
+        }
         const columnDefsInput = context.parameters.ColumnDefinitions.raw;
         let parsedDefs: any[] | undefined;
         if (columnDefsInput) {
@@ -166,7 +178,21 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             });
         });
         this._rowData = rowData;
-        this._selectedRowIds = dataset.getSelectedRecordIds();
+        if (selectedKeyValues && selectedKeyValues.length) {
+            const keyToId = new Map<string, string>();
+            rowData.forEach(r => {
+                if (r.rowKey !== undefined) {
+                    keyToId.set(String(r.rowKey), r.__id);
+                }
+            });
+            const ids = selectedKeyValues
+                .map(k => keyToId.get(String(k)))
+                .filter((id): id is string => Boolean(id));
+            this._selectedRowIds = ids;
+            dataset.setSelectedRecordIds(ids);
+        } else {
+            this._selectedRowIds = dataset.getSelectedRecordIds();
+        }
         ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData,
