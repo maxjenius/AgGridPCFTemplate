@@ -27,3 +27,5 @@ pac solution add-reference --path $rootDir
 
 # build the dotnet project
 dotnet build
+
+cd ..
