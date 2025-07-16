@@ -129,8 +129,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-control-panel-background-color'] = paginationColor;
         }
         if (gridBackgroundColor) {
-            style.backgroundColor = gridBackgroundColor;
-            (style as any)['--ag-background-color'] = gridBackgroundColor;
+            // Only apply the color to rows and not the entire grid container
+            (style as any)['--ag-background-color'] = gridBackgroundColor; // even rows
+            (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
         }
         return style;
     }, [headerColor, paginationColor, gridBackgroundColor]);

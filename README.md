@@ -9,7 +9,7 @@ AG Grid offers a wide range of features for building powerful and customizable d
 You can customize the appearance of the grid using the following input properties:
 * `HeaderColor` - background color for the column header area.
 * `PaginationColor` - background color for the pagination panel.
-* `GridBackgroundColor` - background color for the main grid body.
+* `GridBackgroundColor` - background color applied to all rows in the grid.
 
 ### prerequisites:
 * node js.
