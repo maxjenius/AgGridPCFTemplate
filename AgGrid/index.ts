@@ -59,6 +59,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _multiSelect: boolean = true;
     private _rowKeyField?: string;
     private _readOnly: boolean = false;
+    private _lastResetFlag: boolean = false;
+    private _resetVersion: number = 0;
     private _fontSize?: string;
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
@@ -116,6 +118,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      */
     public updateView(context: ComponentFramework.Context<IInputs>): void {
         this._context = context;
+        const resetFlag = context.parameters.ResetChanges.raw === true;
+        if (resetFlag && resetFlag !== this._lastResetFlag) {
+            this.resetChanges();
+        }
+        this._lastResetFlag = resetFlag;
         const dataset = context.parameters.gridData;
         this._multiSelect = context.parameters.MultiSelect.raw !== false;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
@@ -181,7 +188,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
                 readOnly: this._readOnly,
-                showPagination: context.parameters.ShowPagination.raw !== false
+                showPagination: context.parameters.ShowPagination.raw !== false,
+                resetVersion: this._resetVersion
             }),
             this.gridContainer
         );
@@ -251,6 +259,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
         }
+    }
+
+    private resetChanges(): void {
+        this._editedMap.clear();
+        this._rowPatchesMap.clear();
+        this._editedCells = [];
+        this._editedRows = [];
+        this._editedRowRecords = [];
+        this._resetVersion++;
     }
 
 
