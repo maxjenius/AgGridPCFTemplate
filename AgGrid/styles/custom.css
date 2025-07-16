@@ -71,13 +71,13 @@
 }
 
 /* Overrides to remove width and margin from Ag Grid defaults */
-.ag-header-cell-comp-wrapper {
-    width: auto;
+.ag-theme-balham .ag-header-cell-comp-wrapper {
+    width: auto !important;
 }
 
-.ag-ltr .ag-row-drag,
-.ag-ltr .ag-selection-checkbox,
-.ag-ltr .ag-group-expanded,
-.ag-ltr .ag-group-contracted {
-    margin-right: 0;
+.ag-theme-balham.ag-ltr .ag-row-drag,
+.ag-theme-balham.ag-ltr .ag-selection-checkbox,
+.ag-theme-balham.ag-ltr .ag-group-expanded,
+.ag-theme-balham.ag-ltr .ag-group-contracted {
+    margin-right: 0 !important;
 }
