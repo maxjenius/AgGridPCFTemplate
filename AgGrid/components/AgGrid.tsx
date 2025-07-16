@@ -104,22 +104,23 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return columnDefs;
     }, [columnDefs, rowSelectionMode]);
 
+    const defaultColDef = useMemo(() => ({
+        flex: 1,
+        minWidth: 150,
+        filter: true,
+        resizable: true,
+        editable: !readOnly,
+        cellClassRules: {
+            'edited-cell': (params: any) =>
+                editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
+        }
+    }), [readOnly]);
+
     const gridOptions = useMemo(() => ({
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
-        defaultColDef: {
-            flex: 1,
-            minWidth: 150,
-            filter: true,
-            resizable: true,
-            editable: !readOnly,
-            cellClassRules: {
-                'edited-cell': (params: any) =>
-                    editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
-            }
-        },
         enableRangeSelection: true,
-    }), [finalColumnDefs, readOnly]);
+    }), [finalColumnDefs]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -193,6 +194,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 columnDefs={finalColumnDefs}
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
+                defaultColDef={defaultColDef}
                 getRowId={getRowId}
                 pagination={showPagination}
                 rowSelection={rowSelectionMode}
