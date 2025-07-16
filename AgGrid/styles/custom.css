@@ -24,10 +24,15 @@
     backdrop-filter: blur(8px);
 }
 
-/* Make rows and cells transparent as well */
-.ag-theme-balham .ag-row,
+/* Apply background color using theme variables */
+.ag-theme-balham .ag-row {
+    background-color: var(--ag-background-color);
+}
+.ag-theme-balham .ag-row:nth-of-type(odd) {
+    background-color: var(--ag-odd-row-background-color);
+}
 .ag-theme-balham .ag-cell {
-    background-color: transparent;
+    background-color: inherit;
 }
 
 /* Ensure wrapper elements are also transparent */
@@ -43,6 +48,8 @@
 /* Highlight edited cells */
 .ag-theme-balham .edited-cell {
     border: 1px solid red !important;
+}
+
 /* Center the checkbox in the selection column with padding */
 .ag-theme-balham .selection-checkbox-cell,
 .ag-theme-balham .selection-checkbox-header {
@@ -50,4 +57,15 @@
     justify-content: center;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+/* Ensure grid body background uses theme variable */
+.ag-theme-balham .ag-body-viewport.ag-row-animation.ag-layout-normal {
+    background-color: var(--ag-background-color);
+}
+
+/* Make selection checkboxes transparent */
+.ag-theme-balham .ag-checkbox-input-wrapper,
+.ag-theme-balham .ag-checkbox-input-wrapper input {
+    background-color: transparent;
 }
