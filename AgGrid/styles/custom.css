@@ -1,9 +1,16 @@
 .ag-theme-balham {
     background-color: transparent;
+    --ag-header-background-color: transparent;
+    --ag-control-panel-background-color: transparent;
 }
 
-.ag-theme-balham .ag-menu {
+.ag-theme-balham .ag-header,
+.ag-theme-balham .ag-paging-panel {
+    background-color: transparent;
+}
+
+.ag-theme-balham .ag-menu,
+.ag-theme-balham .ag-picker-field-wrapper {
     background-color: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(8px);
 }
-.ag-theme-balham .ag-paging-panel { background-color: var(--ag-control-panel-background-color); }
