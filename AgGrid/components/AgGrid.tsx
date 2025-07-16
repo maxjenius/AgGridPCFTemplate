@@ -26,9 +26,10 @@ interface MyAgGridProps {
     onCellValueChanged?: (change: EditedCell) => void;
     headerColor?: string;
     paginationColor?: string;
+    rowSelectionMode?: 'single' | 'multiple';
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, rowSelectionMode = 'multiple' }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -42,15 +43,29 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return {
             minWidth: 270,
             field: autoDefName,
-            headerCheckboxSelection: true,
+            headerCheckboxSelection: rowSelectionMode === 'multiple',
             cellRendererParams: {
-                checkbox: true,
+                checkbox: rowSelectionMode === 'multiple',
             },
         };
-    }, [autoDefName]);
+    }, [autoDefName, rowSelectionMode]);
+
+    const finalColumnDefs = useMemo(() => {
+        if (rowSelectionMode === 'multiple') {
+            const selectionCol = {
+                headerName: '',
+                checkboxSelection: true,
+                headerCheckboxSelection: true,
+                width: 40,
+                suppressSizeToFit: true,
+            };
+            return [selectionCol, ...columnDefs];
+        }
+        return columnDefs;
+    }, [columnDefs, rowSelectionMode]);
 
     const gridOptions = {
-        columnDefs: columnDefs,
+        columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         defaultColDef: {
             flex: 1,
@@ -116,13 +131,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             <AgGridReact
                 ref={gridRef}
                 rowData={rowData}
-                columnDefs={columnDefs}
+                columnDefs={finalColumnDefs}
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
                 getRowId={getRowId}
                 pagination={true}
-                rowSelection={'multiple'}
-                rowMultiSelectWithClick={true}
+                rowSelection={rowSelectionMode}
+                rowMultiSelectWithClick={rowSelectionMode === 'multiple'}
                 tooltipShowDelay={500}
                 onSelectionChanged={onSelectionChangedHandler}
                 onCellValueChanged={onCellValueChangedHandler}
