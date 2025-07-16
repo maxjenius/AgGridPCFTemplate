@@ -86,6 +86,13 @@
 /* Overrides to remove width and margin from Ag Grid defaults */
 .ag-theme-balham .ag-header-cell-comp-wrapper {
     width: auto !important;
+    display: flex;
+    align-items: center;
+}
+
+/* Align filter menu buttons to the right */
+.ag-theme-balham .ag-header-cell-menu-button {
+    margin-left: auto;
 }
 
 .ag-theme-balham.ag-ltr .ag-row-drag,
