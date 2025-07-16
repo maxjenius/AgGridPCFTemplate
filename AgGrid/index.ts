@@ -119,7 +119,19 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._multiSelect = context.parameters.MultiSelect.raw !== false;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
-        this._columnDefs = dataset.columns.map(col => ({
+        const columnDefsInput = context.parameters.ColumnDefinitions.raw;
+        let parsedDefs: any[] | undefined;
+        if (columnDefsInput) {
+            try {
+                const temp = JSON.parse(columnDefsInput as any);
+                if (Array.isArray(temp)) {
+                    parsedDefs = temp;
+                }
+            } catch (e) {
+                console.error('Failed to parse ColumnDefinitions', e);
+            }
+        }
+        this._columnDefs = parsedDefs ?? dataset.columns.map(col => ({
             field: col.name,
             headerName: col.displayName
         }));
