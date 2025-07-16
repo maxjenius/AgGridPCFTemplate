@@ -69,3 +69,15 @@
 .ag-theme-balham .ag-checkbox-input-wrapper input {
     background-color: transparent;
 }
+
+/* Overrides to remove width and margin from Ag Grid defaults */
+.ag-header-cell-comp-wrapper {
+    width: auto;
+}
+
+.ag-ltr .ag-row-drag,
+.ag-ltr .ag-selection-checkbox,
+.ag-ltr .ag-group-expanded,
+.ag-ltr .ag-group-contracted {
+    margin-right: 0;
+}
