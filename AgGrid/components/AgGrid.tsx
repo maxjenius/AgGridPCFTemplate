@@ -55,11 +55,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         if (rowSelectionMode === 'multiple') {
             const selectionCol = {
                 headerName: '',
+                colId: 'selection',
                 checkboxSelection: true,
                 headerCheckboxSelection: true,
-                width: 30,
-                minWidth: 30,
-                maxWidth: 30,
+                width: 40,
+                minWidth: 40,
+                maxWidth: 40,
+                cellClass: 'selection-checkbox-cell',
+                headerClass: 'selection-checkbox-header',
                 suppressSizeToFit: true,
             };
             return [selectionCol, ...columnDefs];
