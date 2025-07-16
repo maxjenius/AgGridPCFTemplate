@@ -35,7 +35,7 @@ interface MyAgGridProps {
     resetVersion?: number;
 }
     
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
