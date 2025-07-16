@@ -61,7 +61,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _readOnly: boolean = false;
     private _lastResetFlag: boolean = false;
     private _resetVersion: number = 0;
-    private _fontSize?: string;
+    private _fontSize?: number;
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
         const properties: Record<string, unknown> = {};
@@ -127,7 +127,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._multiSelect = context.parameters.MultiSelect.raw !== false;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
-        this._fontSize = context.parameters.FontSize.raw || undefined;
+        this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
         let selectedKeyValues: any[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
         if (selectedKeysInput) {

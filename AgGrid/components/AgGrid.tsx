@@ -27,7 +27,7 @@ interface MyAgGridProps {
     headerColor?: string;
     paginationColor?: string;
     gridBackgroundColor?: string;
-    fontSize?: string;
+    fontSize?: number | string;
     enableBlur?: boolean;
     multiSelect?: boolean;
     readOnly?: boolean;
@@ -209,13 +209,18 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-background-color'] = gridBackgroundColor; // even rows
             (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
         }
-        if (fontSize) {
-            let size = fontSize;
-            if (/^\d+$/.test(size)) {
-                size = `${size}px`;
+        if (fontSize !== undefined && fontSize !== null) {
+            let sizeStr: string;
+            if (typeof fontSize === 'number') {
+                sizeStr = `${fontSize}px`;
+            } else {
+                sizeStr = fontSize;
+                if (/^\d+$/.test(sizeStr)) {
+                    sizeStr = `${sizeStr}px`;
+                }
             }
-            (style as any)['--ag-font-size'] = size;
-            style.fontSize = size;
+            (style as any)['--ag-font-size'] = sizeStr;
+            style.fontSize = sizeStr;
         }
         if (enableBlur) {
             style.backdropFilter = 'blur(8px)';
