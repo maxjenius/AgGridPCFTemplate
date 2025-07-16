@@ -91,7 +91,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     }, [rowData, selectedRowIds]);
 
     const containerStyle: React.CSSProperties = useMemo(() => {
-        const style: React.CSSProperties = { width: '100%', height: '100%', backgroundColor: 'transparent' };
+        const style: React.CSSProperties = {
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'transparent',
+            '--ag-header-background-color': 'transparent',
+            '--ag-control-panel-background-color': 'transparent'
+        } as React.CSSProperties;
         if (headerColor) {
             (style as any)['--ag-header-background-color'] = headerColor;
         }
