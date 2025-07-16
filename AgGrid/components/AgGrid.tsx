@@ -96,7 +96,11 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             height: '100%',
             backgroundColor: 'transparent',
             '--ag-header-background-color': 'transparent',
-            '--ag-control-panel-background-color': 'transparent'
+            '--ag-control-panel-background-color': 'transparent',
+            '--ag-background-color': 'transparent',
+            '--ag-row-hover-color': 'transparent',
+            '--ag-odd-row-background-color': 'transparent',
+            '--ag-row-border-color': 'transparent'
         } as React.CSSProperties;
         if (headerColor) {
             (style as any)['--ag-header-background-color'] = headerColor;
