@@ -29,6 +29,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _editedRowRecords: any[] = [];
     private _originalRowData: Record<string, any> = {};
     private _context?: ComponentFramework.Context<IInputs>;
+    private _rowSelectionMode: 'single' | 'multiple' = 'multiple';
     /**
      * Empty constructor.
      */
@@ -69,6 +70,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     public updateView(context: ComponentFramework.Context<IInputs>): void {
         this._context = context;
         const dataset = context.parameters.gridData;
+        this._rowSelectionMode = (context.parameters.RowSelectionMode.raw as any) === 'single' ? 'single' : 'multiple';
         this._columnDefs = dataset.columns.map(col => ({
             field: col.name,
             headerName: col.displayName
@@ -108,7 +110,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 onSelectionChanged: this.onRowsSelected.bind(this),
                 onCellValueChanged: this.onCellEdited.bind(this),
                 headerColor: context.parameters.HeaderColor.raw || undefined,
-                paginationColor: context.parameters.PaginationColor.raw || undefined
+                paginationColor: context.parameters.PaginationColor.raw || undefined,
+                rowSelectionMode: this._rowSelectionMode
             }),
             this.gridContainer
         );
