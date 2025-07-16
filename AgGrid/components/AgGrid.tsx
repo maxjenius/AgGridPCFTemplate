@@ -35,6 +35,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
+    const editedCellsRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         if (columnDefs && columnDefs.length > 0) {
@@ -71,7 +72,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return columnDefs;
     }, [columnDefs, rowSelectionMode]);
 
-    const gridOptions = {
+    const gridOptions = useMemo(() => ({
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         defaultColDef: {
@@ -80,9 +81,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             filter: true,
             resizable: true,
             editable: !readOnly,
+            cellClassRules: {
+                'edited-cell': (params: any) =>
+                    editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
+            }
         },
         enableRangeSelection: true,
-    };
+    }), [finalColumnDefs]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -102,6 +107,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 newValue: params.newValue
             });
         }
+        const key = `${params.node.id}_${params.column.getId()}`;
+        editedCellsRef.current.add(key);
+        params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()] });
     }, [onCellValueChanged]);
 
     useEffect(() => {
