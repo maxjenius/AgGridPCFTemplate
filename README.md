@@ -11,6 +11,7 @@ You can customize the appearance of the grid using the following input propertie
 * `PaginationColor` - background color for the pagination panel.
 * `GridBackgroundColor` - background color for the main grid body.
 * `ReadOnly` - disables cell editing when set to true.
+* `ShowPagination` - show or hide the pagination bar (default is show).
 
 ### prerequisites:
 * node js.

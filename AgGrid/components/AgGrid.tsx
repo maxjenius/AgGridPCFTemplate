@@ -29,9 +29,10 @@ interface MyAgGridProps {
     gridBackgroundColor?: string;
     rowSelectionMode?: 'single' | 'multiple';
     readOnly?: boolean;
+    showPagination?: boolean;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, rowSelectionMode = 'multiple', readOnly = false }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, rowSelectionMode = 'multiple', readOnly = false, showPagination = true }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -157,7 +158,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
                 getRowId={getRowId}
-                pagination={true}
+                pagination={showPagination}
                 rowSelection={rowSelectionMode}
                 rowMultiSelectWithClick={rowSelectionMode === 'multiple'}
                 tooltipShowDelay={500}

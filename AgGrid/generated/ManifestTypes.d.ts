@@ -12,6 +12,7 @@ export interface IInputs {
     RowSelectionMode: ComponentFramework.PropertyTypes.StringProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
     ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
+    ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {
