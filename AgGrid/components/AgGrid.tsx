@@ -104,6 +104,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 cellClass: 'selection-checkbox-cell',
                 headerClass: 'selection-checkbox-header',
                 suppressSizeToFit: true,
+                filter: false,
+                suppressMenu: true
             };
             return [selectionCol, ...columnDefs];
         }
