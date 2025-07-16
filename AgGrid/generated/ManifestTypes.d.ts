@@ -11,6 +11,7 @@ export interface IInputs {
     GridBackgroundColor: ComponentFramework.PropertyTypes.StringProperty;
     RowSelectionMode: ComponentFramework.PropertyTypes.StringProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
+    ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {

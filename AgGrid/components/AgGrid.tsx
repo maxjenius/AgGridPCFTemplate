@@ -28,12 +28,14 @@ interface MyAgGridProps {
     paginationColor?: string;
     gridBackgroundColor?: string;
     rowSelectionMode?: 'single' | 'multiple';
+    readOnly?: boolean;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, rowSelectionMode = 'multiple' }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, rowSelectionMode = 'multiple', readOnly = false }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
+    const editedCellsRef = useRef<Set<string>>(new Set());
 
     useEffect(() => {
         if (columnDefs && columnDefs.length > 0) {
@@ -55,11 +57,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         if (rowSelectionMode === 'multiple') {
             const selectionCol = {
                 headerName: '',
+                colId: 'selection',
                 checkboxSelection: true,
                 headerCheckboxSelection: true,
-                width: 30,
-                minWidth: 30,
-                maxWidth: 30,
+                width: 40,
+                minWidth: 40,
+                maxWidth: 40,
+                cellClass: 'selection-checkbox-cell',
+                headerClass: 'selection-checkbox-header',
                 suppressSizeToFit: true,
             };
             return [selectionCol, ...columnDefs];
@@ -67,7 +72,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return columnDefs;
     }, [columnDefs, rowSelectionMode]);
 
-    const gridOptions = {
+    const gridOptions = useMemo(() => ({
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         defaultColDef: {
@@ -75,10 +80,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             minWidth: 150,
             filter: true,
             resizable: true,
-            editable: true,
+            editable: !readOnly,
+            cellClassRules: {
+                'edited-cell': (params: any) =>
+                    editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
+            }
         },
         enableRangeSelection: true,
-    };
+    }), [finalColumnDefs]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -98,6 +107,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 newValue: params.newValue
             });
         }
+        const key = `${params.node.id}_${params.column.getId()}`;
+        editedCellsRef.current.add(key);
+        params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()] });
     }, [onCellValueChanged]);
 
     useEffect(() => {
@@ -129,8 +141,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-control-panel-background-color'] = paginationColor;
         }
         if (gridBackgroundColor) {
-            style.backgroundColor = gridBackgroundColor;
-            (style as any)['--ag-background-color'] = gridBackgroundColor;
+            // Only apply the color to rows and not the entire grid container
+            (style as any)['--ag-background-color'] = gridBackgroundColor; // even rows
+            (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
         }
         return style;
     }, [headerColor, paginationColor, gridBackgroundColor]);
