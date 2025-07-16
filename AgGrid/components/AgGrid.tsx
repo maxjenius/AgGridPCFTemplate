@@ -31,9 +31,10 @@ interface MyAgGridProps {
     multiSelect?: boolean;
     readOnly?: boolean;
     showPagination?: boolean;
+    resetVersion?: number;
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -75,6 +76,17 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             });
         }
     }, [rowData]);
+
+    useEffect(() => {
+        if (resetVersion !== undefined) {
+            editedCellsRef.current.clear();
+            originalDataRef.current = {};
+            rowData.forEach(r => {
+                originalDataRef.current[r.__id] = { ...r };
+            });
+            gridRef.current?.api.refreshCells({ force: true });
+        }
+    }, [resetVersion]);
 
     useEffect(() => {
         if (columnDefs && columnDefs.length > 0) {
