@@ -40,6 +40,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const editedCellsRef = useRef<Set<string>>(new Set());
     const originalDataRef = useRef<Record<string, any>>({});
 
+    const valuesAreEqual = (a: unknown, b: unknown): boolean => {
+        if (a === b) return true;
+        if (a == null && b == null) return true;
+        return String(a) === String(b);
+    };
+
     useEffect(() => {
         rowData.forEach(row => {
             const id = row.__id;
@@ -53,7 +59,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             const currentRow = rowData.find(r => r.__id === rowId);
             if (currentRow) {
                 const originalValue = originalDataRef.current[rowId]?.[field];
-                if (currentRow[field] === originalValue) {
+                if (valuesAreEqual(currentRow[field], originalValue)) {
                     editedCellsRef.current.delete(key);
                     removedKeys.push({ rowId, field });
                 }
@@ -142,7 +148,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         }
         const key = `${params.node.id}_${params.column.getId()}`;
         const originalValue = originalDataRef.current[params.node.id]?.[params.column.getId()];
-        if (params.newValue === originalValue) {
+        if (valuesAreEqual(params.newValue, originalValue)) {
             editedCellsRef.current.delete(key);
         } else {
             editedCellsRef.current.add(key);
