@@ -132,6 +132,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 onCellValueChanged: this.onCellEdited.bind(this),
                 headerColor: context.parameters.HeaderColor.raw || undefined,
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
+                gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
                 rowSelectionMode: this._rowSelectionMode
             }),
             this.gridContainer

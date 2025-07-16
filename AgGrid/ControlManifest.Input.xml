@@ -30,6 +30,7 @@
     </property-dependencies>
     <property name="HeaderColor" display-name-key="HeaderColor" of-type="SingleLine.Text" usage="input" default-value="" />
     <property name="PaginationColor" display-name-key="PaginationColor" of-type="SingleLine.Text" usage="input" default-value="" />
+    <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value="" />
     <property name="RowSelectionMode" display-name-key="RowSelectionMode" of-type="SingleLine.Text" usage="input" default-value="multiple" />
     <!--
       Property node's of-type attribute can be of-type-group attribute.
