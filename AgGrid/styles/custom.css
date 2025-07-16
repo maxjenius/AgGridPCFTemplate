@@ -59,6 +59,19 @@
     padding: 0;
 }
 
+/* Remove default checkbox margins and ensure proper centering */
+.ag-theme-balham .selection-checkbox-cell .ag-selection-checkbox,
+.ag-theme-balham .selection-checkbox-header .ag-selection-checkbox {
+    margin: 0;
+}
+
+.ag-theme-balham .selection-checkbox-cell .ag-cell-wrapper,
+.ag-theme-balham .selection-checkbox-header .ag-header-cell-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Ensure grid body background uses theme variable */
 .ag-theme-balham .ag-body-viewport.ag-row-animation.ag-layout-normal {
     background-color: var(--ag-background-color);
