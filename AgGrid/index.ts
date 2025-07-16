@@ -164,7 +164,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
                 rowSelectionMode: this._rowSelectionMode,
-                readOnly: this._readOnly
+                readOnly: this._readOnly,
+                showPagination: context.parameters.ShowPagination.raw !== false
             }),
             this.gridContainer
         );
