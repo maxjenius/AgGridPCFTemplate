@@ -50,13 +50,13 @@
     border: 1px solid red !important;
 }
 
-/* Center the checkbox in the selection column with padding */
+/* Center the checkbox in the selection column */
 .ag-theme-balham .selection-checkbox-cell,
 .ag-theme-balham .selection-checkbox-header {
     display: flex;
     justify-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
+    align-items: center;
+    padding: 0;
 }
 
 /* Ensure grid body background uses theme variable */
