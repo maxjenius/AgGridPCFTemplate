@@ -10,6 +10,7 @@ You can customize the appearance of the grid using the following input propertie
 * `HeaderColor` - background color for the column header area.
 * `PaginationColor` - background color for the pagination panel.
 * `GridBackgroundColor` - background color for the main grid body.
+* `FontSize` - font size applied to all text in the grid.
 * `EnableBlur` - apply a glass blur effect behind the entire grid when true.
 * `ReadOnly` - disables cell editing when set to true.
 * `ShowPagination` - show or hide the pagination bar (default is show).
