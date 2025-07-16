@@ -27,14 +27,15 @@ interface MyAgGridProps {
     headerColor?: string;
     paginationColor?: string;
     gridBackgroundColor?: string;
+    fontSize?: string;
     enableBlur?: boolean;
     multiSelect?: boolean;
     readOnly?: boolean;
     showPagination?: boolean;
     resetVersion?: number;
 }
-
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
+    
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -208,12 +209,16 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-background-color'] = gridBackgroundColor; // even rows
             (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
         }
+        if (fontSize) {
+            (style as any)['--ag-font-size'] = fontSize;
+            style.fontSize = fontSize;
+        }
         if (enableBlur) {
             style.backdropFilter = 'blur(8px)';
             style.backgroundColor = 'rgba(255,255,255,0.2)';
         }
         return style;
-    }, [headerColor, paginationColor, gridBackgroundColor, enableBlur]);
+    }, [headerColor, paginationColor, gridBackgroundColor, fontSize, enableBlur]);
 
     return (
         <div className={divClass} style={containerStyle}>
