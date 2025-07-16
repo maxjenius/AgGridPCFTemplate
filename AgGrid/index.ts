@@ -26,6 +26,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _editedMap: Map<string, EditedCell> = new Map();
     private _rowPatchesMap: Map<string, RowPatch> = new Map();
     private _editedRows: RowPatch[] = [];
+    private _editedRowRecords: any[] = [];
     private _originalRowData: Record<string, any> = {};
     private _context?: ComponentFramework.Context<IInputs>;
     /**
@@ -50,6 +51,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.container.style.width = "100%";
         this.container.style.height = "100%";
         this.container.style.overflow = "hidden";
+        this.container.style.backgroundColor = "transparent";
 
         this.gridContainer = document.createElement("div");
         this.gridContainer.style.width = "100%";
@@ -156,6 +158,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
         this._editedCells = Array.from(this._editedMap.values());
         this._editedRows = Array.from(this._rowPatchesMap.values());
+        this._editedRowRecords = this._editedRows.map(patch => ({
+            ...this._originalRowData[patch.rowId],
+            ...patch.changes
+        }));
 
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();
@@ -170,7 +176,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     public getOutputs(): IOutputs {
         return {
             EditedCells: this._editedCells,
-            EditedRows: this._editedRows
+            EditedRows: this._editedRowRecords
         };
     }
 
@@ -193,14 +199,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             type: "array",
             items: {
                 type: "object",
-                properties: {
-                    rowId: { type: "string" },
-                    changes: {
-                        type: "object",
-                        // allow arbitrary field names inside the changes object
-                        additionalProperties: true
-                    }
-                }
+                additionalProperties: true
             }
         };
         return Promise.resolve({ EditedCells: schema, EditedRows: rowSchema });
