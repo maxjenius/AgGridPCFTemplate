@@ -39,3 +39,8 @@
 .ag-theme-balham .ag-dnd-ghost {
     background-color: transparent;
 }
+
+/* Highlight edited cells */
+.ag-theme-balham .edited-cell {
+    border: 1px solid red !important;
+}
