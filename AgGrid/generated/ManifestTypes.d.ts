@@ -8,6 +8,7 @@ export interface IInputs {
     EditedRowsSchema: ComponentFramework.PropertyTypes.StringProperty;
     HeaderColor: ComponentFramework.PropertyTypes.StringProperty;
     PaginationColor: ComponentFramework.PropertyTypes.StringProperty;
+    GridBackgroundColor: ComponentFramework.PropertyTypes.StringProperty;
     RowSelectionMode: ComponentFramework.PropertyTypes.StringProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }

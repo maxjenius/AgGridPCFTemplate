@@ -26,10 +26,11 @@ interface MyAgGridProps {
     onCellValueChanged?: (change: EditedCell) => void;
     headerColor?: string;
     paginationColor?: string;
+    gridBackgroundColor?: string;
     rowSelectionMode?: 'single' | 'multiple';
 }
 
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, rowSelectionMode = 'multiple' }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, rowSelectionMode = 'multiple' }) => {
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
@@ -125,8 +126,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         if (paginationColor) {
             (style as any)['--ag-control-panel-background-color'] = paginationColor;
         }
+        if (gridBackgroundColor) {
+            style.backgroundColor = gridBackgroundColor;
+            (style as any)['--ag-background-color'] = gridBackgroundColor;
+        }
         return style;
-    }, [headerColor, paginationColor]);
+    }, [headerColor, paginationColor, gridBackgroundColor]);
 
     return (
         <div className={divClass} style={containerStyle}>
