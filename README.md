@@ -13,7 +13,30 @@ You can customize the appearance of the grid using the following input propertie
 * `EnableBlur` - apply a glass blur effect behind the entire grid when true.
 * `ReadOnly` - disables cell editing when set to true.
 * `ShowPagination` - show or hide the pagination bar (default is show).
-* `ColumnDefinitions` - JSON string to customize Ag Grid column definitions.
+
+### Column Definitions
+Use the `ColumnDefinitions` input to override the automatically generated columns. The value should be a JSON string containing an array of [AG Grid column definition](https://www.ag-grid.com/react-data-grid/column-definitions/) objects. Each object must specify a `field` matching a column in your dataset. Common keys include:
+
+* `field` – the dataset column name (required)
+* `headerName` – display name for the column
+* `width` – numeric width of the column
+* `sortable` – enable sorting
+* `filter` – enable filtering or specify a filter type
+* `pinned` – pin the column to `'left'` or `'right'`
+* `cellRenderer` – registered cell renderer
+* `valueFormatter` – custom formatting for values
+
+Example value for the property:
+
+```json
+[
+  { "field": "name", "headerName": "Name", "sortable": true },
+  { "field": "age", "width": 80, "filter": "agNumberColumnFilter" },
+  { "field": "country", "pinned": "left" }
+]
+```
+
+If the property is left blank, the grid generates columns automatically based on the dataset.
 
 ### prerequisites:
 * node js.
