@@ -8,11 +8,13 @@ interface EditedCell {
     field: string;
     oldValue: unknown;
     newValue: unknown;
+    rowKey?: unknown;
 }
 
 interface RowPatch {
     rowId: string;
     changes: Record<string, unknown>;
+    rowKey?: unknown;
 }
 
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
@@ -37,7 +39,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 rowId: { type: "string" },
                 field: { type: "string" },
                 oldValue: { type: "string" },
-                newValue: { type: "string" }
+                newValue: { type: "string" },
+                rowKey: { type: "string" }
             }
         }
     };
@@ -46,11 +49,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         type: "array",
         items: {
             type: "object",
+            properties: {
+                rowKey: { type: "string" }
+            },
             additionalProperties: true
         }
     };
     private _context?: ComponentFramework.Context<IInputs>;
     private _rowSelectionMode: 'single' | 'multiple' = 'multiple';
+    private _rowKeyField?: string;
     private _readOnly: boolean = false;
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
@@ -58,6 +65,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         columns.forEach(col => {
             properties[col.name] = { type: "string" };
         });
+        properties["rowKey"] = { type: "string" };
         return {
             $schema: "http://json-schema.org/draft-04/schema#",
             type: "array",
@@ -109,6 +117,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._context = context;
         const dataset = context.parameters.gridData;
         this._rowSelectionMode = (context.parameters.RowSelectionMode.raw as any) === 'single' ? 'single' : 'multiple';
+        this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._columnDefs = dataset.columns.map(col => ({
             field: col.name,
@@ -128,7 +137,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
                 row[col.name] = value;
             });
-            this._originalRowData[id] = { ...row };
+            const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : undefined;
+            row["rowKey"] = rowKeyValue;
+            this._originalRowData[id] = { ...row, rowKey: rowKeyValue };
             return row;
         });
         // Apply pending edits so changes persist across re-renders
@@ -175,6 +186,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         const key = `${change.rowId}_${change.field}`;
         const originalRow = this._originalRowData[change.rowId];
         const originalValue = originalRow ? originalRow[change.field] : change.oldValue;
+        const rowKeyValue = originalRow ? originalRow.rowKey : undefined;
 
         if (this.valuesAreEqual(change.newValue, originalValue)) {
             // Reverted to original value - remove tracking
@@ -193,11 +205,12 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             if (existing) {
                 existing.newValue = change.newValue;
             } else {
-                this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue });
+                this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue, rowKey: rowKeyValue });
             }
 
-            const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {} };
+            const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {}, rowKey: rowKeyValue };
             rowPatch.changes[change.field] = change.newValue;
+            rowPatch.rowKey = rowKeyValue;
             this._rowPatchesMap.set(change.rowId, rowPatch);
         }
 
