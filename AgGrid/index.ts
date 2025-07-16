@@ -22,7 +22,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private gridContainer: HTMLDivElement;
     private _notifyOutputChanged?: () => void;
     private _selectedRowIds: string[] = [];
-    private _selectedItems: any[] = [];
     private _rowData: any[] = [];
     private _columnDefs: any[] = [];
     private _editedCells: EditedCell[] = [];
@@ -154,7 +153,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         });
         this._rowData = rowData;
         this._selectedRowIds = dataset.getSelectedRecordIds();
-        this._selectedItems = this._selectedRowIds.map(id => this._originalRowData[id]).filter(r => r);
         ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData,
@@ -175,7 +173,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
     private onRowsSelected(rows: any[]): void {
         this._selectedRowIds = rows.map(r => r.__id);
-        this._selectedItems = rows.map(r => this._originalRowData[r.__id]).filter(r => r);
         if (this._context) {
             this._context.parameters.gridData.setSelectedRecordIds(this._selectedRowIds);
         }
@@ -244,7 +241,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         return {
             EditedCells: this._editedCells,
             EditedRows: this._editedRowRecords,
-            SelectedItems: this._selectedItems,
             EditedCellsSchema: JSON.stringify(this._cellsSchemaObj),
             EditedRowsSchema: JSON.stringify(this._rowsSchemaObj)
         };

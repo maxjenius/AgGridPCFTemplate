@@ -22,7 +22,6 @@
     <!-- Define output for edited cells and schema -->
     <property name="EditedCells" display-name-key="EditedCells" of-type="Object" usage="output" hidden="false" default-value="" />
     <property name="EditedRows" display-name-key="EditedRows" of-type="Object" usage="output" hidden="false" default-value="" />
-    <property name="SelectedItems" display-name-key="SelectedItems" of-type="Object" usage="output" hidden="false" default-value="" />
     <property name="EditedCellsSchema" display-name-key="EditedCellsSchema" of-type="SingleLine.Text" usage="bound" hidden="true" />
     <property name="EditedRowsSchema" display-name-key="EditedRowsSchema" of-type="SingleLine.Text" usage="bound" hidden="true" />
     <property-dependencies>
