@@ -38,6 +38,36 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const [autoDefName, setAutoDefName] = useState('');
     const rowSelectionMode = multiSelect ? 'multiple' : 'single';
     const editedCellsRef = useRef<Set<string>>(new Set());
+    const originalDataRef = useRef<Record<string, any>>({});
+
+    useEffect(() => {
+        rowData.forEach(row => {
+            const id = row.__id;
+            if (originalDataRef.current[id] === undefined) {
+                originalDataRef.current[id] = { ...row };
+            }
+        });
+        const removedKeys: Array<{ rowId: string; field: string }> = [];
+        editedCellsRef.current.forEach(key => {
+            const [rowId, field] = key.split('_');
+            const currentRow = rowData.find(r => r.__id === rowId);
+            if (currentRow) {
+                const originalValue = originalDataRef.current[rowId]?.[field];
+                if (currentRow[field] === originalValue) {
+                    editedCellsRef.current.delete(key);
+                    removedKeys.push({ rowId, field });
+                }
+            }
+        });
+        if (removedKeys.length && gridRef.current?.api) {
+            removedKeys.forEach(k => {
+                const node = gridRef.current!.api.getRowNode(k.rowId);
+                if (node) {
+                    gridRef.current!.api.refreshCells({ rowNodes: [node], columns: [k.field] });
+                }
+            });
+        }
+    }, [rowData]);
 
     useEffect(() => {
         if (columnDefs && columnDefs.length > 0) {
@@ -110,7 +140,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             });
         }
         const key = `${params.node.id}_${params.column.getId()}`;
-        editedCellsRef.current.add(key);
+        const originalValue = originalDataRef.current[params.node.id]?.[params.column.getId()];
+        if (params.newValue === originalValue) {
+            editedCellsRef.current.delete(key);
+        } else {
+            editedCellsRef.current.add(key);
+        }
         params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()] });
     }, [onCellValueChanged]);
 
