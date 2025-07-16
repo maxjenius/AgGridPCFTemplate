@@ -18,7 +18,6 @@ export interface IInputs {
 export interface IOutputs {
     EditedCells?: any;
     EditedRows?: any;
-    SelectedItems?: any;
     EditedCellsSchema?: string;
     EditedRowsSchema?: string;
 }
