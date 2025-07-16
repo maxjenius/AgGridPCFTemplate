@@ -175,6 +175,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 headerColor: context.parameters.HeaderColor.raw || undefined,
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
+                enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false
