@@ -51,6 +51,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     };
     private _context?: ComponentFramework.Context<IInputs>;
     private _rowSelectionMode: 'single' | 'multiple' = 'multiple';
+    private _readOnly: boolean = false;
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
         const properties: Record<string, unknown> = {};
@@ -108,6 +109,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._context = context;
         const dataset = context.parameters.gridData;
         this._rowSelectionMode = (context.parameters.RowSelectionMode.raw as any) === 'single' ? 'single' : 'multiple';
+        this._readOnly = context.parameters.ReadOnly.raw === true;
         this._columnDefs = dataset.columns.map(col => ({
             field: col.name,
             headerName: col.displayName
@@ -150,7 +152,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 headerColor: context.parameters.HeaderColor.raw || undefined,
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
-                rowSelectionMode: this._rowSelectionMode
+                rowSelectionMode: this._rowSelectionMode,
+                readOnly: this._readOnly
             }),
             this.gridContainer
         );
