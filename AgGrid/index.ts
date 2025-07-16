@@ -57,7 +57,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }
     };
     private _context?: ComponentFramework.Context<IInputs>;
-    private _rowSelectionMode: 'single' | 'multiple' = 'multiple';
+    private _multiSelect: boolean = true;
     private _rowKeyField?: string;
     private _readOnly: boolean = false;
 
@@ -117,7 +117,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     public updateView(context: ComponentFramework.Context<IInputs>): void {
         this._context = context;
         const dataset = context.parameters.gridData;
-        this._rowSelectionMode = (context.parameters.RowSelectionMode.raw as any) === 'single' ? 'single' : 'multiple';
+        this._multiSelect = context.parameters.MultiSelect.raw !== false;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._columnDefs = dataset.columns.map(col => ({
@@ -165,7 +165,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 headerColor: context.parameters.HeaderColor.raw || undefined,
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
-                rowSelectionMode: this._rowSelectionMode,
+                multiSelect: this._multiSelect,
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false
             }),
