@@ -182,8 +182,13 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     }
 
     private valuesAreEqual(a: unknown, b: unknown): boolean {
-        // simple equality check for primitives and dates represented as strings
-        return a === b;
+        if (a === b) {
+            return true;
+        }
+        if (a == null && b == null) {
+            return true;
+        }
+        return String(a) === String(b);
     }
 
     private onCellEdited(change: EditedCell): void {
