@@ -210,8 +210,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
         }
         if (fontSize) {
-            (style as any)['--ag-font-size'] = fontSize;
-            style.fontSize = fontSize;
+            let size = fontSize;
+            if (/^\d+$/.test(size)) {
+                size = `${size}px`;
+            }
+            (style as any)['--ag-font-size'] = size;
+            style.fontSize = size;
         }
         if (enableBlur) {
             style.backdropFilter = 'blur(8px)';
