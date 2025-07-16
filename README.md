@@ -12,6 +12,7 @@ You can customize the appearance of the grid using the following input propertie
 * `GridBackgroundColor` - background color for the main grid body.
 * `ReadOnly` - disables cell editing when set to true.
 * `ShowPagination` - show or hide the pagination bar (default is show).
+* `ColumnDefinitions` - JSON string to customize Ag Grid column definitions.
 
 ### prerequisites:
 * node js.

@@ -12,6 +12,7 @@ export interface IInputs {
     MultiSelect: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
     ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
+    ColumnDefinitions: ComponentFramework.PropertyTypes.StringProperty;
     ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
