@@ -41,7 +41,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             }
         }
     };
-    private readonly _rowsSchemaObj = {
+    private _rowsSchemaObj: Record<string, unknown> = {
         $schema: "http://json-schema.org/draft-04/schema#",
         type: "array",
         items: {
@@ -51,6 +51,22 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     };
     private _context?: ComponentFramework.Context<IInputs>;
     private _rowSelectionMode: 'single' | 'multiple' = 'multiple';
+
+    private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
+        const properties: Record<string, unknown> = {};
+        columns.forEach(col => {
+            properties[col.name] = { type: "string" };
+        });
+        return {
+            $schema: "http://json-schema.org/draft-04/schema#",
+            type: "array",
+            items: {
+                type: "object",
+                properties,
+                additionalProperties: true
+            }
+        };
+    }
     /**
      * Empty constructor.
      */
@@ -96,6 +112,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             field: col.name,
             headerName: col.displayName
         }));
+        this._rowsSchemaObj = this.buildRowSchema(dataset.columns as any);
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];
             const row: any = { __id: id };
