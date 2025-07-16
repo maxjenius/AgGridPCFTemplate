@@ -28,6 +28,27 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _editedRows: RowPatch[] = [];
     private _editedRowRecords: any[] = [];
     private _originalRowData: Record<string, any> = {};
+    private readonly _cellsSchemaObj = {
+        $schema: "http://json-schema.org/draft-04/schema#",
+        type: "array",
+        items: {
+            type: "object",
+            properties: {
+                rowId: { type: "string" },
+                field: { type: "string" },
+                oldValue: { type: "string" },
+                newValue: { type: "string" }
+            }
+        }
+    };
+    private readonly _rowsSchemaObj = {
+        $schema: "http://json-schema.org/draft-04/schema#",
+        type: "array",
+        items: {
+            type: "object",
+            additionalProperties: true
+        }
+    };
     private _context?: ComponentFramework.Context<IInputs>;
     /**
      * Empty constructor.
@@ -176,33 +197,17 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     public getOutputs(): IOutputs {
         return {
             EditedCells: this._editedCells,
-            EditedRows: this._editedRowRecords
+            EditedRows: this._editedRowRecords,
+            EditedCellsSchema: JSON.stringify(this._cellsSchemaObj),
+            EditedRowsSchema: JSON.stringify(this._rowsSchemaObj)
         };
     }
 
     public async getOutputSchema(context: ComponentFramework.Context<IInputs>): Promise<Record<string, unknown>> {
-        const schema = {
-            $schema: "http://json-schema.org/draft-04/schema#",
-            type: "array",
-            items: {
-                type: "object",
-                properties: {
-                    rowId: { type: "string" },
-                    field: { type: "string" },
-                    oldValue: { type: "string" },
-                    newValue: { type: "string" }
-                }
-            }
-        };
-        const rowSchema = {
-            $schema: "http://json-schema.org/draft-04/schema#",
-            type: "array",
-            items: {
-                type: "object",
-                additionalProperties: true
-            }
-        };
-        return Promise.resolve({ EditedCells: schema, EditedRows: rowSchema });
+        return Promise.resolve({
+            EditedCells: this._cellsSchemaObj,
+            EditedRows: this._rowsSchemaObj
+        });
     }
 
     /**
