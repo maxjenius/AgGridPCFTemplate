@@ -49,6 +49,30 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return String(a) === String(b);
     };
 
+    const refreshEditedCells = useCallback(() => {
+        if (!gridRef.current?.api) {
+            return;
+        }
+        const refreshMap: Record<string, { node: any; cols: Set<string> }> = {};
+        editedCellsRef.current.forEach(key => {
+            const [rowId, field] = key.split('_');
+            const node = gridRef.current!.api.getRowNode(rowId);
+            if (node) {
+                if (!refreshMap[rowId]) {
+                    refreshMap[rowId] = { node, cols: new Set() };
+                }
+                refreshMap[rowId].cols.add(field);
+            }
+        });
+        Object.values(refreshMap).forEach(val => {
+            gridRef.current!.api.refreshCells({
+                rowNodes: [val.node],
+                columns: Array.from(val.cols),
+                force: true
+            });
+        });
+    }, []);
+
     useEffect(() => {
         rowData.forEach(row => {
             const id = row.__id;
@@ -76,7 +100,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 }
             });
         }
-    }, [rowData]);
+        refreshEditedCells();
+    }, [rowData, refreshEditedCells]);
 
     useEffect(() => {
         if (resetVersion !== undefined) {
@@ -185,8 +210,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     }, [applySelection]);
 
     useEffect(() => {
-        applySelection();
-    }, [rowData, selectedRowIds, applySelection]);
+        if (gridRef.current?.api && selectedRowIds) {
+            gridRef.current?.api?.forEachNode(node => {
+                node.setSelected(selectedRowIds.includes(node.id as any));
+            });
+        }
+        refreshEditedCells();
+    }, [rowData, selectedRowIds, refreshEditedCells]);
 
     const containerStyle: React.CSSProperties = useMemo(() => {
         const style: React.CSSProperties = {
