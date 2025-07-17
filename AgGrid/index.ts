@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 
 interface EditedCell {
     rowId: string;
@@ -20,6 +20,7 @@ interface RowPatch {
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
+    private _reactRoot?: Root;
     private _notifyOutputChanged?: () => void;
     private _selectedRowIds: string[] = [];
     private _rowData: any[] = [];
@@ -109,6 +110,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.gridContainer.style.backgroundColor = "transparent";
 
         this.container.appendChild(this.gridContainer);
+        this._reactRoot = createRoot(this.gridContainer);
     }
 
 
@@ -204,7 +206,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         } else {
             this._selectedRowIds = dataset.getSelectedRecordIds();
         }
-        ReactDOM.render(
+        this._reactRoot?.render(
             React.createElement(MyAgGrid, {
                 rowData,
                 columnDefs: this._columnDefs,
@@ -220,9 +222,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false,
                 resetVersion: this._resetVersion
-            }),
-            this.gridContainer
+            })
         );
+
     }
 
     private onRowsSelected(rows: any[]): void {
@@ -327,6 +329,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      */
     public destroy(): void {
         // Add code to cleanup control if necessary
-        ReactDOM.unmountComponentAtNode(this.container);
+        this._reactRoot?.unmount();
     }
 }
