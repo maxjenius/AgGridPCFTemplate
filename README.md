@@ -46,7 +46,7 @@ If the property is left blank, the grid generates columns automatically based on
 * API as a data source.
 
 ### Automated setup
-The `scripts` folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
+The root folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
 Run the shell script on Linux/macOS:
 ```bash
 ./BuildSolution.sh
