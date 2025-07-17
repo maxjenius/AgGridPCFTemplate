@@ -49,10 +49,10 @@ If the property is left blank, the grid generates columns automatically based on
 The `scripts` folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
 Run the shell script on Linux/macOS:
 ```bash
-./scripts/setup-aggrid-pcf.sh
+./BuildSolution.sh
 ```
 On Windows, run the PowerShell script:
 ```powershell
-./scripts/setup-aggrid-pcf.ps1
+./BuildSolution.ps1
 ```
 
