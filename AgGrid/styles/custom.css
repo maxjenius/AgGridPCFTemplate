@@ -58,6 +58,13 @@
     align-items: center;
     padding: 0;
 }
+/* Ensure the inner label container also centers the checkbox */
+.ag-theme-balham .selection-checkbox-header .ag-header-cell-comp-wrapper,
+.ag-theme-balham .selection-checkbox-header .ag-cell-label-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Remove default checkbox margins and ensure proper centering */
 .ag-theme-balham .selection-checkbox-cell .ag-selection-checkbox,
