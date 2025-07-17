@@ -11,7 +11,7 @@ You can customize the appearance of the grid using the following input propertie
 * `FontSize` - numeric font size applied to all text in the grid (pixels). Default is `13`.
 * `EnableBlur` - apply a glass blur effect behind the entire grid when true.
 * `ReadOnly` - disables cell editing when set to true.
-* `SelectedRowKeys` - JSON array of row key values used to programmatically select rows. When empty or null, the input is ignored. Provide a valid JSON array (e.g. `[1,2,3]`) to clear any existing selection and select rows with matching keys.
+* `SelectedRowKeys` - JSON array of row **IDs** used to programmatically select rows. When empty or null, the input is ignored. Provide a valid JSON array (e.g. `["id1","id2"]`) to clear any existing selection and select rows with matching IDs.
 * `ShowPagination` - show or hide the pagination bar (default is show).
 
 ### Column Definitions

@@ -129,15 +129,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
-        let selectedKeyValues: any[] | undefined;
+        let selectedIds: string[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
-        let selectedKeysValid = false;
+        let selectedIdsValid = false;
         if (selectedKeysInput !== undefined && selectedKeysInput !== null && selectedKeysInput !== "") {
             try {
                 const temp = JSON.parse(selectedKeysInput as any);
                 if (Array.isArray(temp)) {
-                    selectedKeyValues = temp;
-                    selectedKeysValid = true;
+                    selectedIds = temp.map(v => String(v));
+                    selectedIdsValid = true;
                 } else {
                     console.warn('SelectedRowKeys value is not an array');
                 }
@@ -190,16 +190,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             });
         });
         this._rowData = rowData;
-        if (selectedKeysValid) {
-            const keyToId = new Map<string, string>();
-            rowData.forEach(r => {
-                if (r.rowKey !== undefined) {
-                    keyToId.set(String(r.rowKey), r.__id);
-                }
-            });
-            const ids = (selectedKeyValues ?? [])
-                .map(k => keyToId.get(String(k)))
-                .filter((id): id is string => Boolean(id));
+        if (selectedIdsValid) {
+            const ids = (selectedIds ?? [])
+                .map(id => String(id))
+                .filter(id => dataset.records[id]);
             this._selectedRowIds = ids;
             dataset.setSelectedRecordIds(ids);
         } else {
