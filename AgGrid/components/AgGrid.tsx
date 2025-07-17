@@ -146,6 +146,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
+
+    const applySelection = useCallback(() => {
+        if (gridRef.current?.api && selectedRowIds) {
+            gridRef.current.api.forEachNode(node => {
+                node.setSelected(selectedRowIds.includes(node.id as any));
+            });
+        }
+    }, [selectedRowIds]);
     const onSelectionChangedHandler = useCallback(() => {
         if (onSelectionChanged && gridRef.current?.api) {
             const selected = gridRef.current?.api?.getSelectedRows();
@@ -172,13 +180,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
     }, [onCellValueChanged]);
 
+    const onGridReady = useCallback(() => {
+        applySelection();
+    }, [applySelection]);
+
     useEffect(() => {
-        if (gridRef.current?.api && selectedRowIds) {
-            gridRef.current?.api?.forEachNode(node => {
-                node.setSelected(selectedRowIds.includes(node.id as any));
-            });
-        }
-    }, [rowData, selectedRowIds]);
+        applySelection();
+    }, [rowData, selectedRowIds, applySelection]);
 
     const containerStyle: React.CSSProperties = useMemo(() => {
         const style: React.CSSProperties = {
@@ -239,6 +247,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 rowSelection={rowSelectionMode}
                 rowMultiSelectWithClick={rowSelectionMode === 'multiple'}
                 tooltipShowDelay={500}
+                onGridReady={onGridReady}
                 onSelectionChanged={onSelectionChangedHandler}
                 onCellValueChanged={onCellValueChangedHandler}
             />
