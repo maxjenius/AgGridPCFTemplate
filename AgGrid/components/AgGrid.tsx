@@ -167,7 +167,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         enableRangeSelection: false,
-    }), [finalColumnDefs]);
+        suppressRowClickSelection: rowSelectionMode === 'multiple'
+    }), [finalColumnDefs, rowSelectionMode]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -275,7 +276,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 getRowId={getRowId}
                 pagination={showPagination}
                 rowSelection={rowSelectionMode}
-                rowMultiSelectWithClick={rowSelectionMode === 'multiple'}
+                rowMultiSelectWithClick={false}
                 tooltipShowDelay={500}
                 onGridReady={onGridReady}
                 onSelectionChanged={onSelectionChangedHandler}

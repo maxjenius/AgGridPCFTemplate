@@ -40,6 +40,7 @@
     <property name="ColumnDefinitions" display-name-key="ColumnDefinitions" of-type="SingleLine.TextArea" usage="input" default-value="" />
     <property name="ShowPagination" display-name-key="ShowPagination" of-type="TwoOptions" usage="input" default-value="true" />
     <property name="ResetChanges" display-name-key="ResetChanges" of-type="TwoOptions" usage="input" default-value="false" />
+    <property name="ResetSelection" display-name-key="ResetSelection" of-type="TwoOptions" usage="input" default-value="false" />
     <!--
       Property node's of-type attribute can be of-type-group attribute.
       Example:
