@@ -61,6 +61,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _rowKeyField?: string;
     private _readOnly: boolean = false;
     private _lastResetFlag: boolean = false;
+    private _lastResetSelectionFlag: boolean = false;
     private _resetVersion: number = 0;
     private _fontSize?: number;
 
@@ -124,6 +125,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             this.resetChanges();
         }
         this._lastResetFlag = resetFlag;
+        const resetSelectionFlag = context.parameters.ResetSelection.raw === true;
+        if (resetSelectionFlag && resetSelectionFlag !== this._lastResetSelectionFlag) {
+            this.clearSelection();
+        }
+        this._lastResetSelectionFlag = resetSelectionFlag;
         const dataset = context.parameters.gridData;
         this._multiSelect = context.parameters.MultiSelect.raw !== false;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
@@ -302,6 +308,13 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._editedRows = [];
         this._editedRowRecords = [];
         this._resetVersion++;
+    }
+
+    private clearSelection(): void {
+        this._selectedRowIds = [];
+        if (this._context) {
+            this._context.parameters.gridData.setSelectedRecordIds([]);
+        }
     }
 
 

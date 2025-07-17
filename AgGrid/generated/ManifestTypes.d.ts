@@ -18,6 +18,7 @@ export interface IInputs {
     ColumnDefinitions: ComponentFramework.PropertyTypes.StringProperty;
     ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ResetChanges: ComponentFramework.PropertyTypes.TwoOptionsProperty;
+    ResetSelection: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     gridData: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {

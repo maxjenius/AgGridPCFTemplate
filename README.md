@@ -13,6 +13,7 @@ You can customize the appearance of the grid using the following input propertie
 * `ReadOnly` - disables cell editing when set to true.
 * `SelectedRowKeys` - JSON array of row key values used to programmatically select rows. When empty or null, the input is ignored. Provide a valid JSON array (e.g. `[1,2,3]`) to clear any existing selection and select rows with matching keys.
 * `ShowPagination` - show or hide the pagination bar (default is show).
+* `ResetSelection` - when toggled to true, clears any selected rows.
 
 ### Column Definitions
 Use the `ColumnDefinitions` input to override the automatically generated columns. The value should be a JSON string containing an array of [AG Grid column definition](https://www.ag-grid.com/react-data-grid/column-definitions/) objects. Each object must specify a `field` matching a column in your dataset. Common keys include:
