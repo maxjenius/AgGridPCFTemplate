@@ -70,6 +70,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: none;
 }
 
 /* Ensure grid body background uses theme variable */
@@ -93,6 +94,14 @@
 /* Align filter menu buttons to the right */
 .ag-theme-balham .ag-header-cell-menu-button {
     margin-left: auto;
+}
+
+/* Allow header text to grow so menu button stays on the far right */
+.ag-theme-balham .ag-header-cell-label {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    min-width: 0;
 }
 
 .ag-theme-balham.ag-ltr .ag-row-drag,
