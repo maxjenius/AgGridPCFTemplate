@@ -24,10 +24,6 @@
     backdrop-filter: blur(8px);
 }
 
-/* Apply background color using theme variables */
-.ag-theme-balham .ag-row {
-    background-color: var(--ag-background-color);
-}
 .ag-theme-balham .ag-row:nth-of-type(odd) {
     background-color: var(--ag-odd-row-background-color);
 }
@@ -85,9 +81,13 @@
 
 /* Overrides to remove width and margin from Ag Grid defaults */
 .ag-theme-balham .ag-header-cell-comp-wrapper {
-    width: auto !important;
+    width: 100%;
     display: flex;
     align-items: center;
+}
+
+.ag-ltr .ag-header-select-all {
+    margin-left: 12px;
 }
 
 /* Align filter menu buttons to the right */
@@ -105,8 +105,4 @@
 /* Override default header cell display */
 .ag-theme-balham .ag-header-cell {
     display: flex;
-}
-
-.ag-theme-balham.ag-ltr .ag-header-select-all {
-    margin-right: 0 !important;
 }
