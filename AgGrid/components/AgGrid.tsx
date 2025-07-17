@@ -72,7 +72,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             removedKeys.forEach(k => {
                 const node = gridRef.current?.api?.getRowNode(k.rowId);
                 if (node) {
-                    gridRef.current?.api?.refreshCells({ rowNodes: [node], columns: [k.field] });
+                    gridRef.current?.api?.refreshCells({ rowNodes: [node], columns: [k.field], force: true });
                 }
             });
         }
@@ -173,7 +173,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         } else {
             editedCellsRef.current.add(key);
         }
-        params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()] });
+        params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
     }, [onCellValueChanged]);
 
     useEffect(() => {
