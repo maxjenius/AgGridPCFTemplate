@@ -135,6 +135,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 const temp = JSON.parse(selectedKeysInput as any);
                 if (Array.isArray(temp)) {
                     selectedKeyValues = temp;
+                } else {
+                    console.warn('SelectedRowKeys value is not an array');
                 }
             } catch (e) {
                 console.error('Failed to parse SelectedRowKeys', e);
