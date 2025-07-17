@@ -70,9 +70,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         });
         if (removedKeys.length && gridRef.current?.api) {
             removedKeys.forEach(k => {
-                const node = gridRef.current!.api.getRowNode(k.rowId);
+                const node = gridRef.current?.api?.getRowNode(k.rowId);
                 if (node) {
-                    gridRef.current!.api.refreshCells({ rowNodes: [node], columns: [k.field] });
+                    gridRef.current?.api?.refreshCells({ rowNodes: [node], columns: [k.field] });
                 }
             });
         }
@@ -85,7 +85,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             rowData.forEach(r => {
                 originalDataRef.current[r.__id] = { ...r };
             });
-            gridRef.current?.api.refreshCells({ force: true });
+            gridRef.current?.api?.refreshCells({ force: true });
         }
     }, [resetVersion]);
 
@@ -119,7 +119,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 headerClass: 'selection-checkbox-header',
                 suppressSizeToFit: true,
                 filter: false,
-                suppressMenu: true
+                suppressHeaderMenuButton: true
             };
             return [selectionCol, ...columnDefs];
         }
@@ -145,15 +145,15 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const gridOptions = useMemo(() => ({
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
-        enableRangeSelection: true,
+        enableRangeSelection: false,
     }), [finalColumnDefs]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
     const onSelectionChangedHandler = useCallback(() => {
         if (onSelectionChanged && gridRef.current?.api) {
-            const selected = gridRef.current.api.getSelectedRows();
-            onSelectionChanged(selected);
+            const selected = gridRef.current?.api?.getSelectedRows();
+            onSelectionChanged(selected ?? []);
         }
     }, [onSelectionChanged]);
 
@@ -178,7 +178,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
 
     useEffect(() => {
         if (gridRef.current?.api && selectedRowIds) {
-            gridRef.current.api.forEachNode(node => {
+            gridRef.current?.api?.forEachNode(node => {
                 node.setSelected(selectedRowIds.includes(node.id as any));
             });
         }
