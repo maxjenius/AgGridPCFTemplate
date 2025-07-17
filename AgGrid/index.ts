@@ -130,11 +130,13 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
         let selectedKeyValues: any[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
-        if (selectedKeysInput) {
+        let selectedKeysValid = false;
+        if (selectedKeysInput !== undefined && selectedKeysInput !== null && selectedKeysInput !== "") {
             try {
                 const temp = JSON.parse(selectedKeysInput as any);
                 if (Array.isArray(temp)) {
                     selectedKeyValues = temp;
+                    selectedKeysValid = true;
                 } else {
                     console.warn('SelectedRowKeys value is not an array');
                 }
@@ -187,14 +189,14 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             });
         });
         this._rowData = rowData;
-        if (selectedKeyValues && selectedKeyValues.length) {
+        if (selectedKeysValid) {
             const keyToId = new Map<string, string>();
             rowData.forEach(r => {
                 if (r.rowKey !== undefined) {
                     keyToId.set(String(r.rowKey), r.__id);
                 }
             });
-            const ids = selectedKeyValues
+            const ids = (selectedKeyValues ?? [])
                 .map(k => keyToId.get(String(k)))
                 .filter((id): id is string => Boolean(id));
             this._selectedRowIds = ids;
