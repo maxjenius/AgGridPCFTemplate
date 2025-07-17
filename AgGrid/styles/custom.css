@@ -106,3 +106,20 @@
 .ag-theme-balham .ag-header-cell {
     display: flex;
 }
+
+/* Bold header text */
+.ag-header-cell-text {
+    font-weight: bold;
+}
+
+.ag-row-odd {
+    background-color: transparent;
+}
+
+.ag-theme-balham .ag-row:nth-of-type(odd) {
+    background-color: transparent;
+}
+
+.ag-row {
+    background-color: transparent;
+}
