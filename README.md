@@ -22,18 +22,19 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `headerName` – display name for the column
 * `width` – numeric width of the column
 * `sortable` – enable sorting
-* `filter` – enable filtering or specify a filter type
+* `filter` – enable filtering or specify a filter type (e.g. `agTextColumnFilter`, `agNumberColumnFilter`, `agDateColumnFilter`)
 * `pinned` – pin the column to `'left'` or `'right'`
-* `cellRenderer` – registered cell renderer
-* `valueFormatter` – custom formatting for values
+* `editable` – set to `false` to make the column read only
+* `cellRenderer` – registered cell renderer such as `agGroupCellRenderer` or `agCheckboxCellRenderer`
+* `valueFormatter` – custom function to format displayed values
 
 Example value for the property:
 
 ```json
 [
-  { "field": "name", "headerName": "Name", "sortable": true },
-  { "field": "age", "width": 80, "filter": "agNumberColumnFilter" },
-  { "field": "country", "pinned": "left" }
+  { "field": "name", "headerName": "Name", "sortable": true, "editable": false },
+  { "field": "age", "width": 80, "filter": "agNumberColumnFilter", "valueFormatter": "ageFormatter" },
+  { "field": "country", "pinned": "left", "cellRenderer": "agGroupCellRenderer" }
 ]
 ```
 
