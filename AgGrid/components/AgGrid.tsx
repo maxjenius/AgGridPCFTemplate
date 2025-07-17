@@ -135,11 +135,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         cellClassRules: {
             'edited-cell': (params: any) =>
                 editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
-        },
-        cellStyle: (params: any) =>
-            editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
-                ? { border: '1px solid red' }
-                : undefined
+        }
     }), [readOnly]);
 
     const gridOptions = useMemo(() => ({
