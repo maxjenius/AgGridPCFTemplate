@@ -101,3 +101,13 @@
 .ag-theme-balham.ag-ltr .ag-group-contracted {
     margin-right: 0 !important;
 }
+
+/* Ensure header, pagination and grid backgrounds do not overlay other elements */
+.ag-theme-balham .ag-header,
+.ag-theme-balham .ag-paging-panel,
+.ag-theme-balham .ag-root-wrapper,
+.ag-theme-balham .ag-root-wrapper-body,
+.ag-theme-balham .ag-row {
+    position: relative;
+    z-index: 0;
+}
