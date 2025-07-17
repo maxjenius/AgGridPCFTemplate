@@ -101,3 +101,8 @@
 .ag-theme-balham.ag-ltr .ag-group-contracted {
     margin-right: 0 !important;
 }
+
+/* Override default header cell display */
+.ag-theme-balham .ag-header-cell {
+    display: flex;
+}
