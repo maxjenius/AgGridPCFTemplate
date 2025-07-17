@@ -113,13 +113,17 @@
 }
 
 .ag-row-odd {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .ag-theme-balham .ag-row:nth-of-type(odd) {
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .ag-row {
-    background-color: transparent;
+    background-color: transparent !important;
+}
+
+.ag-theme-balham, .ag-theme-balham-dark, .ag-theme-balham-auto-dark {
+    --ag-row-hover-color: #00000010 !important;
 }
