@@ -73,7 +73,7 @@
 }
 
 /* Ensure grid body background uses theme variable */
-.ag-theme-balham .ag-body-viewport.ag-row-animation.ag-layout-normal {
+#AgGrid\ -\ 29 > div.customControl.AgGrid.AgGrid.AgGrid\.AgGrid > div > div > div > div.ag-root-wrapper.ag-ltr.ag-layout-normal > div.ag-root-wrapper-body.ag-focus-managed.ag-layout-normal > div.ag-root.ag-unselectable.ag-layout-normal > div.ag-body.ag-layout-normal {
     background-color: var(--ag-background-color);
 }
 
