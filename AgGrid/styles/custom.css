@@ -135,6 +135,14 @@
 .date-time-editor .rdp {
     z-index: 10000;
 }
+/* Ensure popup editors display above the grid */
+.ag-theme-balham .ag-popup-editor {
+    z-index: 1050;
+}
+
+.date-time-editor {
+    position: relative;
+}
 
 /* Styles inspired by the shadcn datetime picker */
 .datetime-picker {
