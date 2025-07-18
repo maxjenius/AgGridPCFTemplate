@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import { DatetimePicker } from './DatetimePicker';
+import { DatetimePopover } from './DatetimePopover';
 
 const DateTimeFilter = forwardRef<any, any>((props, ref) => {
     const [from, setFrom] = useState<Date | null>(null);
@@ -50,8 +50,8 @@ const DateTimeFilter = forwardRef<any, any>((props, ref) => {
 
     return (
         <div className="ag-filter-body date-time-filter" style={{ padding: '4px' }}>
-            <DatetimePicker selected={from ?? undefined} setDate={d => onChangeFrom(d)} />
-            <DatetimePicker selected={to ?? undefined} setDate={d => onChangeTo(d)} />
+            <DatetimePopover value={from ?? undefined} onChange={d => onChangeFrom(d)} />
+            <DatetimePopover value={to ?? undefined} onChange={d => onChangeTo(d)} />
         </div>
     );
 });
