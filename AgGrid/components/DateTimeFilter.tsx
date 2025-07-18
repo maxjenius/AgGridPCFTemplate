@@ -50,7 +50,7 @@ const DateTimeFilter = forwardRef<any, any>((props, ref) => {
     };
 
     return (
-        <div className="ag-filter-body" style={{ padding: '4px' }}>
+        <div className="ag-filter-body date-time-filter" style={{ padding: '4px' }}>
             <DatePicker
                 selected={from}
                 onChange={onChangeFrom}
@@ -59,6 +59,7 @@ const DateTimeFilter = forwardRef<any, any>((props, ref) => {
                 dateFormat="yyyy-MM-dd HH:mm"
                 placeholderText="From..."
                 className="ag-input-field-input ag-text-field-input"
+                portalId="ag-date-time-filter-portal"
             />
             <DatePicker
                 selected={to}
@@ -68,6 +69,7 @@ const DateTimeFilter = forwardRef<any, any>((props, ref) => {
                 dateFormat="yyyy-MM-dd HH:mm"
                 placeholderText="To..."
                 className="ag-input-field-input ag-text-field-input"
+                portalId="ag-date-time-filter-portal"
             />
         </div>
     );

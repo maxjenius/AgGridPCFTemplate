@@ -127,3 +127,11 @@
 .ag-theme-balham, .ag-theme-balham-dark, .ag-theme-balham-auto-dark {
     --ag-row-hover-color: #00000010 !important;
 }
+
+/* Ensure date time filter pickers fit the panel */
+.date-time-filter .react-datepicker-wrapper {
+    width: 100%;
+}
+.date-time-filter .react-datepicker-popper {
+    z-index: 10000;
+}
