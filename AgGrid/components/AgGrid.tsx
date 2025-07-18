@@ -157,8 +157,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         resizable: true,
         editable: !readOnly,
         cellClassRules: {
-            'edited-cell': (params: any) =>
-                editedCellsRef.current.has(`${params.node.id}_${params.column.getId()}`)
+            'edited-cell': (params: any) => {
+                const id = params.node.id;
+                const field = params.column.getId();
+                const original = originalDataRef.current[id]?.[field];
+                return !valuesAreEqual(params.value, original);
+            }
         }
     }), [readOnly]);
 
