@@ -135,3 +135,8 @@
 .date-time-filter .react-datepicker-popper {
     z-index: 10000;
 }
+
+/* Popup editor styling */
+.date-time-editor .react-datepicker-popper {
+    z-index: 10000;
+}
