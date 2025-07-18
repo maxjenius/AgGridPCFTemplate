@@ -125,30 +125,27 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             field: autoDefName,
             headerCheckboxSelection: rowSelectionMode === 'multiple',
             cellRendererParams: {
-                checkbox: rowSelectionMode === 'multiple',
+                checkbox: true,
             },
         };
     }, [autoDefName, rowSelectionMode]);
 
     const finalColumnDefs = useMemo(() => {
-        if (rowSelectionMode === 'multiple') {
-            const selectionCol = {
-                headerName: '',
-                colId: 'selection',
-                checkboxSelection: true,
-                headerCheckboxSelection: true,
-                width: 40,
-                minWidth: 40,
-                maxWidth: 40,
-                cellClass: 'selection-checkbox-cell',
-                headerClass: 'selection-checkbox-header',
-                suppressSizeToFit: true,
-                filter: false,
-                suppressHeaderMenuButton: true
-            };
-            return [selectionCol, ...columnDefs];
-        }
-        return columnDefs;
+        const selectionCol = {
+            headerName: '',
+            colId: 'selection',
+            checkboxSelection: true,
+            headerCheckboxSelection: rowSelectionMode === 'multiple',
+            width: 40,
+            minWidth: 40,
+            maxWidth: 40,
+            cellClass: 'selection-checkbox-cell',
+            headerClass: 'selection-checkbox-header',
+            suppressSizeToFit: true,
+            filter: false,
+            suppressHeaderMenuButton: true
+        };
+        return [selectionCol, ...columnDefs];
     }, [columnDefs, rowSelectionMode]);
 
     const defaultColDef = useMemo(() => ({
