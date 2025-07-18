@@ -23,7 +23,7 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `headerName` – display name for the column
 * `width` – numeric width of the column
 * `sortable` – enable sorting
-* `filter` – enable filtering or specify a filter type (e.g. `agTextColumnFilter`, `agNumberColumnFilter`, `agDateColumnFilter`)
+* `filter` – enable filtering or specify a filter type (e.g. `agTextColumnFilter`, `agNumberColumnFilter`, `agDateColumnFilter`, `dateTimeFilter`)
 * `pinned` – pin the column to `'left'` or `'right'`
 * `editable` – set to `false` to make the column read only
 * `cellRenderer` – registered cell renderer such as `agGroupCellRenderer` or `agCheckboxCellRenderer`
@@ -40,6 +40,7 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `cellClass` – CSS class applied to cell
 * `cellStyle` – inline style object for cell
 * `dateTimeEditor` – custom editor for picking both date and time
+* `dateTimeFilter` – filter ISO date strings using a start and end picker
 
 Include `cellEditor: 'dateTimeEditor'` in a column definition to let users edit
 an ISO date string with a date and time picker.
@@ -62,6 +63,7 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 * `agTextColumnFilter` – text search with contains, equals and more
 * `agNumberColumnFilter` – numeric comparison operators
 * `agDateColumnFilter` – supports date pickers and ranges
+* `dateTimeFilter` – filter ISO strings using a start and end date/time
 * `agSetColumnFilter` – choose from a list of unique values
 * `agMultiColumnFilter` – combine multiple filter types
 * `true` – use the default filter for the data type

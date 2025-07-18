@@ -6,7 +6,7 @@ interface DateTimeEditorProps {
     value?: string;
 }
 
-const DateTimeEditor = forwardRef<HTMLDivElement, DateTimeEditorProps>((props, ref) => {
+const DateTimeEditor = forwardRef<any, DateTimeEditorProps>((props, ref) => {
     const [value, setValue] = useState<Date | null>(props.value ? new Date(props.value) : new Date());
 
     useImperativeHandle(ref, () => ({
