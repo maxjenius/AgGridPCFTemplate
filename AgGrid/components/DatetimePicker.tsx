@@ -10,9 +10,10 @@ export type DatetimePickerProps = Omit<DayPickerProps, 'mode' | 'onSelect'> & {
   setDate: (date: Date) => void;
   selected?: Date;
   onDone?: () => void;
+  onCancel?: () => void;
 };
 
-function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalDate, onDone, ...props }: DatetimePickerProps) {
+function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalDate, onDone, onCancel, ...props }: DatetimePickerProps) {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const { selected: selectedDate } = props as { selected: Date };
@@ -138,9 +139,22 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
           </button>
         </div>
       </div>
-      <button type="button" className="done-button" onClick={() => onDone?.()}>
-        Done
-      </button>
+      <div className="picker-actions">
+        <button
+          type="button"
+          className="cancel-button"
+          onClick={() => onCancel?.()}
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          className="done-button"
+          onClick={() => onDone?.()}
+        >
+          Done
+        </button>
+      </div>
     </div>
   );
 }
