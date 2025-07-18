@@ -177,7 +177,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         enableRangeSelection: false,
-        suppressRowClickSelection: multiSelect
+        suppressRowClickSelection: multiSelect,
+        popupParent: typeof document !== 'undefined' ? document.body : undefined
     }), [finalColumnDefs, multiSelect]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
