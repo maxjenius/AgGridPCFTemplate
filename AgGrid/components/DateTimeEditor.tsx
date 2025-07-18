@@ -1,14 +1,14 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { DatetimePicker } from './DatetimePicker';
+import { format } from 'date-fns';
 
 interface DateTimeEditorProps {
     value?: string;
 }
 
 const DateTimeEditor = forwardRef<any, DateTimeEditorProps>((props, ref) => {
-    const [value, setValue] = useState<Date | null>(props.value ? new Date(props.value) : new Date());
-    const dpRef = useRef<any>(null);
+    const [value, setValue] = useState<Date>(props.value ? new Date(props.value) : new Date());
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useImperativeHandle(ref, () => ({
         getValue(): string | null {
@@ -18,24 +18,15 @@ const DateTimeEditor = forwardRef<any, DateTimeEditorProps>((props, ref) => {
             return true;
         },
         afterGuiAttached(): void {
-            setTimeout(() => dpRef.current?.setFocus?.());
+            const first = containerRef.current?.querySelector('input');
+            (first as HTMLElement | null)?.focus();
         }
     }));
 
     return (
-        <DatePicker
-            selected={value}
-            onChange={(date: Date | null) => setValue(date)}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            dateFormat="yyyy-MM-dd HH:mm"
-            className="ag-input-field-input ag-text-field-input"
-            wrapperClassName="date-time-editor"
-            withPortal
-            ref={dpRef}
-            autoFocus
-        />
+        <div ref={containerRef} className="date-time-editor">
+            <DatetimePicker selected={value} setDate={setValue} />
+        </div>
     );
 });
 

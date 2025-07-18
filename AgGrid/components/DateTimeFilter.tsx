@@ -1,6 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { DatetimePicker } from './DatetimePicker';
 
 const DateTimeFilter = forwardRef<any, any>((props, ref) => {
     const [from, setFrom] = useState<Date | null>(null);
@@ -39,38 +38,20 @@ const DateTimeFilter = forwardRef<any, any>((props, ref) => {
         }
     }));
 
-    const onChangeFrom = (date: Date | null) => {
-        setFrom(date);
+    const onChangeFrom = (date: Date | undefined) => {
+        setFrom(date ?? null);
         props.filterChangedCallback();
     };
 
-    const onChangeTo = (date: Date | null) => {
-        setTo(date);
+    const onChangeTo = (date: Date | undefined) => {
+        setTo(date ?? null);
         props.filterChangedCallback();
     };
 
     return (
         <div className="ag-filter-body date-time-filter" style={{ padding: '4px' }}>
-            <DatePicker
-                selected={from}
-                onChange={onChangeFrom}
-                showTimeSelect
-                timeIntervals={15}
-                dateFormat="yyyy-MM-dd HH:mm"
-                placeholderText="From..."
-                className="ag-input-field-input ag-text-field-input"
-                portalId="ag-date-time-filter-portal"
-            />
-            <DatePicker
-                selected={to}
-                onChange={onChangeTo}
-                showTimeSelect
-                timeIntervals={15}
-                dateFormat="yyyy-MM-dd HH:mm"
-                placeholderText="To..."
-                className="ag-input-field-input ag-text-field-input"
-                portalId="ag-date-time-filter-portal"
-            />
+            <DatetimePicker selected={from ?? undefined} setDate={d => onChangeFrom(d)} />
+            <DatetimePicker selected={to ?? undefined} setDate={d => onChangeTo(d)} />
         </div>
     );
 });
