@@ -39,6 +39,10 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `filterParams` – additional filtering options
 * `cellClass` – CSS class applied to cell
 * `cellStyle` – inline style object for cell
+* `dateTimeEditor` – custom editor for picking both date and time
+
+Include `cellEditor: 'dateTimeEditor'` in a column definition to let users edit
+an ISO date string with a date and time picker.
 
 Example formula in a Canvas app:
 
