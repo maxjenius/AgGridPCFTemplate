@@ -129,14 +129,9 @@
 }
 
 /* Ensure date time filter pickers fit the panel */
-.date-time-filter .react-datepicker-wrapper {
+.date-time-filter .rdp {
     width: 100%;
 }
-.date-time-filter .react-datepicker-popper {
-    z-index: 10000;
-}
-
-/* Popup editor styling */
-.date-time-editor .react-datepicker-popper {
+.date-time-editor .rdp {
     z-index: 10000;
 }
