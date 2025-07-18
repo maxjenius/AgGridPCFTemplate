@@ -39,7 +39,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
-    const rowSelectionMode = multiSelect ? 'multiple' : 'single';
+    // Always use 'multiple' selection to keep checkbox column visible
+    // When multiSelect is false we will enforce single selection manually
+    const rowSelectionMode = 'multiple';
     const editedCellsRef = useRef<Set<string>>(new Set());
     const originalDataRef = useRef<Record<string, any>>({});
 
@@ -123,19 +125,19 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return {
             minWidth: 270,
             field: autoDefName,
-            headerCheckboxSelection: rowSelectionMode === 'multiple',
+            headerCheckboxSelection: multiSelect,
             cellRendererParams: {
                 checkbox: true,
             },
         };
-    }, [autoDefName, rowSelectionMode]);
+    }, [autoDefName, multiSelect]);
 
     const finalColumnDefs = useMemo(() => {
         const selectionCol = {
             headerName: '',
             colId: 'selection',
             checkboxSelection: true,
-            headerCheckboxSelection: rowSelectionMode === 'multiple',
+            headerCheckboxSelection: multiSelect,
             width: 40,
             minWidth: 40,
             maxWidth: 40,
@@ -146,7 +148,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             suppressHeaderMenuButton: true
         };
         return [selectionCol, ...columnDefs];
-    }, [columnDefs, rowSelectionMode]);
+    }, [columnDefs, multiSelect]);
 
     const defaultColDef = useMemo(() => ({
         flex: 1,
@@ -164,8 +166,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         enableRangeSelection: false,
-        suppressRowClickSelection: rowSelectionMode === 'multiple'
-    }), [finalColumnDefs, rowSelectionMode]);
+        suppressRowClickSelection: multiSelect
+    }), [finalColumnDefs, multiSelect]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -178,11 +180,22 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         }
     }, [selectedRowIds]);
     const onSelectionChangedHandler = useCallback(() => {
-        if (onSelectionChanged && gridRef.current?.api) {
-            const selected = gridRef.current?.api?.getSelectedRows();
+        if (!gridRef.current?.api) {
+            return;
+        }
+        if (!multiSelect) {
+            const nodes = gridRef.current.api.getSelectedNodes();
+            if (nodes.length > 1) {
+                const last = nodes[nodes.length - 1];
+                gridRef.current.api.deselectAll();
+                last.setSelected(true);
+            }
+        }
+        if (onSelectionChanged) {
+            const selected = gridRef.current.api.getSelectedRows();
             onSelectionChanged(selected ?? []);
         }
-    }, [onSelectionChanged]);
+    }, [onSelectionChanged, multiSelect]);
 
     const onCellValueChangedHandler = useCallback((params: any) => {
         if (onCellValueChanged) {
