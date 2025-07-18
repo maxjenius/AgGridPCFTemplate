@@ -1,11 +1,12 @@
 import React from 'react';
-import { DayPicker, DayPickerSingleProps, useNavigation } from 'react-day-picker';
-import { ChevronLeft, ChevronRight, Clock, CalendarCheck, CalendarCog, CalendarClock } from 'lucide-react';
+import { DayPicker, DayPickerProps, useDayPicker } from 'react-day-picker';
+import { Clock, CalendarCheck, CalendarPlus, CalendarClock } from 'lucide-react';
 import { format } from 'date-fns';
 import { TimePickerInput } from './TimePickerInput';
 
-export type DatetimePickerProps = Omit<DayPickerSingleProps, 'mode' | 'onSelect'> & {
+export type DatetimePickerProps = Omit<DayPickerProps, 'mode' | 'onSelect'> & {
   setDate: (date: Date) => void;
+  selected?: Date;
 };
 
 function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalDate, ...props }: DatetimePickerProps) {
@@ -39,7 +40,7 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
         className={className}
         components={{
           Footer: () => {
-            const { goToDate } = useNavigation();
+            const { goToMonth } = useDayPicker();
             return (
               <div>
                 <hr className="mt-2" />
@@ -49,7 +50,7 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
                     type="button"
                     onClick={() => {
                       const chosenDate = new Date();
-                      goToDate(chosenDate);
+                      goToMonth(chosenDate);
                       setDate(chosenDate);
                     }}
                   >
@@ -62,11 +63,11 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
                     onClick={() => {
                       const chosenDate = new Date();
                       chosenDate.setDate(chosenDate.getDate() + 1);
-                      goToDate(chosenDate);
+                      goToMonth(chosenDate);
                       setDate(chosenDate);
                     }}
                   >
-                    <span className="flex"><CalendarCog className="h-4 w-4 mr-1" />Tomorrow</span>
+                    <span className="flex"><CalendarPlus className="h-4 w-4 mr-1" />Tomorrow</span>
                     <span className="text-sm text-gray-400">{format(new Date(Date.now() + 24*60*60*1000), 'PPP')}</span>
                   </button>
                   <button
@@ -75,7 +76,7 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
                     onClick={() => {
                       const chosenDate = new Date();
                       chosenDate.setDate(chosenDate.getDate() + 7);
-                      goToDate(chosenDate);
+                      goToMonth(chosenDate);
                       setDate(chosenDate);
                     }}
                   >
@@ -86,8 +87,6 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
               </div>
             );
           },
-          IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-          IconRight: () => <ChevronRight className="h-4 w-4" />,
         }}
         {...props}
       />
