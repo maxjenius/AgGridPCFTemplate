@@ -13,6 +13,7 @@ You can customize the appearance of the grid using the following input propertie
 * `ReadOnly` - disables cell editing when set to true.
 * `SelectedRowKeys` - JSON array of values compared against each row's `rowKey` field. When set, any rows whose `rowKey` value matches one of the entries will be selected. Provide a valid JSON array (e.g. `["value1","value2"]`) to clear the existing selection and select rows with matching keys.
 * `ShowPagination` - show or hide the pagination bar (default is show).
+* `ShowEdited` - when true, only display rows that have been modified during the session.
 * `ResetSelection` - when toggled to true, clears any selected rows.
 
 ### Column Definitions
