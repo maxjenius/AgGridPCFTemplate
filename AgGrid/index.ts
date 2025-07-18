@@ -60,6 +60,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _multiSelect: boolean = true;
     private _rowKeyField?: string;
     private _readOnly: boolean = false;
+    private _showEdited: boolean = false;
     private _lastResetFlag: boolean = false;
     private _lastResetSelectionFlag: boolean = false;
     private _resetVersion: number = 0;
@@ -135,6 +136,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
+        this._showEdited = context.parameters.ShowEdited.raw === true;
         let selectedKeys: string[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
         let selectedKeysValid = false;
@@ -195,10 +197,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
             });
         });
-        this._rowData = rowData;
+        let finalRowData = rowData;
+        if (this._showEdited) {
+            const editedIds = new Set(Array.from(this._rowPatchesMap.keys()));
+            finalRowData = rowData.filter(r => editedIds.has(r.__id));
+        }
+        this._rowData = finalRowData;
         if (selectedKeysValid) {
             const keyMap = new Map<string, string>();
-            rowData.forEach(r => keyMap.set(String(r.rowKey), r.__id));
+            finalRowData.forEach(r => keyMap.set(String(r.rowKey), r.__id));
             const ids = (selectedKeys ?? [])
                 .map(k => keyMap.get(String(k)))
                 .filter((id): id is string => id !== undefined);
@@ -212,7 +219,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         }
         this.root.render(
             React.createElement(MyAgGrid, {
-                rowData,
+                rowData: finalRowData,
                 columnDefs: this._columnDefs,
                 selectedRowIds: this._selectedRowIds,
                 onSelectionChanged: this.onRowsSelected.bind(this),

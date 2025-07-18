@@ -16,6 +16,7 @@ export interface IInputs {
     SelectedRowKeys: ComponentFramework.PropertyTypes.StringProperty;
     ReadOnly: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ColumnDefinitions: ComponentFramework.PropertyTypes.StringProperty;
+    ShowEdited: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ShowPagination: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ResetChanges: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     ResetSelection: ComponentFramework.PropertyTypes.TwoOptionsProperty;
