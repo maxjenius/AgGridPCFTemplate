@@ -29,14 +29,14 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `cellRenderer` – registered cell renderer such as `agGroupCellRenderer` or `agCheckboxCellRenderer`
 * `valueFormatter` – custom function to format displayed values
 
-Example value for the property:
+Example formula in a Canvas app:
 
-```json
-[
-  { "field": "name", "headerName": "Name", "sortable": true, "editable": false },
-  { "field": "age", "width": 80, "filter": "agNumberColumnFilter", "valueFormatter": "ageFormatter" },
-  { "field": "country", "pinned": "left", "cellRenderer": "agGroupCellRenderer" }
-]
+```PowerApps
+JSON([
+  {field: "name", headerName: "Name", sortable: true, editable: false},
+  {field: "age", width: 80, filter: "agNumberColumnFilter", valueFormatter: "ageFormatter"},
+  {field: "country", pinned: "left", cellRenderer: "agGroupCellRenderer"}
+])
 ```
 
 If the property is left blank, the grid generates columns automatically based on the dataset.
@@ -54,6 +54,17 @@ The grid provides several options for controlling how values are displayed insid
   * Display alternative values mapped from your dataset, e.g. show `"America"` when the underlying data contains `"USA"`.
 
 These options follow the behaviour documented in the [AG Grid Cell Content guide](https://www.ag-grid.com/react-data-grid/cell-content/).
+
+A column definition can combine these features before being serialized with `JSON()`. For example:
+
+```PowerApps
+JSON([
+  {field: "website", cellRenderer: "linkRenderer"},
+  {field: "status", valueFormatter: "statusFormatter"}
+])
+```
+
+The `linkRenderer` component would output an anchor element using the row's `website` value, while `statusFormatter` converts numeric codes into friendly text.
 
 ### prerequisites:
 * node js.
