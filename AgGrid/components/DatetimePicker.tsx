@@ -1,5 +1,6 @@
 import React from 'react';
 import { DayPicker, DayPickerProps, useDayPicker } from 'react-day-picker';
+import 'react-day-picker/src/style.css';
 import { Clock, CalendarCheck, CalendarPlus, CalendarClock } from 'lucide-react';
 import { format } from 'date-fns';
 import { TimePickerInput } from './TimePickerInput';
@@ -31,13 +32,13 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
   };
 
   return (
-    <>
+    <div className={`datetime-picker ${className ?? ''}`.trim()}>
       <DayPicker
         mode="single"
         selected={selectedDate}
         onSelect={setDate as any}
         showOutsideDays={showOutsideDays}
-        className={className}
+        className="rdp"
         components={{
           Footer: () => {
             const { goToMonth } = useDayPicker();
@@ -91,13 +92,14 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
         {...props}
       />
       <hr className="my-2" />
-      <div className="flex justify-between px-2">
-        <div className="flex items-center gap-2 text-gray-700">
-          <Clock className="h-4 w-4" />
-          <span className="text-sm">Time</span>
+      <div className="time-header">
+        <div className="time-label">
+          <Clock className="icon" />
+          <span>Time</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="time-inputs">
           <TimePickerInput
+            className="time-input"
             picker="hours"
             date={selectedDate}
             setDate={setTime}
@@ -106,6 +108,7 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
           />
           <span>:</span>
           <TimePickerInput
+            className="time-input"
             picker="minutes"
             date={selectedDate}
             setDate={setTime}
@@ -114,7 +117,7 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
