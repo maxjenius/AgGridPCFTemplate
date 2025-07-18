@@ -28,6 +28,17 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `editable` – set to `false` to make the column read only
 * `cellRenderer` – registered cell renderer such as `agGroupCellRenderer` or `agCheckboxCellRenderer`
 * `valueFormatter` – custom function to format displayed values
+* `minWidth` – minimum column width in pixels
+* `maxWidth` – maximum column width in pixels
+* `valueGetter` – function invoked to derive the value for a cell
+* `valueParser` – convert edited input before saving
+* `valueSetter` – custom save logic for edits
+* `cellRendererParams` – parameters passed to your cell renderer
+* `cellEditor` – name of a built-in editor like `agTextCellEditor`
+* `cellEditorParams` – editor configuration object
+* `filterParams` – additional filtering options
+* `cellClass` – CSS class applied to cell
+* `cellStyle` – inline style object for cell
 
 Example formula in a Canvas app:
 
@@ -40,6 +51,18 @@ JSON([
 ```
 
 If the property is left blank, the grid generates columns automatically based on the dataset.
+
+#### Filter Options
+Set the `filter` key to one of AG Grid's built‑in filter names:
+
+* `agTextColumnFilter` – text search with contains, equals and more
+* `agNumberColumnFilter` – numeric comparison operators
+* `agDateColumnFilter` – supports date pickers and ranges
+* `agSetColumnFilter` – choose from a list of unique values
+* `agMultiColumnFilter` – combine multiple filter types
+* `true` – use the default filter for the data type
+
+Extra configuration can be supplied using `filterParams`.
 
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
@@ -63,6 +86,27 @@ JSON([
   {field: "status", valueFormatter: "statusFormatter"}
 ])
 ```
+
+Another example uses advanced options:
+
+```PowerApps
+JSON([
+  {
+    field: "amount",
+    valueGetter: "getAmount",
+    valueFormatter: "currencyFormatter",
+    filter: "agNumberColumnFilter"
+  },
+  {
+    field: "state",
+    cellRenderer: "stateRenderer",
+    cellRendererParams: { showIcon: true },
+    filter: "agSetColumnFilter"
+  }
+])
+```
+
+Functions like `getAmount` or `currencyFormatter` must be available globally in your Canvas app. `stateRenderer` is a custom React component registered with the grid.
 
 The `linkRenderer` component would output an anchor element using the row's `website` value, while `statusFormatter` converts numeric codes into friendly text.
 
