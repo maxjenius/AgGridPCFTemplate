@@ -40,6 +40,20 @@ Example value for the property:
 
 If the property is left blank, the grid generates columns automatically based on the dataset.
 
+### Cell Content
+The grid provides several options for controlling how values are displayed inside each cell:
+
+* **Value Getter** (`colDef.valueGetter`)
+  * Supply a JavaScript function to derive a value when it can't be taken directly from the data field.
+* **Value Formatter** (`colDef.valueFormatter`)
+  * Format raw values for display, for example converting numbers into currency strings.
+* **Cell Components** (`colDef.cellRenderer`)
+  * Render React components within a cell to show rich content such as icons, links or buttons.
+* **Reference Data**
+  * Display alternative values mapped from your dataset, e.g. show `"America"` when the underlying data contains `"USA"`.
+
+These options follow the behaviour documented in the [AG Grid Cell Content guide](https://www.ag-grid.com/react-data-grid/cell-content/).
+
 ### prerequisites:
 * node js.
 * Microsoft Power Platform CLI.
