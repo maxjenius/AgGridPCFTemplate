@@ -4,16 +4,25 @@ import 'react-day-picker/src/style.css';
 import { Clock, CalendarCheck, CalendarPlus, CalendarClock } from 'lucide-react';
 import { format } from 'date-fns';
 import { TimePickerInput } from './TimePickerInput';
+import { Period } from './timePickerUtils';
 
 export type DatetimePickerProps = Omit<DayPickerProps, 'mode' | 'onSelect'> & {
   setDate: (date: Date) => void;
   selected?: Date;
+  onDone?: () => void;
 };
 
-function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalDate, ...props }: DatetimePickerProps) {
+function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalDate, onDone, ...props }: DatetimePickerProps) {
   const minuteRef = React.useRef<HTMLInputElement>(null);
   const hourRef = React.useRef<HTMLInputElement>(null);
   const { selected: selectedDate } = props as { selected: Date };
+  const [period, setPeriod] = React.useState<Period>(
+    selectedDate.getHours() >= 12 ? 'PM' : 'AM'
+  );
+
+  React.useEffect(() => {
+    setPeriod(selectedDate.getHours() >= 12 ? 'PM' : 'AM');
+  }, [selectedDate]);
 
   const setDate = (dateInput: Date) => {
     const date = new Date(selectedDate);
@@ -25,17 +34,25 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
 
   const setTime = (dateInput: Date | undefined) => {
     if (!dateInput) return;
-    const time = new Date(selectedDate);
-    time.setHours(dateInput.getHours());
-    time.setMinutes(dateInput.getMinutes());
-    setGlobalDate(time);
+    setPeriod(dateInput.getHours() >= 12 ? 'PM' : 'AM');
+    setGlobalDate(dateInput);
+  };
+
+  const togglePeriod = () => {
+    const newPeriod: Period = period === 'AM' ? 'PM' : 'AM';
+    const temp = new Date(selectedDate);
+    if (newPeriod === 'PM' && temp.getHours() < 12) temp.setHours(temp.getHours() + 12);
+    if (newPeriod === 'AM' && temp.getHours() >= 12) temp.setHours(temp.getHours() - 12);
+    setPeriod(newPeriod);
+    setGlobalDate(temp);
   };
 
   return (
     <div className={`datetime-picker ${className ?? ''}`.trim()}>
       <DayPicker
         mode="single"
-        selected={selectedDate}
+        captionLayout="dropdown"
+        selected={selectedDate as any}
         onSelect={setDate as any}
         showOutsideDays={showOutsideDays}
         className="rdp"
@@ -100,7 +117,8 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
         <div className="time-inputs">
           <TimePickerInput
             className="time-input"
-            picker="hours"
+            picker="12hours"
+            period={period}
             date={selectedDate}
             setDate={setTime}
             ref={hourRef}
@@ -115,8 +133,14 @@ function DatetimePicker({ className, showOutsideDays = true, setDate: setGlobalD
             ref={minuteRef}
             onLeftFocus={() => hourRef.current?.focus()}
           />
+          <button type="button" className="period-toggle" onClick={togglePeriod}>
+            {period}
+          </button>
         </div>
       </div>
+      <button type="button" className="done-button" onClick={() => onDone?.()}>
+        Done
+      </button>
     </div>
   );
 }

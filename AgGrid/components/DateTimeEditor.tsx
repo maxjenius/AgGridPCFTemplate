@@ -1,6 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useState, useRef } from 'react';
-import { DatetimePicker } from './DatetimePicker';
-import { format } from 'date-fns';
+import { DatetimePopover } from './DatetimePopover';
 
 interface DateTimeEditorProps {
     value?: string;
@@ -18,14 +17,14 @@ const DateTimeEditor = forwardRef<any, DateTimeEditorProps>((props, ref) => {
             return true;
         },
         afterGuiAttached(): void {
-            const first = containerRef.current?.querySelector('input');
-            (first as HTMLElement | null)?.focus();
+            const btn = containerRef.current?.querySelector('button');
+            (btn as HTMLElement | null)?.focus();
         }
     }));
 
     return (
         <div ref={containerRef} className="date-time-editor">
-            <DatetimePicker selected={value} setDate={setValue} />
+            <DatetimePopover value={value} onChange={setValue} />
         </div>
     );
 });
