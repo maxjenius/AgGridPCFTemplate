@@ -3,6 +3,8 @@
 ### Features:
 AG Grid offers a wide range of features for building powerful and customizable data grids, including sorting, filtering, grouping, column pinning, row selection, row virtualization, cell editing, and many more.
 
+Date and time fields are automatically formatted in a short US style such as `5/5/2025` or `5/5/2025 2:20 PM` for display only.
+
 ### Color Inputs
 You can customize the appearance of the grid using the following input properties:
 * `HeaderColor` - background color for the column header area.

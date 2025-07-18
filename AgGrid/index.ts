@@ -66,6 +66,32 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _resetVersion: number = 0;
     private _fontSize?: number;
 
+    private readonly dateFormatter = (params: any): string => {
+        const val = params.value;
+        if (val === undefined || val === null || val === '') {
+            return '';
+        }
+        const date = new Date(val);
+        if (isNaN(date.getTime())) {
+            return String(val);
+        }
+        return date.toLocaleDateString('en-US');
+    };
+
+    private readonly dateTimeFormatter = (params: any): string => {
+        const val = params.value;
+        if (val === undefined || val === null || val === '') {
+            return '';
+        }
+        const date = new Date(val);
+        if (isNaN(date.getTime())) {
+            return String(val);
+        }
+        const datePart = date.toLocaleDateString('en-US');
+        const timePart = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        return `${datePart} ${timePart}`;
+    };
+
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
         const properties: Record<string, unknown> = {};
         columns.forEach(col => {
@@ -165,10 +191,19 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 console.error('Failed to parse ColumnDefinitions', e);
             }
         }
-        this._columnDefs = parsedDefs ?? dataset.columns.map(col => ({
+        const columnsArray = dataset.columns as any[];
+        this._columnDefs = (parsedDefs ?? columnsArray.map(col => ({
             field: col.name,
             headerName: col.displayName
-        }));
+        }))).map(def => {
+            const meta = columnsArray.find(c => c.name === def.field);
+            const dt = meta && typeof meta.dataType === 'string' ? meta.dataType.toLowerCase() : '';
+            if (meta && !def.valueFormatter && dt.includes('date')) {
+                const includeTime = dt.includes('time') && !dt.includes('dateonly');
+                def.valueFormatter = includeTime ? this.dateTimeFormatter : this.dateFormatter;
+            }
+            return def;
+        });
         this._rowsSchemaObj = this.buildRowSchema(dataset.columns as any);
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];
