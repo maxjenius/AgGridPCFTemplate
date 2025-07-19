@@ -88,15 +88,24 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         if (value === null || value === undefined) {
             return value as null | undefined;
         }
-        const d = new Date(value as any);
+        const str = String(value);
+        if (type === "date") {
+            const m = str.match(/^(\d{4}-\d{2}-\d{2})/);
+            if (m) {
+                return m[1];
+            }
+        } else {
+            const m = str.match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/);
+            if (m) {
+                return `${m[1]}T${m[2]}`;
+            }
+        }
+        const d = new Date(str);
         if (isNaN(d.getTime())) {
             return value as any;
         }
         const iso = d.toISOString();
-        if (type === "date") {
-            return iso.slice(0, 10);
-        }
-        return iso.slice(0, 19);
+        return type === "date" ? iso.slice(0, 10) : iso.slice(0, 19);
     }
     /**
      * Empty constructor.
