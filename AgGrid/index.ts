@@ -198,7 +198,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     const formatted = serialiseDate(value as any);
                     value = formatted === null ? value.toISOString() : formatted;
                 } else if (typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)) {
-                    const parsed = parseDateTimeFromString(value);
+                    // Convert ISO 8601 strings (yyyy-MM-ddTHH:mm) into the format
+                    // expected by AG Grid's date parser (yyyy-MM-dd HH:mm:ss)
+                    const isoValue = value.replace('T', ' ').replace(/Z$/, '');
+                    const parsed = parseDateTimeFromString(isoValue);
                     if (parsed) {
                         const formatted = serialiseDate(parsed);
                         if (formatted !== null) {
