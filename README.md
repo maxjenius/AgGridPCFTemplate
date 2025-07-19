@@ -68,6 +68,25 @@ JSON([
 
 If the property is left blank, the grid generates columns automatically based on the dataset.
 
+#### DateTime Filter and Editor
+Use AG Grid's built-in date/time picker for filtering and editing columns. Set the
+`filter` to `agDateColumnFilter` and the `cellEditor` to `agDateStringCellEditor`.
+Both support browser-based date pickers via `browserDatePicker` and
+`useBrowserDatePicker`.
+
+```PowerApps
+JSON([
+  {
+    field: "appointment",
+    headerName: "Appointment",
+    filter: "agDateColumnFilter",
+    filterParams: { browserDatePicker: true },
+    cellEditor: "agDateStringCellEditor",
+    cellEditorParams: { useBrowserDatePicker: true }
+  }
+])
+```
+
 #### Filter Options
 Set the `filter` key to one of AG Grid's built‑in filter names:
 
