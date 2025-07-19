@@ -82,6 +82,12 @@ to ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`) before being passed to
 AG Grid. This ensures that the built-in date filter and editors can interpret the
 values correctly.
 
+The browser `datetime-local` inputs require values **without the trailing `Z`**
+(time zone) portion. Ensure your data and parser functions produce strings in the
+`YYYY-MM-DDTHH:MM:SS` format so both the filter and editor allow entering a time
+value. When supplying your own data, trim any zone information from ISO
+timestamps.
+
 ```PowerApps
 JSON([
   {
