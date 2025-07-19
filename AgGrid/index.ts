@@ -167,10 +167,23 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             }
         }
         const columnsArray = dataset.columns as any[];
-        this._columnDefs = parsedDefs ?? columnsArray.map(col => ({
-            field: col.name,
-            headerName: col.displayName
-        }));
+        this._columnDefs = parsedDefs ?? columnsArray.map(col => {
+            const def: any = {
+                field: col.name,
+                headerName: col.displayName
+            };
+            const dataType = (col as any).dataType ? String((col as any).dataType).toLowerCase() : '';
+            if (dataType.includes('time')) {
+                def.cellDataType = 'dateTime';
+                def.filter = 'agDateColumnFilter';
+                def.cellEditor = 'agDateStringCellEditor';
+            } else if (dataType.includes('date')) {
+                def.cellDataType = 'date';
+                def.filter = 'agDateColumnFilter';
+                def.cellEditor = 'agDateStringCellEditor';
+            }
+            return def;
+        });
         this._rowsSchemaObj = this.buildRowSchema(dataset.columns as any);
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];

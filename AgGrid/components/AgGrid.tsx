@@ -8,6 +8,11 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import {
+    DataTypeDefinition,
+    parseDateTimeFromString,
+    serialiseDate
+} from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
@@ -39,6 +44,16 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
+    const dataTypeDefinitions = useMemo<{ [key: string]: DataTypeDefinition }>(() => ({
+        dateTime: {
+            baseDataType: 'dateString',
+            dateParser: (value: string | undefined | null) => parseDateTimeFromString(value ?? undefined) ?? undefined,
+            dateFormatter: (value: Date | null | undefined) => serialiseDate(value ?? null),
+            valueParser: params => params.newValue ?? null,
+            valueFormatter: params => params.value ?? '',
+            dataTypeMatcher: value => typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)
+        }
+    }), []);
     // Always use 'multiple' selection to keep checkbox column visible
     // When multiSelect is false we will enforce single selection manually
     const rowSelectionMode = 'multiple';
@@ -289,6 +304,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
                 defaultColDef={defaultColDef}
+                dataTypeDefinitions={dataTypeDefinitions}
                 getRowId={getRowId}
                 pagination={showPagination}
                 rowSelection={rowSelectionMode}
