@@ -8,11 +8,11 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { DataTypeDefinition } from 'ag-grid-community';
 import {
-    DataTypeDefinition,
     parseDateTimeFromString,
     serialiseDate
-} from 'ag-grid-community';
+} from '@ag-grid-community/core/dist/esm/es5/utils/date';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
@@ -47,8 +47,15 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const dataTypeDefinitions = useMemo<{ [key: string]: DataTypeDefinition }>(() => ({
         dateTime: {
             baseDataType: 'dateString',
-            dateParser: (value: string | undefined | null) => parseDateTimeFromString(value ?? undefined) ?? undefined,
-            dateFormatter: (value: Date | null | undefined) => serialiseDate(value ?? null),
+            extendsDataType: 'dateString',
+            dateParser: (value: string | undefined | null) => {
+                const parsed = parseDateTimeFromString(value ?? undefined);
+                return parsed === null ? undefined : parsed;
+            },
+            dateFormatter: (value: Date | undefined) => {
+                const formatted = serialiseDate(value ?? null);
+                return formatted === null ? undefined : formatted;
+            },
             valueParser: params => params.newValue ?? null,
             valueFormatter: params => params.value ?? '',
             dataTypeMatcher: value => typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)
