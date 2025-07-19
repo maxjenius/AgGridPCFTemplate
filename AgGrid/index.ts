@@ -2,7 +2,6 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
-import { serialiseDate, parseDateTimeFromString } from '@ag-grid-community/core/dist/esm/es5/utils/date';
 
 interface EditedCell {
     rowId: string;
@@ -190,25 +189,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             const record = dataset.records[id];
             const row: any = { __id: id };
             dataset.columns.forEach(col => {
-                let value: any = record.getFormattedValue?.(col.name);
-                if (value === undefined || value === null || value === "") {
-                    value = record.getValue(col.name);
-                }
-                if (value instanceof Date) {
-                    const formatted = serialiseDate(value as any);
-                    value = formatted === null ? value.toISOString() : formatted;
-                } else if (typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)) {
-                    // Convert ISO 8601 strings (yyyy-MM-ddTHH:mm) into the format
-                    // expected by AG Grid's date parser (yyyy-MM-dd HH:mm:ss)
-                    const isoValue = value.replace('T', ' ').replace(/Z$/, '');
-                    const parsed = parseDateTimeFromString(isoValue);
-                    if (parsed) {
-                        const formatted = serialiseDate(parsed);
-                        if (formatted !== null) {
-                            value = formatted;
-                        }
-                    }
-                }
+                const value = record.getValue(col.name);
                 row[col.name] = value;
             });
             const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : id;
