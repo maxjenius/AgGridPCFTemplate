@@ -75,6 +75,11 @@ Both support browser-based date pickers via `browserDatePicker` and
 `useBrowserDatePicker`. When the values include time, set `cellDataType` to
 `"dateTime"` so the grid parses the time portion.
 
+Date and time fields retrieved from your data source are automatically normalized
+to ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`) before being passed to
+AG Grid. This ensures that the built-in date filter and editors can interpret the
+values correctly.
+
 ```PowerApps
 JSON([
   {

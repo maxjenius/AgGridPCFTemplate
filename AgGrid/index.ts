@@ -83,6 +83,21 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             }
         };
     }
+
+    private formatDateForGrid(value: unknown, type: "date" | "dateTime"): string | null | undefined {
+        if (value === null || value === undefined) {
+            return value as null | undefined;
+        }
+        const d = new Date(value as any);
+        if (isNaN(d.getTime())) {
+            return value as any;
+        }
+        const iso = d.toISOString();
+        if (type === "date") {
+            return iso.slice(0, 10);
+        }
+        return iso.slice(0, 19);
+    }
     /**
      * Empty constructor.
      */
@@ -190,7 +205,14 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             const row: any = { __id: id };
             dataset.columns.forEach(col => {
                 const value = record.getValue(col.name);
-                row[col.name] = value;
+                const dt = (col as any).dataType ? String((col as any).dataType).toLowerCase() : '';
+                if (dt.includes('time')) {
+                    row[col.name] = this.formatDateForGrid(value, 'dateTime');
+                } else if (dt.includes('date')) {
+                    row[col.name] = this.formatDateForGrid(value, 'date');
+                } else {
+                    row[col.name] = value;
+                }
             });
             const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : id;
             row["rowKey"] = rowKeyValue;
