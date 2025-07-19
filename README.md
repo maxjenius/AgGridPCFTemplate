@@ -72,7 +72,8 @@ If the property is left blank, the grid generates columns automatically based on
 Use AG Grid's built-in date/time picker for filtering and editing columns. Set the
 `filter` to `agDateColumnFilter` and the `cellEditor` to `agDateStringCellEditor`.
 Both support browser-based date pickers via `browserDatePicker` and
-`useBrowserDatePicker`.
+`useBrowserDatePicker`. When the values include time, set `cellDataType` to
+`"dateTime"` so the grid parses the time portion.
 
 ```PowerApps
 JSON([
@@ -82,7 +83,10 @@ JSON([
     filter: "agDateColumnFilter",
     filterParams: { browserDatePicker: true },
     cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true }
+    cellEditorParams: { useBrowserDatePicker: true },
+    cellDataType: "dateTime",
+    valueFormatter: "dateTimeFormatter",
+    valueParser: "dateTimeParser"
   }
 ])
 ```
