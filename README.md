@@ -59,7 +59,9 @@ JSON([
     field: "createdon",
     headerName: "Created On",
     filter: "agDateColumnFilter",
+    filterParams: { browserDatePicker: true, inputType: "datetime-local" },
     cellEditor: "agDateStringCellEditor",
+    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
     valueFormatter: "dateTimeFormatter",
     valueParser: "dateTimeParser"
   }
@@ -86,9 +88,9 @@ JSON([
     field: "appointment",
     headerName: "Appointment",
     filter: "agDateColumnFilter",
-    filterParams: { browserDatePicker: true },
+    filterParams: { browserDatePicker: true, inputType: "datetime-local" },
     cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true },
+    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
     cellDataType: "dateTime",
     valueFormatter: "dateTimeFormatter",
     valueParser: "dateTimeParser"
