@@ -59,7 +59,7 @@ JSON([
     field: "createdon",
     headerName: "Created On",
     filter: "agDateColumnFilter",
-    filterParams: { browserDatePicker: true, inputType: "datetime-local" },
+    filterParams: { browserDatePicker: true, dateComponent: "agDateTimeInput" },
     cellEditor: "agDateStringCellEditor",
     cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
     valueFormatter: "dateTimeFormatter",
@@ -75,7 +75,9 @@ Use AG Grid's built-in date/time picker for filtering and editing columns. Set t
 `filter` to `agDateColumnFilter` and the `cellEditor` to `agDateStringCellEditor`.
 Both support browser-based date pickers via `browserDatePicker` and
 `useBrowserDatePicker`. When the values include time, set `cellDataType` to
-`"dateTime"` so the grid parses the time portion.
+`"dateTime"` so the grid parses the time portion. Use the included
+`agDateTimeInput` component by adding `dateComponent: "agDateTimeInput"` to
+`filterParams` if you need a time field in the filter.
 
 Date and time fields retrieved from your data source are automatically normalized
 to ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`) before being passed to
@@ -94,7 +96,11 @@ JSON([
     field: "appointment",
     headerName: "Appointment",
     filter: "agDateColumnFilter",
-    filterParams: { browserDatePicker: true, inputType: "datetime-local" },
+    filterParams: {
+      browserDatePicker: true,
+      dateComponent: "agDateTimeInput",
+      inputType: "datetime-local"
+    },
     cellEditor: "agDateStringCellEditor",
     cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
     cellDataType: "dateTime",
