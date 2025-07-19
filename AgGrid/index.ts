@@ -2,6 +2,7 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
 import { createRoot, Root } from "react-dom/client";
+import { serialiseDate, parseDateTimeFromString } from '@ag-grid-community/core/dist/esm/es5/utils/date';
 
 interface EditedCell {
     rowId: string;
@@ -194,7 +195,16 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     value = record.getValue(col.name);
                 }
                 if (value instanceof Date) {
-                    value = value.toISOString();
+                    const formatted = serialiseDate(value as any);
+                    value = formatted === null ? value.toISOString() : formatted;
+                } else if (typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)) {
+                    const parsed = parseDateTimeFromString(value);
+                    if (parsed) {
+                        const formatted = serialiseDate(parsed);
+                        if (formatted !== null) {
+                            value = formatted;
+                        }
+                    }
                 }
                 row[col.name] = value;
             });
