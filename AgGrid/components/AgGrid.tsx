@@ -10,6 +10,7 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
+import DateTimeInput from "./DateTimeInput";
 
 interface EditedCell {
     rowId: string;
@@ -172,7 +173,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         suppressAggFuncInHeader: true,
         enableRangeSelection: false,
         suppressRowClickSelection: multiSelect,
-        popupParent: typeof document !== 'undefined' ? document.body : undefined
+        popupParent: typeof document !== 'undefined' ? document.body : undefined,
+        components: { agDateTimeInput: DateTimeInput },
     }), [finalColumnDefs, multiSelect]);
 
     const gridRef = useRef<AgGridReact<any>>(null);

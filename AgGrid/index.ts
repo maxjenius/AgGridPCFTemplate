@@ -200,9 +200,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             if (dataType.includes('time')) {
                 def.cellDataType = 'dateTime';
                 def.filter = 'agDateColumnFilter';
-                def.filterParams = { browserDatePicker: true, inputType: 'datetime-local' };
+                def.filterParams = { browserDatePicker: true, dateComponent: "agDateTimeInput" };
                 def.cellEditor = 'agDateStringCellEditor';
-                def.cellEditorParams = { useBrowserDatePicker: true, inputType: 'datetime-local' };
+                def.cellEditorParams = { useBrowserDatePicker: true, inputType: "datetime-local" };
             } else if (dataType.includes('date')) {
                 def.cellDataType = 'date';
                 def.filter = 'agDateColumnFilter';
