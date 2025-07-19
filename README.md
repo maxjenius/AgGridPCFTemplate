@@ -79,8 +79,8 @@ Both support browser-based date pickers via `browserDatePicker` and
 
 Date and time fields retrieved from your data source are automatically normalized
 to ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`) before being passed to
-AG Grid. This ensures that the built-in date filter and editors can interpret the
-values correctly.
+AG Grid. Any trailing timezone information is stripped so that the built-in date
+filter and editors interpret the values correctly without shifting the time.
 
 The browser `datetime-local` inputs require values **without the trailing `Z`**
 (time zone) portion. Ensure your data and parser functions produce strings in the
