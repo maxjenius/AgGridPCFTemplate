@@ -10,8 +10,6 @@ import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
-import DateTimeEditor from './DateTimeEditor';
-import DateTimeFilter from './DateTimeFilter';
 
 interface EditedCell {
     rowId: string;
@@ -168,10 +166,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         }
     }), [readOnly]);
 
-    const frameworkComponents = useMemo(() => ({
-        dateTimeEditor: DateTimeEditor,
-        dateTimeFilter: DateTimeFilter
-    }), []);
 
     const gridOptions = useMemo(() => ({
         columnDefs: finalColumnDefs,
@@ -292,7 +286,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 ref={gridRef}
                 rowData={rowData}
                 columnDefs={finalColumnDefs}
-                components={frameworkComponents as any}
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
                 defaultColDef={defaultColDef}
