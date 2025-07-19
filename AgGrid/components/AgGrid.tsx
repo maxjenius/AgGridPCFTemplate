@@ -8,11 +8,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { DataTypeDefinition } from 'ag-grid-community';
-import {
-    parseDateTimeFromString,
-    serialiseDate
-} from '@ag-grid-community/core/dist/esm/es5/utils/date';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
@@ -44,23 +39,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     console.log('AG Grid')
     const divClass = 'ag-theme-balham';
     const [autoDefName, setAutoDefName] = useState('');
-    const dataTypeDefinitions = useMemo<{ [key: string]: DataTypeDefinition }>(() => ({
-        dateTime: {
-            baseDataType: 'dateString',
-            extendsDataType: 'dateString',
-            dateParser: (value: string | undefined | null) => {
-                const parsed = parseDateTimeFromString(value ?? undefined);
-                return parsed === null ? undefined : parsed;
-            },
-            dateFormatter: (value: Date | undefined) => {
-                const formatted = serialiseDate(value ?? null);
-                return formatted === null ? undefined : formatted;
-            },
-            valueParser: params => params.newValue ?? null,
-            valueFormatter: params => params.value ?? '',
-            dataTypeMatcher: value => typeof value === 'string' && /\d{4}-\d{2}-\d{2}T\d{2}/.test(value)
-        }
-    }), []);
     // Always use 'multiple' selection to keep checkbox column visible
     // When multiSelect is false we will enforce single selection manually
     const rowSelectionMode = 'multiple';
@@ -311,7 +289,6 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 autoGroupColumnDef={autoGroupColumnDef}
                 gridOptions={gridOptions}
                 defaultColDef={defaultColDef}
-                dataTypeDefinitions={dataTypeDefinitions}
                 getRowId={getRowId}
                 pagination={showPagination}
                 rowSelection={rowSelectionMode}
