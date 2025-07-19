@@ -48,6 +48,21 @@ JSON([
   {field: "name", headerName: "Name", sortable: true, editable: false},
   {field: "age", width: 80, filter: "agNumberColumnFilter", valueFormatter: "ageFormatter"},
   {field: "country", pinned: "left", cellRenderer: "agGroupCellRenderer"}
+  ])
+  ```
+
+A Date/Time column example:
+
+```PowerApps
+JSON([
+  {
+    field: "createdon",
+    headerName: "Created On",
+    filter: "agDateColumnFilter",
+    cellEditor: "agDateStringCellEditor",
+    valueFormatter: "dateTimeFormatter",
+    valueParser: "dateTimeParser"
+  }
 ])
 ```
 
