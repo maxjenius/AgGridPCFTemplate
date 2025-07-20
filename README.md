@@ -48,69 +48,10 @@ JSON([
   {field: "name", headerName: "Name", sortable: true, editable: false},
   {field: "age", width: 80, filter: "agNumberColumnFilter", valueFormatter: "ageFormatter"},
   {field: "country", pinned: "left", cellRenderer: "agGroupCellRenderer"}
-  ])
-  ```
-
-A Date/Time column example:
-
-```PowerApps
-JSON([
-  {
-    field: "createdon",
-    headerName: "Created On",
-    filter: "agDateColumnFilter",
-    filterParams: { browserDatePicker: true, dateComponent: "agDateTimeInput" },
-    cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
-    cellDataType: "dateTime",
-    valueFormatter: "dateTimeFormatter",
-    valueParser: "dateTimeParser"
-  }
 ])
 ```
 
 If the property is left blank, the grid generates columns automatically based on the dataset.
-
-#### DateTime Filter and Editor
-Use AG Grid's built-in date/time picker for filtering and editing columns. Set the
-`filter` to `agDateColumnFilter` and the `cellEditor` to `agDateStringCellEditor`.
-Both support browser-based date pickers via `browserDatePicker` and
-`useBrowserDatePicker`. When the values include time, set `cellDataType` to
-`"dateTime"` so the grid parses the time portion. Use the included
-`agDateTimeInput` component by adding `dateComponent: "agDateTimeInput"` to
-`filterParams` if you need a time field in the filter. For editing, set
-`inputType: "datetime-local"` inside `cellEditorParams` so the browser shows a
-combined date and time picker.
-
-Date and time fields retrieved from your data source are automatically normalized
-to ISO strings (`YYYY-MM-DD` or `YYYY-MM-DDTHH:MM:SS`) before being passed to
-AG Grid. Any trailing timezone information is stripped so that the built-in date
-filter and editors interpret the values correctly without shifting the time.
-
-The browser `datetime-local` inputs require values **without the trailing `Z`**
-(time zone) portion. Ensure your data and parser functions produce strings in the
-`YYYY-MM-DDTHH:MM:SS` format so both the filter and editor allow entering a time
-value. When supplying your own data, trim any zone information from ISO
-timestamps.
-
-```PowerApps
-JSON([
-  {
-    field: "appointment",
-    headerName: "Appointment",
-    filter: "agDateColumnFilter",
-    filterParams: {
-      browserDatePicker: true,
-      dateComponent: "agDateTimeInput"
-    },
-    cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
-    cellDataType: "dateTime",
-    valueFormatter: "dateTimeFormatter",
-    valueParser: "dateTimeParser"
-  }
-])
-```
 
 #### Filter Options
 Set the `filter` key to one of AG Grid's built‑in filter names:

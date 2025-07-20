@@ -84,29 +84,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         };
     }
 
-    private formatDateForGrid(value: unknown, type: "date" | "dateTime"): string | null | undefined {
-        if (value === null || value === undefined) {
-            return value as null | undefined;
-        }
-        const str = String(value);
-        if (type === "date") {
-            const m = str.match(/^(\d{4}-\d{2}-\d{2})/);
-            if (m) {
-                return m[1];
-            }
-        } else {
-            const m = str.match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/);
-            if (m) {
-                return `${m[1]}T${m[2]}`;
-            }
-        }
-        const d = new Date(str);
-        if (isNaN(d.getTime())) {
-            return value as any;
-        }
-        const iso = d.toISOString();
-        return type === "date" ? iso.slice(0, 10) : iso.slice(0, 19);
-    }
     /**
      * Empty constructor.
      */
@@ -191,41 +168,23 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             }
         }
         const columnsArray = dataset.columns as any[];
-        this._columnDefs = parsedDefs ?? columnsArray.map(col => {
-            const def: any = {
-                field: col.name,
-                headerName: col.displayName
-            };
-            const dataType = (col as any).dataType ? String((col as any).dataType).toLowerCase() : '';
-            if (dataType.includes('time')) {
-                def.cellDataType = 'dateTime';
-                def.filter = 'agDateColumnFilter';
-                def.filterParams = { browserDatePicker: true, dateComponent: "agDateTimeInput" };
-                def.cellEditor = 'agDateStringCellEditor';
-                def.cellEditorParams = { useBrowserDatePicker: true, inputType: "datetime-local" };
-            } else if (dataType.includes('date')) {
-                def.cellDataType = 'date';
-                def.filter = 'agDateColumnFilter';
-                def.filterParams = { browserDatePicker: true };
-                def.cellEditor = 'agDateStringCellEditor';
-                def.cellEditorParams = { useBrowserDatePicker: true };
-            }
-            return def;
-        });
+        this._columnDefs = parsedDefs ?? columnsArray.map(col => ({
+            field: col.name,
+            headerName: col.displayName
+        }));
         this._rowsSchemaObj = this.buildRowSchema(dataset.columns as any);
         const rowData = dataset.sortedRecordIds.map(id => {
             const record = dataset.records[id];
             const row: any = { __id: id };
             dataset.columns.forEach(col => {
-                const value = record.getValue(col.name);
-                const dt = (col as any).dataType ? String((col as any).dataType).toLowerCase() : '';
-                if (dt.includes('time')) {
-                    row[col.name] = this.formatDateForGrid(value, 'dateTime');
-                } else if (dt.includes('date')) {
-                    row[col.name] = this.formatDateForGrid(value, 'date');
-                } else {
-                    row[col.name] = value;
+                let value: any = record.getFormattedValue?.(col.name);
+                if (value === undefined || value === null || value === "") {
+                    value = record.getValue(col.name);
                 }
+                if (value instanceof Date) {
+                    value = value.toISOString();
+                }
+                row[col.name] = value;
             });
             const rowKeyValue = this._rowKeyField ? row[this._rowKeyField] : id;
             row["rowKey"] = rowKeyValue;
