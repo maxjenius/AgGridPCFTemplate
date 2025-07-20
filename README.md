@@ -61,7 +61,7 @@ JSON([
     filter: "agDateColumnFilter",
     filterParams: { browserDatePicker: true, dateComponent: "agDateTimeInput" },
     cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
+    cellEditorParams: { useBrowserDatePicker: true, includeTime: true },
     valueFormatter: "dateTimeFormatter",
     valueParser: "dateTimeParser"
   }
@@ -98,11 +98,10 @@ JSON([
     filter: "agDateColumnFilter",
     filterParams: {
       browserDatePicker: true,
-      dateComponent: "agDateTimeInput",
-      inputType: "datetime-local"
+      dateComponent: "agDateTimeInput"
     },
     cellEditor: "agDateStringCellEditor",
-    cellEditorParams: { useBrowserDatePicker: true, inputType: "datetime-local" },
+    cellEditorParams: { useBrowserDatePicker: true, includeTime: true },
     cellDataType: "dateTime",
     valueFormatter: "dateTimeFormatter",
     valueParser: "dateTimeParser"
