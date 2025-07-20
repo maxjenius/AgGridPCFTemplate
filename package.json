@@ -13,11 +13,11 @@
     "refreshTypes": "pcf-scripts refreshTypes"
   },
   "dependencies": {
-    "@ag-grid-community/client-side-row-model": "^31.1.1",
-    "@ag-grid-community/react": "^31.1.1",
-    "@ag-grid-community/styles": "^31.0.3",
-    "ag-grid-community": "^31.0.3",
-    "ag-grid-react": "^31.0.3",
+    "@ag-grid-community/client-side-row-model": "^32.3.8",
+    "@ag-grid-community/react": "^32.3.8",
+    "@ag-grid-community/styles": "^32.3.8",
+    "ag-grid-community": "^32.3.8",
+    "ag-grid-react": "^32.3.8",
     "axios": "^1.6.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
