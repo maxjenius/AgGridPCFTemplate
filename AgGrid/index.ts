@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
-import { createRoot, Root } from "react-dom/client";
+import ReactDOM from "react-dom";
 
 interface EditedCell {
     rowId: string;
@@ -20,7 +20,6 @@ interface RowPatch {
 export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private container: HTMLDivElement;
     private gridContainer: HTMLDivElement;
-    private root?: Root;
     private _notifyOutputChanged?: () => void;
     private _selectedRowIds: string[] = [];
     private _rowData: any[] = [];
@@ -217,10 +216,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         } else {
             this._selectedRowIds = dataset.getSelectedRecordIds();
         }
-        if (!this.root) {
-            this.root = createRoot(this.gridContainer);
-        }
-        this.root.render(
+        ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData: finalRowData,
                 columnDefs: this._columnDefs,
@@ -236,7 +232,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false,
                 resetVersion: this._resetVersion
-            })
+            }),
+            this.gridContainer
         );
 
     }
@@ -349,8 +346,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * i.e. cancelling any pending remote calls, removing listeners, etc.
      */
     public destroy(): void {
-        if (this.root) {
-            this.root.unmount();
-        }
+        ReactDOM.unmountComponentAtNode(this.gridContainer);
     }
 }
