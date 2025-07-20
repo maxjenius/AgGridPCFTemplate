@@ -35,7 +35,9 @@ Use the `ColumnDefinitions` input to override the automatically generated column
 * `valueParser` – convert edited input before saving
 * `valueSetter` – custom save logic for edits
 * `cellRendererParams` – parameters passed to your cell renderer
-* `cellEditor` – name of a built-in editor like `agTextCellEditor`
+* `cellEditor` – name of a built-in editor like `agTextCellEditor`. For
+  date values returned as strings, use `agDateStringCellEditor` so users can
+  edit date and time.
 * `cellEditorParams` – editor configuration object
 * `filterParams` – additional filtering options
 * `cellClass` – CSS class applied to cell
@@ -58,7 +60,9 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 
 * `agTextColumnFilter` – text search with contains, equals and more
 * `agNumberColumnFilter` – numeric comparison operators
-* `agDateColumnFilter` – supports date pickers and ranges
+* `agDateColumnFilter` – supports date pickers and ranges; combine with
+  `dataType: 'dateTimeString'` for ISO strings or `dataType: 'date'` for
+  `Date` objects.
 * `agSetColumnFilter` – choose from a list of unique values
 * `agMultiColumnFilter` – combine multiple filter types
 * `true` – use the default filter for the data type
