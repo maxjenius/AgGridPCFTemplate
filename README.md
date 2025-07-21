@@ -122,6 +122,12 @@ The `linkRenderer` component would output an anchor element using the row's `web
 * dotnet build tools or dotnet sdk.
 * API as a data source.
 
+### Using the latest AG Grid version
+This component has been tested with AG Grid Community **34.0.2**. When upgrading
+the dependency run `npm install` to ensure the new version is bundled correctly.
+All community modules are registered automatically via `ModuleRegistry` so the
+grid works with modern AG Grid releases.
+
 ### Automated setup
 The root folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
 Run the shell script on Linux/macOS:
