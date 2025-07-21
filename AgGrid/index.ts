@@ -2,6 +2,11 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from "react-dom";
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+
+// Ensure all community grid modules are registered for compatibility with
+// the latest AG Grid versions.
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface EditedCell {
     rowId: string;
