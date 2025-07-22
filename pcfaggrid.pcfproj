@@ -10,7 +10,8 @@
   <PropertyGroup>
     <Name>pcfaggrid</Name>
     <ProjectGuid>8a545e68-5993-4791-ae41-67d9338e436c</ProjectGuid>
-    <OutputPath>$(MSBuildThisFileDirectory)out\controls</OutputPath>
+    <!-- Match the output directory defined in pcfconfig.json -->
+    <OutputPath>out/controls</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
