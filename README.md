@@ -69,6 +69,14 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 
 Extra configuration can be supplied using `filterParams`.
 
+To edit both date and time values, use `agDateStringCellEditor` and set
+`dataType: 'dateTimeString'` in your column definition. Enable the browser
+date picker with:
+
+```PowerApps
+cellEditorParams: { useBrowserDatePicker: true, inputType: 'datetime-local' }
+```
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 

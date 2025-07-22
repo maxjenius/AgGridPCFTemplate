@@ -165,6 +165,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             try {
                 const temp = JSON.parse(columnDefsInput as any);
                 if (Array.isArray(temp)) {
+                    temp.forEach(def => {
+                        if (def && def.cellDataType && !def.dataType) {
+                            def.dataType = def.cellDataType;
+                        }
+                    });
                     parsedDefs = temp;
                 }
             } catch (e) {
