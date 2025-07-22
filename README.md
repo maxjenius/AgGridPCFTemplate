@@ -92,6 +92,25 @@ filterParams: {
 }
 ```
 
+A full column definition using these settings:
+
+```PowerApps
+JSON([
+  { field: "ara_display_name", headerName: "Name" },
+  {
+    field: "ara_created",
+    headerName: "Created",
+    filter: "agDateColumnFilter",
+    filterParams: { browserDatePicker: true, inputType: 'datetime-local', includeTime: true },
+    cellEditor: "agDateStringCellEditor",
+    cellEditorParams: { useBrowserDatePicker: true, inputType: 'datetime-local', includeTime: true },
+    dataType: 'dateTimeString',
+    valueFormatter: "dateTimeFormatter",
+    valueParser: "dateTimeParser"
+  }
+])
+```
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 
