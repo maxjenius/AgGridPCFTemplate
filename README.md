@@ -71,17 +71,25 @@ Extra configuration can be supplied using `filterParams`.
 
 To edit both date and time values, use `agDateStringCellEditor` and set
 `dataType: 'dateTimeString'` in your column definition. Enable the browser
-date picker with:
+date picker and ensure the time picker is shown by including `includeTime: true`:
 
 ```PowerApps
-cellEditorParams: { useBrowserDatePicker: true, inputType: 'datetime-local' }
+cellEditorParams: {
+  useBrowserDatePicker: true,
+  inputType: 'datetime-local',
+  includeTime: true
+}
 ```
 
 To show a time picker in the filter, set the same `inputType` on the
 `agDateColumnFilter`:
 
 ```PowerApps
-filterParams: { browserDatePicker: true, inputType: 'datetime-local' }
+filterParams: {
+  browserDatePicker: true,
+  inputType: 'datetime-local',
+  includeTime: true
+}
 ```
 
 ### Cell Content
