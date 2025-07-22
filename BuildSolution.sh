@@ -16,6 +16,7 @@ cd AgGridPCF
 
 # install node dependencies
 npm install
+npm audit fix
 
 # initialize power platform solution
 pac solution init --publisher-name ARA --publisher-prefix ARA
