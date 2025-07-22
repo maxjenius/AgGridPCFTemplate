@@ -77,6 +77,13 @@ date picker with:
 cellEditorParams: { useBrowserDatePicker: true, inputType: 'datetime-local' }
 ```
 
+To show a time picker in the filter, set the same `inputType` on the
+`agDateColumnFilter`:
+
+```PowerApps
+filterParams: { browserDatePicker: true, inputType: 'datetime-local' }
+```
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 
