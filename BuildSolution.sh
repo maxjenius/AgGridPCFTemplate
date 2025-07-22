@@ -24,6 +24,12 @@ pac solution init --publisher-name ARA --publisher-prefix ARA
 # add reference to the PCF project
 pac solution add-reference --path "$ROOT_DIR"
 
+# ensure out directory is accessible from the solution project
+if [ -e out ]; then
+  rm -rf out
+fi
+ln -s "$ROOT_DIR/out" out
+
 # build the dotnet project
 dotnet build
 
