@@ -55,12 +55,6 @@
     padding: 0;
 }
 
-/* Remove default checkbox margins and ensure proper centering */
-.ag-theme-balham .selection-checkbox-cell .ag-selection-checkbox,
-.ag-theme-balham .selection-checkbox-header .ag-selection-checkbox {
-    margin: 0;
-}
-
 .ag-theme-balham .selection-checkbox-cell .ag-cell-wrapper,
 .ag-theme-balham .selection-checkbox-header .ag-header-cell-label {
     display: flex;
@@ -128,3 +122,17 @@
     --ag-row-hover-color: #00000010 !important;
 }
 
+[class*="ag-theme-"] {
+    --ag-background-color: none;
+    --ag-selected-row-background-color: none;
+}
+
+[class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
+	box-sizing: border-box;
+}
+
+:where(.ag-theme-params-1) {
+    --ag-checkbox-checked-shape-color: none;
+    --ag-checkbox-checked-shape-image: none;
+    --ag-checkbox-unchecked-border-color: none;
+}
