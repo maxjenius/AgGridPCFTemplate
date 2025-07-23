@@ -8,6 +8,7 @@
     --ag-border-color: transparent;
     --ag-borders: none;
     --ag-row-border-color: transparent;
+    --ag-border-radius: 6px;
 }
 
 .ag-theme-balham .ag-header {
@@ -135,4 +136,9 @@
     --ag-checkbox-checked-shape-color: none;
     --ag-checkbox-checked-shape-image: none;
     --ag-checkbox-unchecked-border-color: none;
+}
+
+[class*="ag-theme-"] {
+    --ag-borders: solid 1px;
+    --ag-border-radius: var(--ag-border-radius);
 }
