@@ -52,6 +52,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return String(a) === String(b);
     };
 
+    const normalizeSeconds = (val: unknown): unknown => {
+        if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+            return `${val}:00`;
+        }
+        return val;
+    };
+
     const refreshEditedCells = useCallback(() => {
         if (!gridRef.current?.api) {
             return;
@@ -205,20 +212,24 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     }, [onSelectionChanged, multiSelect]);
 
     const onCellValueChangedHandler = useCallback((params: any) => {
+        const newVal = normalizeSeconds(params.newValue);
         if (onCellValueChanged) {
             onCellValueChanged({
                 rowId: params.node.id,
                 field: params.column.getId(),
                 oldValue: params.oldValue,
-                newValue: params.newValue
+                newValue: newVal
             });
         }
         const key = `${params.node.id}_${params.column.getId()}`;
         const originalValue = originalDataRef.current[params.node.id]?.[params.column.getId()];
-        if (valuesAreEqual(params.newValue, originalValue)) {
+        if (valuesAreEqual(newVal, originalValue)) {
             editedCellsRef.current.delete(key);
         } else {
             editedCellsRef.current.add(key);
+        }
+        if (newVal !== params.newValue) {
+            params.node.setDataValue(params.column.getId(), newVal);
         }
         params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
     }, [onCellValueChanged]);
@@ -231,6 +242,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             params.node.setDataValue(field, originalValue);
             editedCellsRef.current.delete(`${rowId}_${field}`);
             params.api.refreshCells({ rowNodes: [params.node], columns: [field], force: true });
+        } else {
+            const currentVal = params.node.data[field];
+            const fixed = normalizeSeconds(currentVal);
+            if (fixed !== currentVal) {
+                params.node.setDataValue(field, fixed);
+            }
         }
     }, []);
 
