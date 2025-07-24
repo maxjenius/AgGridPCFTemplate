@@ -68,6 +68,7 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 * `true` – use the default filter for the data type
 
 Extra configuration can be supplied using `filterParams`.
+When editing or filtering date/time values you can remove the seconds by setting `step: 60`.
 
 To edit both date and time values, use `agDateStringCellEditor` and set
 `dataType: 'dateTimeString'` in your column definition. Enable the browser
@@ -77,7 +78,8 @@ date picker and ensure the time picker is shown by including `includeTime: true`
 cellEditorParams: {
   useBrowserDatePicker: true,
   inputType: 'datetime-local',
-  includeTime: true
+  includeTime: true,
+  step: 60
 }
 ```
 
@@ -88,7 +90,8 @@ To show a time picker in the filter, set the same `inputType` on the
 filterParams: {
   browserDatePicker: true,
   inputType: 'datetime-local',
-  includeTime: true
+  includeTime: true,
+  step: 60
 }
 ```
 

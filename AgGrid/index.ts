@@ -169,6 +169,19 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                         if (def && def.cellDataType && !def.dataType) {
                             def.dataType = def.cellDataType;
                         }
+                        // Apply step of 60 seconds when using datetime
+                        if (def?.cellEditor === 'agDateStringCellEditor') {
+                            def.cellEditorParams = {
+                                step: 60,
+                                ...(def.cellEditorParams || {})
+                            };
+                        }
+                        if (def?.filter === 'agDateColumnFilter') {
+                            def.filterParams = {
+                                step: 60,
+                                ...(def.filterParams || {})
+                            };
+                        }
                     });
                     parsedDefs = temp;
                 }
@@ -187,6 +200,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'agDateStringCellEditor';
                 def.dataType = 'dateTimeString';
+                def.filterParams = { step: 60 };
+                def.cellEditorParams = { step: 60 };
             } else if (dt.includes('date')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'agDateStringCellEditor';
