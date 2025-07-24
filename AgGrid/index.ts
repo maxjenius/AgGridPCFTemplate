@@ -83,6 +83,14 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         return val;
     }
 
+    private formatDisplay(val: unknown): string {
+        const out = this.formatToMinutes(val);
+        if (out == null) {
+            return '';
+        }
+        return String(out).replace('T', ' ');
+    }
+
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
         const properties: Record<string, unknown> = {};
@@ -190,6 +198,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                                 step: 60,
                                 ...(def.cellEditorParams || {})
                             };
+                            if (!def.valueFormatter) {
+                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
+                            }
                         }
                         if (def?.filter === 'agDateColumnFilter') {
                             def.filterParams = {
@@ -230,6 +241,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     includeTime: true,
                     step: 60
                 };
+                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
             } else if (dt.includes('date')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'agDateStringCellEditor';
