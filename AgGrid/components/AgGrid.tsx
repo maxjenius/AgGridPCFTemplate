@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-balham.css';
 
@@ -222,6 +223,17 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
     }, [onCellValueChanged]);
 
+    const onCellEditingStoppedHandler = useCallback((params: CellEditingStoppedEvent) => {
+        const field = params.column.getId();
+        const rowId = params.node.id as string;
+        if (!params.valueChanged) {
+            const originalValue = originalDataRef.current[rowId]?.[field];
+            params.node.setDataValue(field, originalValue);
+            editedCellsRef.current.delete(`${rowId}_${field}`);
+            params.api.refreshCells({ rowNodes: [params.node], columns: [field], force: true });
+        }
+    }, []);
+
     const onGridReady = useCallback(() => {
         applySelection();
     }, [applySelection]);
@@ -297,6 +309,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 onGridReady={onGridReady}
                 onSelectionChanged={onSelectionChangedHandler}
                 onCellValueChanged={onCellValueChangedHandler}
+                onCellEditingStopped={onCellEditingStoppedHandler}
             />
         </div>
     );
