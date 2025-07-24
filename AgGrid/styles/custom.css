@@ -161,12 +161,26 @@
     display: flex;
     align-items: center;
 }
+
 .fluent-date-time-editor .ms-TextField,
 .fluent-date-time-editor .ms-TextField-fieldGroup {
     height: 100%;
 }
+
 .fluent-date-time-editor input {
     height: 100%;
     padding-top: 0;
     padding-bottom: 0;
+}
+
+.field-756 {
+    font-family: revert;
+    line-height: revert;
+}
+
+.fluent-date-time-editor .ms-TextField, .fluent-date-time-editor .ms-TextField-fieldGroup {
+    height: auto;
+    background-color: transparent;
+    border: none;
+    margin-left: 4px;
 }
