@@ -199,9 +199,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             const record = dataset.records[id];
             const row: any = { __id: id };
             dataset.columns.forEach(col => {
-                let value: any = record.getFormattedValue?.(col.name);
-                if (value === undefined || value === null || value === "") {
+                let value: any;
+                const dt = (col.dataType || '').toLowerCase();
+                if (dt.includes('date')) {
                     value = record.getValue(col.name);
+                } else {
+                    value = record.getFormattedValue?.(col.name);
+                    if (value === undefined || value === null || value === '') {
+                        value = record.getValue(col.name);
+                    }
                 }
                 if (value instanceof Date) {
                     value = value.toISOString();
