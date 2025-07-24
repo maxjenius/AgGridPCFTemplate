@@ -70,6 +70,19 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _resetVersion: number = 0;
     private _fontSize?: number;
 
+    private formatToMinutes(val: unknown): unknown {
+        if (val instanceof Date) {
+            return val.toISOString().slice(0, 16);
+        }
+        if (typeof val === 'string') {
+            const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
+            if (m) {
+                return m[1];
+            }
+        }
+        return val;
+    }
+
 
     private buildRowSchema(columns: Array<{ name: string }>): Record<string, unknown> {
         const properties: Record<string, unknown> = {};
@@ -169,15 +182,20 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                         if (def && def.cellDataType && !def.dataType) {
                             def.dataType = def.cellDataType;
                         }
-                        // Apply step of 60 seconds when using datetime
                         if (def?.cellEditor === 'agDateStringCellEditor') {
                             def.cellEditorParams = {
+                                useBrowserDatePicker: true,
+                                inputType: 'datetime-local',
+                                includeTime: true,
                                 step: 60,
                                 ...(def.cellEditorParams || {})
                             };
                         }
                         if (def?.filter === 'agDateColumnFilter') {
                             def.filterParams = {
+                                browserDatePicker: true,
+                                inputType: 'datetime-local',
+                                includeTime: true,
                                 step: 60,
                                 ...(def.filterParams || {})
                             };
@@ -200,8 +218,18 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'agDateStringCellEditor';
                 def.dataType = 'dateTimeString';
-                def.filterParams = { step: 60 };
-                def.cellEditorParams = { step: 60 };
+                def.filterParams = {
+                    browserDatePicker: true,
+                    inputType: 'datetime-local',
+                    includeTime: true,
+                    step: 60
+                };
+                def.cellEditorParams = {
+                    useBrowserDatePicker: true,
+                    inputType: 'datetime-local',
+                    includeTime: true,
+                    step: 60
+                };
             } else if (dt.includes('date')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'agDateStringCellEditor';
@@ -226,6 +254,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 }
                 if (value instanceof Date) {
                     value = value.toISOString();
+                }
+                if (dt.includes('dateandtime')) {
+                    value = this.formatToMinutes(value);
                 }
                 row[col.name] = value;
             });

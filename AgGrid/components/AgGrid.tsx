@@ -52,9 +52,12 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return String(a) === String(b);
     };
 
-    const normalizeSeconds = (val: unknown): unknown => {
-        if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
-            return `${val}:00`;
+    const stripSeconds = (val: unknown): unknown => {
+        if (typeof val === 'string') {
+            const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
+            if (m) {
+                return m[1];
+            }
         }
         return val;
     };
@@ -212,7 +215,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     }, [onSelectionChanged, multiSelect]);
 
     const onCellValueChangedHandler = useCallback((params: any) => {
-        const newVal = normalizeSeconds(params.newValue);
+        const newVal = stripSeconds(params.newValue);
         if (onCellValueChanged) {
             onCellValueChanged({
                 rowId: params.node.id,
@@ -244,7 +247,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             params.api.refreshCells({ rowNodes: [params.node], columns: [field], force: true });
         } else {
             const currentVal = params.node.data[field];
-            const fixed = normalizeSeconds(currentVal);
+            const fixed = stripSeconds(currentVal);
             if (fixed !== currentVal) {
                 params.node.setDataValue(field, fixed);
             }
