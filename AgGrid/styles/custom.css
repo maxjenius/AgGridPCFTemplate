@@ -8,7 +8,7 @@
     --ag-border-color: transparent;
     --ag-borders: none;
     --ag-row-border-color: transparent;
-    --ag-border-radius: 6px;
+    --ag-border-radius: 0px;
 }
 
 .ag-theme-balham .ag-header {
@@ -129,8 +129,8 @@
 }
 
 [class*="ag-theme-"] {
-    --ag-background-color: none;
-    --ag-selected-row-background-color: none;
+    --ag-background-color: none !important;
+    --ag-selected-row-background-color: none !important;
 }
 
 [class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
