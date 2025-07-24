@@ -41,8 +41,17 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
   };
 
   return (
-    <div ref={target}>
-      <TextField readOnly value={formatted()} onClick={() => setOpen(true)} />
+    <div ref={target} className="fluent-date-time-editor">
+      <TextField
+        readOnly
+        value={formatted()}
+        onClick={() => setOpen(true)}
+        styles={{
+          root: { height: '100%' },
+          fieldGroup: { height: '100%' },
+          field: { padding: '0 4px', lineHeight: '24px' }
+        }}
+      />
       {open && target.current && (
         <Callout target={target.current} onDismiss={() => setOpen(false)}>
           <Stack tokens={{ childrenGap: 8, padding: 8 }}>

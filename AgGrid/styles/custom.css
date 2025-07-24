@@ -141,7 +141,7 @@
 }
 
 [class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
-	box-sizing: border-box;
+        box-sizing: border-box;
 }
 
 :where(.ag-theme-params-1) {
@@ -153,4 +153,20 @@
 [class*="ag-theme-"] {
     --ag-borders: solid 1px;
     --ag-border-radius: var(--ag-border-radius);
+}
+
+/* Compact date/time editor */
+.fluent-date-time-editor {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.fluent-date-time-editor .ms-TextField,
+.fluent-date-time-editor .ms-TextField-fieldGroup {
+    height: 100%;
+}
+.fluent-date-time-editor input {
+    height: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
 }
