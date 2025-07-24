@@ -227,6 +227,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
                 def.dataType = 'dateString';
+                def.filterParams = { browserDatePicker: false, dateComponent: 'fluentDateInput' };
             }
             return def;
         });
