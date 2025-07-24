@@ -125,6 +125,7 @@
 
 .ag-row {
     background-color: transparent !important;
+    margin-right: 10px;
 }
 
 .ag-theme-balham, .ag-theme-balham-dark, .ag-theme-balham-auto-dark {
