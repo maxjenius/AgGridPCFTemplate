@@ -42,6 +42,11 @@
     background-color: transparent;
 }
 
+/* Remove border from the grid container without affecting menus */
+.ag-theme-balham .ag-root-wrapper {
+    border: none !important;
+}
+
 /* Highlight edited cells */
 .ag-theme-balham .edited-cell {
     border: 1px solid red !important;
