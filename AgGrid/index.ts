@@ -98,12 +98,13 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         if (parsed instanceof Date && !isNaN(parsed.getTime())) {
             const dateStr = parsed.toLocaleDateString(undefined, {
                 year: 'numeric',
-                month: '2-digit',
-                day: '2-digit'
+                month: 'numeric',
+                day: 'numeric'
             });
             const timeStr = parsed.toLocaleTimeString(undefined, {
                 hour: 'numeric',
-                minute: '2-digit'
+                minute: '2-digit',
+                hour12: true
             });
             return `${dateStr} ${timeStr}`;
         }
