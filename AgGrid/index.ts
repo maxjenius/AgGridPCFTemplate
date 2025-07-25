@@ -84,11 +84,29 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     }
 
     private formatDisplay(val: unknown): string {
-        const out = this.formatToMinutes(val);
-        if (out == null) {
+        if (val === null || val === undefined || val === '') {
             return '';
         }
-        return String(out).replace('T', ' ');
+        let parsed: string | Date | undefined = undefined;
+        if (val instanceof Date) {
+            parsed = val;
+        } else if (typeof val === 'string') {
+            const iso = this.formatToMinutes(val);
+            parsed = typeof iso === 'string' ? new Date(iso) : undefined;
+        }
+        if (parsed instanceof Date && !isNaN(parsed.getTime())) {
+            const dateStr = parsed.toLocaleDateString(undefined, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+            const timeStr = parsed.toLocaleTimeString(undefined, {
+                hour: 'numeric',
+                minute: '2-digit'
+            });
+            return `${dateStr} ${timeStr}`;
+        }
+        return String(val);
     }
 
 
