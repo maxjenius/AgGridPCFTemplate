@@ -71,28 +71,22 @@ Extra configuration can be supplied using `filterParams`.
 When editing or filtering date/time values you can remove the seconds by setting `step: 60`.
 Be sure to also set `inputType: 'datetime-local'` and `includeTime: true` so the time picker remains visible.
 
-To edit both date and time values, use `agDateStringCellEditor` and set
-`dataType: 'dateTimeString'` in your column definition. Enable the browser
-date picker and ensure the time picker is shown by including `includeTime: true`:
+This component uses a custom picker for editing and filtering date values. The picker is applied automatically when the column `dataType` contains `date` or `dateandtime`. Additional options can be supplied via `cellEditorParams` or `filterParams`.
 
 ```PowerApps
 cellEditorParams: {
-  useBrowserDatePicker: true,
   inputType: 'datetime-local',
   includeTime: true,
   step: 60
 }
 ```
 
-To show a time picker in the filter, set the same `inputType` on the
-`agDateColumnFilter`:
-
 ```PowerApps
 filterParams: {
-  browserDatePicker: true,
   inputType: 'datetime-local',
   includeTime: true,
-  step: 60
+  step: 60,
+  browserDatePicker: false
 }
 ```
 
