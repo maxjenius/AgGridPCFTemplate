@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { LayerHost } from '@fluentui/react';
 import FluentDateTimeCellEditor from './FluentDateTimeCellEditor';
 import FluentDateInput from './FluentDateInput';
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
@@ -338,6 +339,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 onCellValueChanged={onCellValueChangedHandler}
                 onCellEditingStopped={onCellEditingStoppedHandler}
             />
+            <LayerHost id="fluent-layer-host" />
         </div>
     );
 });
