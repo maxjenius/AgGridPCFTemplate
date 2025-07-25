@@ -71,7 +71,7 @@ Extra configuration can be supplied using `filterParams`.
 When editing or filtering date/time values you can remove the seconds by setting `step: 60`.
 Be sure to also set `inputType: 'datetime-local'` and `includeTime: true` so the time picker remains visible.
 
-This component uses a custom picker for editing and filtering date values. The picker is applied automatically when the column `dataType` contains `date` or `dateandtime`. Additional options can be supplied via `cellEditorParams` or `filterParams`.
+This component uses a custom picker for editing and filtering date values. The picker is applied automatically when the column `dataType` contains `date` or `dateandtime`. `browserDatePicker` is disabled and the picker component is passed through `dateComponent: 'fluentDateInput'`. You can override or extend the configuration via `cellEditorParams` or `filterParams`.
 
 ```PowerApps
 cellEditorParams: {
@@ -86,13 +86,14 @@ filterParams: {
   inputType: 'datetime-local',
   includeTime: true,
   step: 60,
-  browserDatePicker: false
+  browserDatePicker: false,
+  dateComponent: 'fluentDateInput'
 }
 ```
 
 When column definitions are omitted, the component automatically applies this
-`agDateColumnFilter` setup for any detected date fields so the filter's picker
-matches the built-in `FluentDateTimeCellEditor`.
+`agDateColumnFilter` setup for any detected date fields. The custom date picker
+is wired automatically, matching the behaviour of `FluentDateTimeCellEditor`.
 
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
