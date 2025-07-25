@@ -96,6 +96,10 @@ filterParams: {
 }
 ```
 
+When column definitions are omitted, the component automatically applies this
+`agDateColumnFilter` setup for any detected date fields so the filter's picker
+matches the built-in `FluentDateTimeCellEditor`.
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 
