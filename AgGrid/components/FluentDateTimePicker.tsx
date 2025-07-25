@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { TextField, Callout, DatePicker, Dropdown, IDropdownOption, PrimaryButton, Stack } from '@fluentui/react';
+import { toLocalIsoMinutes } from '../utils/date';
 
 interface Props {
   value?: string | null;
@@ -37,7 +38,7 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
     d.setMinutes(minute);
     d.setSeconds(0);
     setOpen(false);
-    onChange?.(d.toISOString().slice(0,16));
+    onChange?.(toLocalIsoMinutes(d));
   };
 
   return (
