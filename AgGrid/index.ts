@@ -2,6 +2,7 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from "react-dom";
+import '@fluentui/react/dist/css/fabric.css';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { toLocalIsoMinutes } from './utils/date';
 
