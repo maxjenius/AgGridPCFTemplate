@@ -211,6 +211,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                         if (def && def.cellDataType && !def.dataType) {
                             def.dataType = def.cellDataType;
                         }
+
+                        const dt = (def.dataType || '').toLowerCase();
+
                         if (def?.cellEditor === 'agDateStringCellEditor') {
                             def.cellEditor = 'fluentDateTimeCellEditor';
                             if (!def.valueFormatter) {
@@ -220,7 +223,20 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                                 def.filter = 'agDateColumnFilter';
                             }
                         }
-                        if (def?.filter === 'agDateColumnFilter') {
+
+                        if ((dt.includes('dateandtime') || dt.includes('date')) && !def.filter) {
+                            def.filter = 'agDateColumnFilter';
+                        }
+
+                        if (def.filter === 'agDateColumnFilter') {
+                            if (!def.cellEditor) {
+                                def.cellEditor = 'fluentDateTimeCellEditor';
+                            }
+                            if (dt.includes('dateandtime')) {
+                                def.dataType = 'dateTimeString';
+                            } else if (dt.includes('date')) {
+                                def.dataType = 'dateString';
+                            }
                             def.cellEditorPopup = true;
                             def.filterParams = {
                                 browserDatePicker: false,
@@ -230,6 +246,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                                 step: 60,
                                 ...(def.filterParams || {})
                             };
+                            if (!def.valueFormatter && dt.includes('dateandtime')) {
+                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
+                            }
                         }
                     });
                     parsedDefs = temp;
