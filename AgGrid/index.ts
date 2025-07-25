@@ -3,6 +3,7 @@ import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from "react-dom";
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { toLocalIsoMinutes } from './utils/date';
 
 // Ensure all community grid modules are registered for compatibility with
 // the latest AG Grid versions.
@@ -72,7 +73,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
-            return val.toISOString().slice(0, 16);
+            return toLocalIsoMinutes(val);
         }
         if (typeof val === 'string') {
             const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
@@ -283,7 +284,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     }
                 }
                 if (value instanceof Date) {
-                    value = value.toISOString();
+                    value = toLocalIsoMinutes(value);
                 }
                 if (dt.includes('dateandtime')) {
                     value = this.formatToMinutes(value);
