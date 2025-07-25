@@ -186,3 +186,13 @@
     border: none;
     margin-left: 4px;
 }
+
+.root-760 {
+	font-family: var(--ag-cell-font-family);
+	font-size: var(--ag-font-size);
+    width: 100%;
+}
+
+.fluent-date-time-editor input {
+	margin-left: 8px;
+}
