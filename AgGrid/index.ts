@@ -195,6 +195,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                             if (!def.valueFormatter) {
                                 def.valueFormatter = (p: any) => this.formatDisplay(p.value);
                             }
+                            if (!def.filter) {
+                                def.filter = 'agDateColumnFilter';
+                            }
                         }
                         if (def?.filter === 'agDateColumnFilter') {
                             def.filterParams = {
