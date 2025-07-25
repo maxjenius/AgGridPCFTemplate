@@ -219,8 +219,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                             }
                         }
                         if (def?.filter === 'agDateColumnFilter') {
+                            def.cellEditorPopup = true;
                             def.filterParams = {
-                                browserDatePicker: true,
+                                browserDatePicker: false,
                                 inputType: 'datetime-local',
                                 includeTime: true,
                                 step: 60,
@@ -245,9 +246,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             if (dt.includes('dateandtime')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
+                def.cellEditorPopup = true;
                 def.dataType = 'dateTimeString';
                 def.filterParams = {
-                    browserDatePicker: true,
+                    browserDatePicker: false,
                     inputType: 'datetime-local',
                     includeTime: true,
                     step: 60,
@@ -257,9 +259,10 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             } else if (dt.includes('date')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
+                def.cellEditorPopup = true;
                 def.dataType = 'dateString';
                 def.filterParams = {
-                    browserDatePicker: true,
+                    browserDatePicker: false,
                     inputType: 'datetime-local',
                     includeTime: true,
                     step: 60,
