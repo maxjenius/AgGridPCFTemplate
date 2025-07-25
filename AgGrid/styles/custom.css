@@ -174,8 +174,10 @@
 }
 
 .field-756 {
-    font-family: revert;
+    font-family: var(--ag-cell-font-family);
+    font-size: var(--ag-font-size);
     line-height: revert;
+    width: 100%;
 }
 
 .fluent-date-time-editor .ms-TextField, .fluent-date-time-editor .ms-TextField-fieldGroup {
