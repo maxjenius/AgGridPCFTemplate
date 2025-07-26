@@ -211,9 +211,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                         if (def && def.cellDataType && !def.dataType) {
                             def.dataType = def.cellDataType;
                         }
-
-                        const dt = (def.dataType || '').toLowerCase();
-
                         if (def?.cellEditor === 'agDateStringCellEditor') {
                             def.cellEditor = 'fluentDateTimeCellEditor';
                             if (!def.valueFormatter) {
@@ -223,32 +220,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                                 def.filter = 'agDateColumnFilter';
                             }
                         }
-
-                        if ((dt.includes('dateandtime') || dt.includes('date')) && !def.filter) {
-                            def.filter = 'agDateColumnFilter';
-                        }
-
-                        if (def.filter === 'agDateColumnFilter') {
-                            if (!def.cellEditor) {
-                                def.cellEditor = 'fluentDateTimeCellEditor';
-                            }
-                            if (dt.includes('dateandtime')) {
-                                def.dataType = 'dateTimeString';
-                            } else if (dt.includes('date')) {
-                                def.dataType = 'dateString';
-                            }
+                        if (def?.filter === 'agDateColumnFilter') {
                             def.cellEditorPopup = true;
                             def.filterParams = {
-                                ...(def.filterParams || {}),
-                                browserDatePicker: false,
-                                dateComponent: 'fluentDateInput',
+                                browserDatePicker: true,
                                 inputType: 'datetime-local',
                                 includeTime: true,
-                                step: 60
+                                step: 60,
+                                ...(def.filterParams || {})
                             };
-                            if (!def.valueFormatter && dt.includes('dateandtime')) {
-                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
-                            }
                         }
                     });
                     parsedDefs = temp;
@@ -270,9 +250,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.cellEditorPopup = true;
                 def.dataType = 'dateTimeString';
                 def.filterParams = {
-                    ...(def.filterParams || {}),
-                    browserDatePicker: false,
-                    dateComponent: 'fluentDateInput',
+                    browserDatePicker: true,
                     inputType: 'datetime-local',
                     includeTime: true,
                     step: 60
@@ -284,9 +262,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.cellEditorPopup = true;
                 def.dataType = 'dateString';
                 def.filterParams = {
-                    ...(def.filterParams || {}),
-                    browserDatePicker: false,
-                    dateComponent: 'fluentDateInput',
+                    browserDatePicker: true,
                     inputType: 'datetime-local',
                     includeTime: true,
                     step: 60
