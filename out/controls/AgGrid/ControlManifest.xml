@@ -2,13 +2,37 @@
 <manifest>
   <control namespace="AgGrid" constructor="AgGrid" version="1.2.0" display-name-key="AgGrid" description-key="AgGrid description" control-type="standard" api-version="1.3.11">
     <external-service-usage enabled="false"/>
-    <property name="ApiUrl" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
-    <property name="enableRowGroupColumns" display-name-key="enableRowGroupColumns_Key" description-key="enableRowGroupColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
-    <property name="pivotColumns" display-name-key="pivotColumns_Key" description-key="pivotColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
-    <property name="aggFuncColumns" display-name-key="aggFuncColumns_Key" description-key="aggFuncColumns_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
+    <data-set name="gridData" display-name-key="gridData" description-key="gridData_Desc"/>
+    <property name="EditedCells" display-name-key="EditedCells" of-type="Object" usage="output" hidden="false" default-value=""/>
+    <property name="EditedRows" display-name-key="EditedRows" of-type="Object" usage="output" hidden="false" default-value=""/>
+    <property name="EditedCellsSchema" display-name-key="EditedCellsSchema" of-type="SingleLine.Text" usage="bound" hidden="true"/>
+    <property name="EditedRowsSchema" display-name-key="EditedRowsSchema" of-type="SingleLine.Text" usage="bound" hidden="true"/>
+    <property name="HeaderColor" display-name-key="HeaderColor" of-type="SingleLine.Text" usage="input" default-value=""/>
+    <property name="PaginationColor" display-name-key="PaginationColor" of-type="SingleLine.Text" usage="input" default-value=""/>
+    <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value=""/>
+    <property name="FontSize" display-name-key="FontSize" of-type="Decimal" usage="input" default-value="13"/>
+    <property name="EnableBlur" display-name-key="EnableBlur" of-type="TwoOptions" usage="input" default-value="false"/>
+    <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true"/>
+    <property name="RowKey" display-name-key="RowKey" of-type="SingleLine.Text" usage="input" default-value=""/>
+    <property name="SelectedRowKeys" display-name-key="SelectedRowKeys" of-type="SingleLine.TextArea" usage="input" default-value=""/>
+    <property name="ReadOnly" display-name-key="ReadOnly" of-type="TwoOptions" usage="input" default-value="false"/>
+    <property name="ColumnDefinitions" display-name-key="ColumnDefinitions" of-type="SingleLine.TextArea" usage="input" default-value=""/>
+    <property name="ShowEdited" display-name-key="ShowEdited" of-type="TwoOptions" usage="input" default-value="false"/>
+    <property name="ShowPagination" display-name-key="ShowPagination" of-type="TwoOptions" usage="input" default-value="true"/>
+    <property name="ResetChanges" display-name-key="ResetChanges" of-type="TwoOptions" usage="input" default-value="false"/>
+    <property name="ResetSelection" display-name-key="ResetSelection" of-type="TwoOptions" usage="input" default-value="false"/>
+    <property-dependencies>
+      <property-dependency input="EditedCellsSchema" output="EditedCells" required-for="schema"/>
+      <property-dependency input="EditedRowsSchema" output="EditedRows" required-for="schema"/>
+    </property-dependencies>
     <resources>
       <code path="bundle.js" order="1"/>
+      <css path="styles/custom.css" order="1"/>
     </resources>
-    <built-by name="pac" version="1.30.2"/>
+    <feature-usage/>
+    <built-by name="pac" version="1.45.2"/>
+    <subscribed-functionalities>
+      <subscribed-functionality name="sharedTemplate" value="false"/>
+    </subscribed-functionalities>
   </control>
 </manifest>
