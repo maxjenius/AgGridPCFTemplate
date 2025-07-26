@@ -74,7 +74,6 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
         <Callout
           target={target.current}
           onDismiss={() => setOpen(false)}
-          layerProps={{ hostId: 'fluent-layer-host' }}
         >
           <Stack tokens={{ childrenGap: 8, padding: 8 }}>
             <DatePicker value={date} onSelectDate={(d) => d && setDate(d)} />
