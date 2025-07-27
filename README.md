@@ -146,6 +146,34 @@ JSON([
 ])
 ```
 
+For a date field such as `ara_created`, combine AG Grid's built-in date editor
+and filter so users can pick both the date and time:
+
+```PowerApps
+JSON([
+  {
+    field: "ara_created",
+    headerName: "Created",
+    dataType: "dateTimeString",
+    filter: "agDateColumnFilter",
+    cellEditor: "agDateStringCellEditor",
+    cellEditorParams: {
+      useBrowserDatePicker: true,
+      inputType: "datetime-local",
+      includeTime: true,
+      step: 60
+    },
+    filterParams: {
+      browserDatePicker: false,
+      dateComponent: "fluentDateInput",
+      inputType: "datetime-local",
+      includeTime: true,
+      step: 60
+    }
+  }
+])
+```
+
 Functions like `getAmount` or `currencyFormatter` must be available globally in your Canvas app. `stateRenderer` is a custom React component registered with the grid.
 
 The `linkRenderer` component would output an anchor element using the row's `website` value, while `statusFormatter` converts numeric codes into friendly text.
