@@ -89,7 +89,8 @@ To show a time picker in the filter, set the same `inputType` on the
 
 ```PowerApps
 filterParams: {
-  browserDatePicker: true,
+  browserDatePicker: false,
+  dateComponent: 'fluentDateInput',
   inputType: 'datetime-local',
   includeTime: true,
   step: 60
