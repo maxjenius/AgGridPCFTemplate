@@ -101,6 +101,9 @@ When column definitions are omitted, the component automatically applies this
 `agDateColumnFilter` setup for any detected date fields so the filter's picker
 matches the built-in `FluentDateTimeCellEditor`.
 
+The grid container now allows visible overflow so these pickers remain visible
+even when the control is embedded inside a tight layout.
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 
