@@ -151,7 +151,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.container = container;
         this.container.style.width = "100%";
         this.container.style.height = "100%";
-        this.container.style.overflow = "hidden";
+        this.container.style.overflow = "visible";
         this.container.style.backgroundColor = "transparent";
 
         this.gridContainer = document.createElement("div");
