@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot, Root } from 'react-dom/client';
 import '@fluentui/react/dist/css/fabric.css';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { toLocalIsoMinutes } from './utils/date';
@@ -71,6 +71,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _lastResetSelectionFlag: boolean = false;
     private _resetVersion: number = 0;
     private _fontSize?: number;
+    private _root?: Root;
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
@@ -160,6 +161,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.gridContainer.style.backgroundColor = "transparent";
 
         this.container.appendChild(this.gridContainer);
+        this._root = createRoot(this.gridContainer);
     }
 
 
@@ -208,8 +210,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 const temp = JSON.parse(columnDefsInput as any);
                 if (Array.isArray(temp)) {
                     temp.forEach(def => {
-                        if (def && def.cellDataType && !def.dataType) {
-                            def.dataType = def.cellDataType;
+                        if (def && def.dataType && !def.cellDataType) {
+                            def.cellDataType = def.dataType;
+                            delete def.dataType;
                         }
                         if (def?.cellEditor === 'agDateStringCellEditor') {
                             def.cellEditor = 'fluentDateTimeCellEditor';
@@ -246,7 +249,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
                 def.cellEditorPopup = true;
-                def.dataType = 'dateTimeString';
+                def.cellDataType = 'dateTimeString';
                 def.filterParams = {
                     browserDatePicker: false,
                     dateComponent: 'fluentDateInput',
@@ -259,7 +262,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
                 def.cellEditorPopup = true;
-                def.dataType = 'dateString';
+                def.cellDataType = 'dateString';
                 def.filterParams = {
                     browserDatePicker: false,
                     dateComponent: 'fluentDateInput',
@@ -324,7 +327,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         } else {
             this._selectedRowIds = dataset.getSelectedRecordIds();
         }
-        ReactDOM.render(
+        this._root?.render(
             React.createElement(MyAgGrid, {
                 rowData: finalRowData,
                 columnDefs: this._columnDefs,
@@ -340,8 +343,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false,
                 resetVersion: this._resetVersion
-            }),
-            this.gridContainer
+            })
         );
 
     }
@@ -454,6 +456,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * i.e. cancelling any pending remote calls, removing listeners, etc.
      */
     public destroy(): void {
-        ReactDOM.unmountComponentAtNode(this.gridContainer);
+        this._root?.unmount();
     }
 }
