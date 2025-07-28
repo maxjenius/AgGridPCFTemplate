@@ -186,10 +186,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         enableRangeSelection: false,
         suppressRowClickSelection: multiSelect,
         popupParent: typeof document !== 'undefined' ? document.body : undefined,
-        frameworkComponents: {
+        components: {
             fluentDateTimeCellEditor: FluentDateTimeCellEditor,
-            fluentDateInput: FluentDateInput,
-            agDateInput: FluentDateInput
+            fluentDateInput: FluentDateInput
         }
     }), [finalColumnDefs, multiSelect]);
 

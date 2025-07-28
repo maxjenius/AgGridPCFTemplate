@@ -89,20 +89,12 @@ To show a time picker in the filter, set the same `inputType` on the
 
 ```PowerApps
 filterParams: {
-  browserDatePicker: false,
-  dateComponent: 'fluentDateInput',
+  browserDatePicker: true,
   inputType: 'datetime-local',
   includeTime: true,
   step: 60
 }
 ```
-
-When column definitions are omitted, the component automatically applies this
-`agDateColumnFilter` setup for any detected date fields so the filter's picker
-matches the built-in `FluentDateTimeCellEditor`.
-
-The grid container now allows visible overflow so these pickers remain visible
-even when the control is embedded inside a tight layout.
 
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
@@ -142,34 +134,6 @@ JSON([
     cellRenderer: "stateRenderer",
     cellRendererParams: { showIcon: true },
     filter: "agSetColumnFilter"
-  }
-])
-```
-
-For a date field such as `ara_created`, combine AG Grid's built-in date editor
-and filter so users can pick both the date and time:
-
-```PowerApps
-JSON([
-  {
-    field: "ara_created",
-    headerName: "Created",
-    dataType: "dateTimeString",
-    filter: "agDateColumnFilter",
-    cellEditor: "agDateStringCellEditor",
-    cellEditorParams: {
-      useBrowserDatePicker: true,
-      inputType: "datetime-local",
-      includeTime: true,
-      step: 60
-    },
-    filterParams: {
-      browserDatePicker: false,
-      dateComponent: "fluentDateInput",
-      inputType: "datetime-local",
-      includeTime: true,
-      step: 60
-    }
   }
 ])
 ```
