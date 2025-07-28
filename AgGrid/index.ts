@@ -2,9 +2,7 @@ import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from "react-dom";
-import '@fluentui/react/dist/css/fabric.css';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
-import { toLocalIsoMinutes } from './utils/date';
 
 // Ensure all community grid modules are registered for compatibility with
 // the latest AG Grid versions.
@@ -74,7 +72,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
-            return toLocalIsoMinutes(val);
+            return val.toISOString().slice(0, 16);
         }
         if (typeof val === 'string') {
             const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
@@ -86,30 +84,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     }
 
     private formatDisplay(val: unknown): string {
-        if (val === null || val === undefined || val === '') {
+        const out = this.formatToMinutes(val);
+        if (out == null) {
             return '';
         }
-        let parsed: string | Date | undefined = undefined;
-        if (val instanceof Date) {
-            parsed = val;
-        } else if (typeof val === 'string') {
-            const iso = this.formatToMinutes(val);
-            parsed = typeof iso === 'string' ? new Date(iso) : undefined;
-        }
-        if (parsed instanceof Date && !isNaN(parsed.getTime())) {
-            const dateStr = parsed.toLocaleDateString(undefined, {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric'
-            });
-            const timeStr = parsed.toLocaleTimeString(undefined, {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            });
-            return `${dateStr} ${timeStr}`;
-        }
-        return String(val);
+        return String(out).replace('T', ' ');
     }
 
 
@@ -151,7 +130,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.container = container;
         this.container.style.width = "100%";
         this.container.style.height = "100%";
-        this.container.style.overflow = "visible";
+        this.container.style.overflow = "hidden";
         this.container.style.backgroundColor = "transparent";
 
         this.gridContainer = document.createElement("div");
@@ -216,18 +195,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                             if (!def.valueFormatter) {
                                 def.valueFormatter = (p: any) => this.formatDisplay(p.value);
                             }
-                            if (!def.filter) {
-                                def.filter = 'agDateColumnFilter';
-                            }
                         }
                         if (def?.filter === 'agDateColumnFilter') {
-                            def.cellEditorPopup = true;
                             def.filterParams = {
                                 browserDatePicker: false,
                                 dateComponent: 'fluentDateInput',
-                                inputType: 'datetime-local',
-                                includeTime: true,
-                                step: 60,
                                 ...(def.filterParams || {})
                             };
                         }
@@ -248,28 +220,14 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             if (dt.includes('dateandtime')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
-                def.cellEditorPopup = true;
                 def.dataType = 'dateTimeString';
-                def.filterParams = {
-                    browserDatePicker: false,
-                    dateComponent: 'fluentDateInput',
-                    inputType: 'datetime-local',
-                    includeTime: true,
-                    step: 60
-                };
+                def.filterParams = { browserDatePicker: false, dateComponent: 'fluentDateInput' };
                 def.valueFormatter = (p: any) => this.formatDisplay(p.value);
             } else if (dt.includes('date')) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
-                def.cellEditorPopup = true;
                 def.dataType = 'dateString';
-                def.filterParams = {
-                    browserDatePicker: false,
-                    dateComponent: 'fluentDateInput',
-                    inputType: 'datetime-local',
-                    includeTime: true,
-                    step: 60
-                };
+                def.filterParams = { browserDatePicker: false, dateComponent: 'fluentDateInput' };
             }
             return def;
         });
@@ -289,7 +247,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     }
                 }
                 if (value instanceof Date) {
-                    value = toLocalIsoMinutes(value);
+                    value = value.toISOString();
                 }
                 if (dt.includes('dateandtime')) {
                     value = this.formatToMinutes(value);

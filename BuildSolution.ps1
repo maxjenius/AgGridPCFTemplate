@@ -19,7 +19,6 @@ Set-Location 'AgGridPCF'
 # install node dependencies
 npm install
 npm audit fix
-npm run build
 
 # initialize power platform solution
 pac solution init --publisher-name 'ARA' --publisher-prefix 'ARA'

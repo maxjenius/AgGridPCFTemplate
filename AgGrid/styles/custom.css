@@ -161,38 +161,12 @@
     display: flex;
     align-items: center;
 }
-
 .fluent-date-time-editor .ms-TextField,
 .fluent-date-time-editor .ms-TextField-fieldGroup {
     height: 100%;
 }
-
 .fluent-date-time-editor input {
     height: 100%;
     padding-top: 0;
     padding-bottom: 0;
-}
-
-.field-756 {
-    font-family: var(--ag-cell-font-family);
-    font-size: var(--ag-font-size);
-    line-height: revert;
-    width: 100%;
-}
-
-.fluent-date-time-editor .ms-TextField, .fluent-date-time-editor .ms-TextField-fieldGroup {
-    height: auto;
-    background-color: transparent;
-    border: none;
-    margin-left: 4px;
-}
-
-.root-760 {
-	font-family: var(--ag-cell-font-family);
-	font-size: var(--ag-font-size);
-    width: 100%;
-}
-
-.fluent-date-time-editor input {
-	margin-left: 8px;
 }
