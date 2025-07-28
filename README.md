@@ -89,12 +89,17 @@ To show a time picker in the filter, set the same `inputType` on the
 
 ```PowerApps
 filterParams: {
-  browserDatePicker: true,
+  browserDatePicker: false,
+  dateComponent: 'fluentDateInput',
   inputType: 'datetime-local',
   includeTime: true,
   step: 60
 }
 ```
+
+When column definitions are omitted, the component automatically applies this
+`agDateColumnFilter` setup for any detected date fields so the filter's picker
+matches the built-in `FluentDateTimeCellEditor`.
 
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:

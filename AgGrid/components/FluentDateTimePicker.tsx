@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TextField, Callout, DatePicker, Dropdown, IDropdownOption, PrimaryButton, Stack } from '@fluentui/react';
+import { toLocalIsoMinutes } from '../utils/date';
 
 interface Props {
   value?: string | null;
@@ -19,6 +20,16 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
   const target = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (!open && target.current) {
+      target.current.focus();
+    }
+  }, [open]);
+
   const formatted = () => {
     const h = hour === 12 ? 0 : hour;
     const fullHour = ampmVal === 'PM' ? h + 12 : h;
@@ -26,7 +37,14 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
     d.setHours(fullHour);
     d.setMinutes(minute);
     d.setSeconds(0);
-    return d.toLocaleString();
+    return d.toLocaleString(undefined, {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
   };
 
   const apply = () => {
@@ -37,7 +55,7 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
     d.setMinutes(minute);
     d.setSeconds(0);
     setOpen(false);
-    onChange?.(d.toISOString().slice(0,16));
+    onChange?.(toLocalIsoMinutes(d));
   };
 
   return (
@@ -53,7 +71,11 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
         }}
       />
       {open && target.current && (
-        <Callout target={target.current} onDismiss={() => setOpen(false)}>
+        <Callout
+          target={target.current}
+          onDismiss={() => setOpen(false)}
+          doNotLayer
+        >
           <Stack tokens={{ childrenGap: 8, padding: 8 }}>
             <DatePicker value={date} onSelectDate={(d) => d && setDate(d)} />
             <Stack horizontal tokens={{ childrenGap: 8 }}>
