@@ -160,6 +160,11 @@ the dependency run `npm install` to ensure the new version is bundled correctly.
 All community modules are registered automatically via `ModuleRegistry` so the
 grid works with modern AG Grid releases.
 
+### React version
+Power Apps currently does not support React 18 for PCF controls. This project
+targets **React 17** to ensure the control can be added to a Canvas app without
+issues.
+
 ### Automated setup
 The root folder contains helper scripts that create a new Power Platform solution and build the PCF project. The scripts automatically detect the absolute path to this repository so no manual path editing is required.
 Run the shell script on Linux/macOS:

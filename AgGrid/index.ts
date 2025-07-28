@@ -1,7 +1,7 @@
 import { IInputs, IOutputs } from "./generated/ManifestTypes";
 import MyAgGrid from './components/AgGrid'
 import React from "react";
-import { createRoot, Root } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import '@fluentui/react/dist/css/fabric.css';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { toLocalIsoMinutes } from './utils/date';
@@ -71,7 +71,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _lastResetSelectionFlag: boolean = false;
     private _resetVersion: number = 0;
     private _fontSize?: number;
-    private _root?: Root;
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
@@ -161,7 +160,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this.gridContainer.style.backgroundColor = "transparent";
 
         this.container.appendChild(this.gridContainer);
-        this._root = createRoot(this.gridContainer);
     }
 
 
@@ -327,7 +325,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         } else {
             this._selectedRowIds = dataset.getSelectedRecordIds();
         }
-        this._root?.render(
+        ReactDOM.render(
             React.createElement(MyAgGrid, {
                 rowData: finalRowData,
                 columnDefs: this._columnDefs,
@@ -343,7 +341,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false,
                 resetVersion: this._resetVersion
-            })
+            }),
+            this.gridContainer
         );
 
     }
@@ -456,6 +455,6 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
      * i.e. cancelling any pending remote calls, removing listeners, etc.
      */
     public destroy(): void {
-        this._root?.unmount();
+        ReactDOM.unmountComponentAtNode(this.gridContainer);
     }
 }
