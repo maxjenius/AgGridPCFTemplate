@@ -61,7 +61,7 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 * `agTextColumnFilter` – text search with contains, equals and more
 * `agNumberColumnFilter` – numeric comparison operators
 * `agDateColumnFilter` – supports date pickers and ranges; combine with
-  `dataType: 'dateTimeString'` for ISO strings or `dataType: 'date'` for
+  `cellDataType: 'dateTimeString'` for ISO strings or `cellDataType: 'date'` for
   `Date` objects.
 * `agSetColumnFilter` – choose from a list of unique values
 * `agMultiColumnFilter` – combine multiple filter types
@@ -72,7 +72,7 @@ When editing or filtering date/time values you can remove the seconds by setting
 Be sure to also set `inputType: 'datetime-local'` and `includeTime: true` so the time picker remains visible.
 
 To edit both date and time values, use `agDateStringCellEditor` and set
-`dataType: 'dateTimeString'` in your column definition. Enable the browser
+`cellDataType: 'dateTimeString'` in your column definition. Enable the browser
 date picker and ensure the time picker is shown by including `includeTime: true`:
 
 ```PowerApps
