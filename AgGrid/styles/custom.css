@@ -191,6 +191,10 @@
        margin-left: 8px;
 }
 
+.ag-ltr .ag-row-drag, .ag-ltr .ag-selection-checkbox, .ag-ltr .ag-group-expanded, .ag-ltr .ag-group-contracted {
+    margin-right: 0px !important;
+}
+
 /* Hide seconds from native datetime pickers */
 input[type="datetime-local"]::-webkit-datetime-edit-second-field,
 input[type="datetime-local"]::-webkit-datetime-edit-millisecond-field,
