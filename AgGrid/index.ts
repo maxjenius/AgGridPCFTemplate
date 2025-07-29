@@ -85,6 +85,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         return val;
     }
 
+    private isDateTimeType(dt: string): boolean {
+        const t = (dt || '').toLowerCase();
+        return /(date.*time|datetime)/.test(t);
+    }
+
+    private isDateType(dt: string): boolean {
+        return /date/.test((dt || '').toLowerCase());
+    }
+
     private formatDisplay(val: unknown): string {
         if (val === null || val === undefined || val === '') {
             return '';
@@ -212,22 +221,32 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                             def.cellDataType = def.dataType;
                             delete def.dataType;
                         }
-                        if (def?.cellEditor === 'agDateStringCellEditor') {
-                            def.cellEditor = 'fluentDateTimeCellEditor';
-                            if (!def.valueFormatter) {
-                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
+                        const dt = def?.cellDataType || '';
+                        if (this.isDateTimeType(dt)) {
+                            if (!def.cellEditor) {
+                                def.cellEditor = 'fluentDateTimeCellEditor';
                             }
-                        }
-                        if (def?.filter === 'agDateColumnFilter') {
                             def.cellEditorPopup = true;
+                            if (!def.filterParams) {
+                                def.filterParams = {};
+                            }
+                            def.filter = 'agDateColumnFilter';
                             def.filterParams = {
                                 browserDatePicker: false,
                                 dateComponent: 'fluentDateInput',
                                 inputType: 'datetime-local',
                                 includeTime: true,
                                 step: 60,
-                                ...(def.filterParams || {})
+                                ...def.filterParams
                             };
+                            if (!def.valueFormatter) {
+                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
+                            }
+                        } else if (def?.cellEditor === 'agDateStringCellEditor') {
+                            def.cellEditor = 'fluentDateTimeCellEditor';
+                            if (!def.valueFormatter) {
+                                def.valueFormatter = (p: any) => this.formatDisplay(p.value);
+                            }
                         }
                     });
                     parsedDefs = temp;
@@ -242,8 +261,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 field: col.name,
                 headerName: col.displayName
             };
-            const dt = (col.dataType || '').toLowerCase();
-            if (dt.includes('dateandtime')) {
+            const dt = col.dataType || '';
+            if (this.isDateTimeType(dt)) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
                 def.cellEditorPopup = true;
@@ -256,7 +275,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                     step: 60
                 };
                 def.valueFormatter = (p: any) => this.formatDisplay(p.value);
-            } else if (dt.includes('date')) {
+            } else if (this.isDateType(dt)) {
                 def.filter = 'agDateColumnFilter';
                 def.cellEditor = 'fluentDateTimeCellEditor';
                 def.cellEditorPopup = true;
@@ -277,8 +296,8 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             const row: any = { __id: id };
             dataset.columns.forEach(col => {
                 let value: any;
-                const dt = (col.dataType || '').toLowerCase();
-                if (dt.includes('date')) {
+                const dt = col.dataType || '';
+                if (this.isDateType(dt)) {
                     value = record.getValue(col.name);
                 } else {
                     value = record.getFormattedValue?.(col.name);
@@ -289,7 +308,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 if (value instanceof Date) {
                     value = toLocalIsoMinutes(value);
                 }
-                if (dt.includes('dateandtime')) {
+                if (this.isDateTimeType(dt)) {
                     value = this.formatToMinutes(value);
                 }
                 row[col.name] = value;
