@@ -176,7 +176,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         cellClassRules: {
             'edited-cell': (params: any) => {
                 const id = params.node.id;
-                const field = params.column.getId();
+                const field = params.column.getColDef().field ?? params.column.getId();
                 const original = originalDataRef.current[id]?.[field];
                 return !valuesAreEqual(params.value, original);
             }
@@ -227,35 +227,36 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
 
     const onCellValueChangedHandler = useCallback((params: any) => {
         const newVal = stripSeconds(params.newValue);
+        const field = params.column.getColDef().field ?? params.column.getId();
         if (onCellValueChanged) {
             onCellValueChanged({
                 rowId: params.node.id,
-                field: params.column.getId(),
+                field,
                 oldValue: params.oldValue,
                 newValue: newVal
             });
         }
-        const key = `${params.node.id}_${params.column.getId()}`;
-        const originalValue = originalDataRef.current[params.node.id]?.[params.column.getId()];
+        const key = `${params.node.id}_${field}`;
+        const originalValue = originalDataRef.current[params.node.id]?.[field];
         if (valuesAreEqual(newVal, originalValue)) {
             editedCellsRef.current.delete(key);
         } else {
             editedCellsRef.current.add(key);
         }
         if (newVal !== params.newValue) {
-            params.node.setDataValue(params.column.getId(), newVal);
+            params.node.setDataValue(field, newVal);
         }
         params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
     }, [onCellValueChanged]);
 
     const onCellEditingStoppedHandler = useCallback((params: CellEditingStoppedEvent) => {
-        const field = params.column.getId();
+        const field = params.column.getColDef().field ?? params.column.getId();
         const rowId = params.node.id as string;
         if (!params.valueChanged) {
             const originalValue = originalDataRef.current[rowId]?.[field];
             params.node.setDataValue(field, originalValue);
             editedCellsRef.current.delete(`${rowId}_${field}`);
-            params.api.refreshCells({ rowNodes: [params.node], columns: [field], force: true });
+            params.api.refreshCells({ rowNodes: [params.node], columns: [params.column.getId()], force: true });
         } else {
             const currentVal = params.node.data[field];
             const fixed = stripSeconds(currentVal);
