@@ -5,13 +5,19 @@ import { toLocalIsoMinutes } from '../utils/date';
 interface Props {
   value?: string | null;
   onChange?: (val: string | null) => void;
+  /**
+   * When true the picker popup opens immediately after mount.
+   * Useful for grid cell editors that should display the picker
+   * as soon as editing starts.
+   */
+  autoOpen?: boolean;
 }
 
 const hours: IDropdownOption[] = Array.from({ length: 12 }, (_, i) => ({ key: i + 1, text: String(i + 1) }));
 const minutes: IDropdownOption[] = Array.from({ length: 60 }, (_, i) => ({ key: i, text: i.toString().padStart(2, '0') }));
 const ampm: IDropdownOption[] = [ { key: 'AM', text: 'AM' }, { key: 'PM', text: 'PM' } ];
 
-export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
+export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange, autoOpen }) => {
   const initial = value ? new Date(value) : new Date('2025-05-04T21:35:00');
   const [date, setDate] = useState<Date>(initial);
   const [hour, setHour] = useState<number>((initial.getHours() % 12) || 12);
@@ -19,6 +25,12 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
   const [ampmVal, setAmPmVal] = useState<string>(initial.getHours() >= 12 ? 'PM' : 'AM');
   const [open, setOpen] = useState(false);
   const target = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (autoOpen) {
+      setOpen(true);
+    }
+  }, [autoOpen]);
 
   useEffect(() => {
     if (!open && target.current) {
