@@ -145,11 +145,6 @@
         box-sizing: border-box;
 }
 
-:where(.ag-theme-params-1) {
-    --ag-checkbox-checked-shape-color: none;
-    --ag-checkbox-checked-shape-image: none;
-    --ag-checkbox-unchecked-border-color: none;
-}
 
 [class*="ag-theme-"] {
     --ag-borders: solid 1px;
