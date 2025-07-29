@@ -195,6 +195,10 @@
     margin-right: 0px !important;
 }
 
+.ag-header-cell ag-column-first ag-header-parent-hidden ag-header-cell-sortable selection-checkbox-header {
+    margin-left: 14px;
+}
+
 /* Hide seconds from native datetime pickers */
 input[type="datetime-local"]::-webkit-datetime-edit-second-field,
 input[type="datetime-local"]::-webkit-datetime-edit-millisecond-field,
