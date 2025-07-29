@@ -77,9 +77,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             return toLocalIsoMinutes(val);
         }
         if (typeof val === 'string') {
-            const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
-            if (m) {
-                return m[1];
+            const d = new Date(val);
+            if (!isNaN(d.getTime())) {
+                return toLocalIsoMinutes(d);
             }
         }
         return val;
@@ -119,6 +119,17 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             return `${dateStr} ${timeStr}`;
         }
         return String(val);
+    }
+
+    // Convert cell values to display strings for output when dealing with date
+    // types. Non-date values are returned unchanged.
+    private convertForOutput(field: string, value: unknown): unknown {
+        const def = this._columnDefs.find(c => c.field === field);
+        const dt = def?.cellDataType || '';
+        if (this.isDateType(dt) || this.isDateTimeType(dt)) {
+            return this.formatDisplay(value);
+        }
+        return value;
     }
 
 
@@ -431,14 +442,24 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             this._rowPatchesMap.set(change.rowId, rowPatch);
         }
 
-        this._editedCells = Array.from(this._editedMap.values());
-        this._editedRows = Array.from(this._rowPatchesMap.values());
-        this._editedRowRecords = this._editedRows.map(patch => ({
-            rowKey: patch.rowKey !== undefined
-                ? patch.rowKey
-                : this._originalRowData[patch.rowId]?.rowKey,
-            ...patch.changes
+        this._editedCells = Array.from(this._editedMap.values()).map(cell => ({
+            ...cell,
+            oldValue: this.convertForOutput(cell.field, cell.oldValue),
+            newValue: this.convertForOutput(cell.field, cell.newValue)
         }));
+
+        this._editedRows = Array.from(this._rowPatchesMap.values());
+        this._editedRowRecords = this._editedRows.map(patch => {
+            const record: any = {
+                rowKey: patch.rowKey !== undefined
+                    ? patch.rowKey
+                    : this._originalRowData[patch.rowId]?.rowKey
+            };
+            Object.entries(patch.changes).forEach(([field, val]) => {
+                record[field] = this.convertForOutput(field, val);
+            });
+            return record;
+        });
 
         if (this._notifyOutputChanged) {
             this._notifyOutputChanged();

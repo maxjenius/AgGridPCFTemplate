@@ -54,9 +54,13 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return String(a) === String(b);
     };
 
+    // Prior implementation removed the seconds portion from ISO strings, which
+    // caused AG Grid's `dateTimeString` type validation to fail. Now we simply
+    // return the value unchanged but keep the function for backward
+    // compatibility.
     const stripSeconds = (val: unknown): unknown => {
         if (typeof val === 'string') {
-            const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/);
+            const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/);
             if (m) {
                 return m[1];
             }
