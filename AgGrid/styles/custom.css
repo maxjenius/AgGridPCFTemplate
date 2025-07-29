@@ -195,7 +195,7 @@
     margin-right: 0px !important;
 }
 
-.ag-header-cell ag-column-first ag-header-parent-hidden ag-header-cell-sortable selection-checkbox-header {
+div.ag-header-cell.ag-column-first.ag-header-parent-hidden.ag-header-cell-sortable.selection-checkbox-header.ag-focus-managed {
     margin-left: 14px;
 }
 
