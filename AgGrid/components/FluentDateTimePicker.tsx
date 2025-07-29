@@ -21,10 +21,6 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange }) => {
   const target = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    setOpen(true);
-  }, []);
-
-  useEffect(() => {
     if (!open && target.current) {
       target.current.focus();
     }

@@ -101,6 +101,10 @@ When column definitions are omitted, the component automatically applies this
 `agDateColumnFilter` setup for any detected date fields so the filter's picker
 matches the built-in `FluentDateTimeCellEditor`.
 
+The editor uses a custom Fluent UI picker that starts out displaying
+`5/4/2025 9:35 PM`. Click the field to open a popup where you can quickly choose
+the month, year, day and time (hour, minute and AM/PM).
+
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
 
