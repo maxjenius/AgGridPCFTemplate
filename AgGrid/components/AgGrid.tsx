@@ -60,6 +60,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     // compatibility.
     const stripSeconds = (val: unknown): unknown => {
         if (typeof val === 'string') {
+            if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(val)) {
+                return `${val}:00`;
+            }
             const m = val.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})/);
             if (m) {
                 return m[1];
