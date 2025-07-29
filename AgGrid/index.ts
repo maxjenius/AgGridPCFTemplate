@@ -121,13 +121,15 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         return String(val);
     }
 
-    // Convert cell values to display strings for output when dealing with date
-    // types. Non-date values are returned unchanged.
+    // Convert cell values for output when dealing with date types. Returns a
+    // local ISO string (YYYY-MM-DDTHH:mm:ss) so the consumer can update the
+    // underlying record directly. Non-date values are returned unchanged.
     private convertForOutput(field: string, value: unknown): unknown {
         const def = this._columnDefs.find(c => c.field === field);
         const dt = def?.cellDataType || '';
         if (this.isDateType(dt) || this.isDateTimeType(dt)) {
-            return this.formatDisplay(value);
+            const normalized = this.formatToMinutes(value);
+            return typeof normalized === 'string' ? normalized : value;
         }
         return value;
     }

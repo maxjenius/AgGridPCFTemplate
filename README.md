@@ -72,6 +72,8 @@ When editing or filtering date/time values you can remove the seconds by setting
 Be sure to also set `inputType: 'datetime-local'` and `includeTime: true` so the time picker remains visible.
 Seconds are ignored by the custom picker, so no field for them is displayed.
 
+Any changed date or date/time values in **EditedRows** use a local ISO format (`YYYY-MM-DDTHH:mm:ss`). This lets you write updates back to Dataverse without additional conversion.
+
 To edit both date and time values, use `agDateStringCellEditor` and set
 `cellDataType: 'dateTimeString'` in your column definition. Enable the browser
 date picker and ensure the time picker is shown by including `includeTime: true`:
