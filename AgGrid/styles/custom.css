@@ -138,7 +138,7 @@
 
 [class*="ag-theme-"] {
     --ag-background-color: none !important;
-    --ag-selected-row-background-color: none !important;
+    --ag-selected-row-background-color: #d0e9ff !important;
 }
 
 [class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
