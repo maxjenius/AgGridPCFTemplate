@@ -451,7 +451,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
             newValue: this.convertForOutput(cell.field, cell.newValue)
         }));
 
-        this._editedRows = Array.from(this._rowPatchesMap.values());
+        this._editedRows = Array.from(this._rowPatchesMap.values()).map(patch => ({
+            rowId: patch.rowId,
+            rowKey: patch.rowKey,
+            changes: { ...patch.changes }
+        }));
         this._editedRowRecords = this._editedRows.map(patch => {
             const record: any = {
                 rowKey: patch.rowKey !== undefined
