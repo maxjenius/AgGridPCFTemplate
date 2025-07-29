@@ -70,6 +70,7 @@ Set the `filter` key to one of AG Grid's built‑in filter names:
 Extra configuration can be supplied using `filterParams`.
 When editing or filtering date/time values you can remove the seconds by setting `step: 60`.
 Be sure to also set `inputType: 'datetime-local'` and `includeTime: true` so the time picker remains visible.
+Seconds are ignored by the custom picker, so no field for them is displayed.
 
 To edit both date and time values, use `agDateStringCellEditor` and set
 `cellDataType: 'dateTimeString'` in your column definition. Enable the browser
@@ -104,6 +105,7 @@ matches the built-in `FluentDateTimeCellEditor`.
 The editor uses a custom Fluent UI picker that starts out displaying
 `5/4/2025 9:35 PM`. Click the field to open a popup where you can quickly choose
 the month, year, day and time (hour, minute and AM/PM).
+Seconds are omitted in the popup because values are saved to the nearest minute.
 
 ### Cell Content
 The grid provides several options for controlling how values are displayed inside each cell:
