@@ -9,6 +9,7 @@
     --ag-borders: none;
     --ag-row-border-color: transparent;
     --ag-border-radius: 0px;
+    --ag-checkbox-unchecked-border-color: black;
 }
 
 .ag-theme-balham .ag-header {
