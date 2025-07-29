@@ -16,7 +16,12 @@ const FluentDateInput = forwardRef((props: IDateParams, ref) => {
     refresh: () => {}
   }));
 
-  return <FluentDateTimePicker value={val ?? undefined} onChange={setVal} />;
+  const handleChange = (v: string | null) => {
+    setVal(v);
+    props.onDateChanged();
+  };
+
+  return <FluentDateTimePicker value={val ?? undefined} onChange={handleChange} />;
 });
 
 export default FluentDateInput;
