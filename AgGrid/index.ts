@@ -415,8 +415,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         const originalRow = this._originalRowData[change.rowId];
         const originalValue = originalRow ? originalRow[change.field] : change.oldValue;
         const rowKeyValue = originalRow ? originalRow.rowKey : change.rowId;
+        const normalizedNewVal = this.formatToMinutes(change.newValue);
 
-        if (this.valuesAreEqual(change.newValue, originalValue)) {
+        if (this.valuesAreEqual(normalizedNewVal, originalValue)) {
             // Reverted to original value - remove tracking
             this._editedMap.delete(key);
             const rowPatch = this._rowPatchesMap.get(change.rowId);
@@ -431,13 +432,13 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         } else {
             const existing = this._editedMap.get(key);
             if (existing) {
-                existing.newValue = change.newValue;
+                existing.newValue = normalizedNewVal;
             } else {
-                this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: change.newValue, rowKey: rowKeyValue });
+                this._editedMap.set(key, { rowId: change.rowId, field: change.field, oldValue: originalValue, newValue: normalizedNewVal, rowKey: rowKeyValue });
             }
 
             const rowPatch = this._rowPatchesMap.get(change.rowId) || { rowId: change.rowId, changes: {}, rowKey: rowKeyValue };
-            rowPatch.changes[change.field] = change.newValue;
+            rowPatch.changes[change.field] = normalizedNewVal;
             rowPatch.rowKey = rowKeyValue;
             this._rowPatchesMap.set(change.rowId, rowPatch);
         }
