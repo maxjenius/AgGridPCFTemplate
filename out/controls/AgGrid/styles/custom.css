@@ -9,6 +9,7 @@
     --ag-borders: none;
     --ag-row-border-color: transparent;
     --ag-border-radius: 0px;
+    --ag-checkbox-unchecked-border-color: black;
 }
 
 .ag-theme-balham .ag-header {
@@ -144,11 +145,6 @@
         box-sizing: border-box;
 }
 
-:where(.ag-theme-params-1) {
-    --ag-checkbox-checked-shape-color: none;
-    --ag-checkbox-checked-shape-image: none;
-    --ag-checkbox-unchecked-border-color: none;
-}
 
 [class*="ag-theme-"] {
     --ag-borders: solid 1px;
@@ -189,6 +185,14 @@
 }
 .fluent-date-time-editor input {
        margin-left: 8px;
+}
+
+.ag-ltr .ag-row-drag, .ag-ltr .ag-selection-checkbox, .ag-ltr .ag-group-expanded, .ag-ltr .ag-group-contracted {
+    margin-right: 0px !important;
+}
+
+div.ag-header-cell.ag-column-first.ag-header-parent-hidden.ag-header-cell-sortable.selection-checkbox-header.ag-focus-managed {
+    margin-left: 14px;
 }
 
 /* Hide seconds from native datetime pickers */
