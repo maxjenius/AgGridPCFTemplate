@@ -19,6 +19,7 @@ const ampm: IDropdownOption[] = [ { key: 'AM', text: 'AM' }, { key: 'PM', text: 
 
 export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange, autoOpen }) => {
   const initial = value ? new Date(value) : new Date('2025-05-04T21:35:00');
+  initial.setSeconds(0, 0);
   const [date, setDate] = useState<Date>(initial);
   const [hour, setHour] = useState<number>((initial.getHours() % 12) || 12);
   const [minute, setMinute] = useState<number>(initial.getMinutes());
@@ -84,7 +85,15 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange, autoOpe
           onDismiss={() => setOpen(false)}
         >
           <Stack tokens={{ childrenGap: 8, padding: 8 }}>
-            <DatePicker value={date} onSelectDate={(d) => d && setDate(d)} />
+            <DatePicker
+              value={date}
+              onSelectDate={(d) => {
+                if (d) {
+                  d.setSeconds(0, 0);
+                  setDate(d);
+                }
+              }}
+            />
             <Stack horizontal tokens={{ childrenGap: 8 }}>
               <Dropdown options={hours} selectedKey={hour} onChange={(_, o) => setHour(Number(o?.key))} />
               <Dropdown options={minutes} selectedKey={minute} onChange={(_, o) => setMinute(Number(o?.key))} />
