@@ -10,7 +10,7 @@ const FluentDateTimeCellEditor = forwardRef((props: ICellEditorParams, ref) => {
     isPopup: () => true,
   }));
 
-  return <FluentDateTimePicker value={val} onChange={(v) => v && setVal(v)} />;
+  return <FluentDateTimePicker autoOpen value={val} onChange={(v) => v && setVal(v)} />;
 });
 
 export default FluentDateTimeCellEditor;
