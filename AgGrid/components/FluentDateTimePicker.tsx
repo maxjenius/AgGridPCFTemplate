@@ -44,16 +44,16 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange, autoOpe
     const fullHour = ampmVal === 'PM' ? h + 12 : h;
     const d = new Date(date);
     d.setHours(fullHour);
-    d.setMinutes(minute);
-    d.setSeconds(0);
-    return d.toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+    d.setMinutes(minute, 0, 0);
+    return (
+      d.toLocaleDateString() +
+      ' ' +
+      d.toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      })
+    );
   };
 
   const apply = () => {
