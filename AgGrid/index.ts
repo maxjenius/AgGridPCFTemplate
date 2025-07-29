@@ -244,6 +244,19 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                             }
                         } else if (def?.cellEditor === 'agDateStringCellEditor') {
                             def.cellEditor = 'fluentDateTimeCellEditor';
+                            def.cellEditorPopup = true;
+                            if (!def.filterParams) {
+                                def.filterParams = {};
+                            }
+                            def.filter = 'agDateColumnFilter';
+                            def.filterParams = {
+                                browserDatePicker: false,
+                                dateComponent: 'fluentDateInput',
+                                inputType: 'datetime-local',
+                                includeTime: true,
+                                step: 60,
+                                ...def.filterParams
+                            };
                             if (!def.valueFormatter) {
                                 def.valueFormatter = (p: any) => this.formatDisplay(p.value);
                             }
