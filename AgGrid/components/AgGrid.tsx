@@ -285,15 +285,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const containerStyle: React.CSSProperties = useMemo(() => {
         const style: React.CSSProperties = {
             width: '100%',
-            height: '100%',
-            backgroundColor: 'transparent',
-            '--ag-header-background-color': 'transparent',
-            '--ag-control-panel-background-color': 'transparent',
-            '--ag-background-color': 'transparent',
-            '--ag-odd-row-background-color': 'transparent',
-            '--ag-border-color': 'transparent',
-            '--ag-borders': 'none',
-            '--ag-row-border-color': 'transparent'
+            height: '100%'
         } as React.CSSProperties;
         if (headerColor) {
             (style as any)['--ag-header-background-color'] = headerColor;
@@ -302,9 +294,8 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             (style as any)['--ag-control-panel-background-color'] = paginationColor;
         }
         if (gridBackgroundColor) {
-            // Only apply the color to rows and not the entire grid container
-            (style as any)['--ag-background-color'] = gridBackgroundColor; // even rows
-            (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor; // odd rows
+            (style as any)['--ag-background-color'] = gridBackgroundColor;
+            (style as any)['--ag-odd-row-background-color'] = gridBackgroundColor;
         }
         if (fontSize !== undefined && fontSize !== null) {
             let sizeStr: string;
