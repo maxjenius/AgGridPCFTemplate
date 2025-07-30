@@ -124,15 +124,15 @@
 }
 
 .ag-row-odd {
-    background-color: transparent !important;
+    background-color: transparent;
 }
 
 .ag-theme-balham .ag-row:nth-of-type(odd) {
-    background-color: transparent !important;
+    background-color: transparent;
 }
 
 .ag-row {
-    background-color: transparent !important;
+    background-color: transparent;
     margin-right: 10px;
 }
 
@@ -142,7 +142,7 @@
 
 [class*="ag-theme-"] {
     --ag-background-color: transparent !important;
-    --ag-selected-row-background-color: transparent !important;
+    --ag-selected-row-background-color: var(--ag-row-hover-color) !important;
 }
 
 [class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
