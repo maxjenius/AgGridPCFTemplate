@@ -10,6 +10,8 @@
     --ag-row-border-color: transparent;
     --ag-border-radius: 0px;
     --ag-checkbox-unchecked-border-color: transparent;
+    /* Keep checkbox shape consistent between states */
+    --ag-checkbox-border-radius: 3px;
 }
 
 .ag-theme-balham .ag-header {
@@ -79,6 +81,11 @@
 .ag-theme-balham .ag-checkbox-input-wrapper,
 .ag-theme-balham .ag-checkbox-input-wrapper input {
     background-color: transparent;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--ag-checkbox-border-radius);
 }
 
 /* Overrides to remove width and margin from Ag Grid defaults */
@@ -89,10 +96,10 @@
 }
 
 
+
 .ag-theme-balham.ag-ltr .ag-header-select-all,
 .ag-theme-balham.ag-ltr .ag-selection-checkbox {
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin: 0 auto !important;
 }
 
 /* Align filter menu buttons to the right */
@@ -104,9 +111,6 @@
 .ag-theme-balham.ag-ltr .ag-group-expanded,
 .ag-theme-balham.ag-ltr .ag-group-contracted {
     margin-right: 0 !important;
-}
-.ag-theme-balham.ag-ltr .ag-selection-checkbox {
-    margin-right: auto !important;
 }
 
 /* Override default header cell display */
