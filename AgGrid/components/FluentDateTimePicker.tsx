@@ -73,6 +73,13 @@ export const FluentDateTimePicker: React.FC<Props> = ({ value, onChange, autoOpe
         readOnly
         value={formatted()}
         onClick={() => setOpen(true)}
+        onFocus={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
         styles={{
           root: { height: '100%' },
           fieldGroup: { height: '100%' },
