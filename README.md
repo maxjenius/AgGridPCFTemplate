@@ -185,3 +185,11 @@ On Windows, run the PowerShell script:
 ./BuildSolution.ps1
 ```
 
+### Balham theme styling
+The grid component imports `ag-theme-balham.css` so the Balham theme is applied
+automatically. This theme uses CSS variables for its colors, fonts and spacing.
+If your grid does not match the examples shown in the
+[AG Grid Themes guide](https://www.ag-grid.com/javascript-data-grid/themes/),
+verify that the stylesheet is loaded. You can override Balham's variables using
+the input properties `HeaderColor`, `PaginationColor` and `GridBackgroundColor`
+or by adding your own CSS rules.
