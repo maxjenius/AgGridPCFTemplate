@@ -10,6 +10,7 @@ export interface IInputs {
     PaginationColor: ComponentFramework.PropertyTypes.StringProperty;
     GridBackgroundColor: ComponentFramework.PropertyTypes.StringProperty;
     FontSize: ComponentFramework.PropertyTypes.DecimalNumberProperty;
+    ThemeClass: ComponentFramework.PropertyTypes.StringProperty;
     EnableBlur: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     MultiSelect: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;

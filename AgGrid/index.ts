@@ -71,6 +71,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _lastResetSelectionFlag: boolean = false;
     private _resetVersion: number = 0;
     private _fontSize?: number;
+    private _themeClass: string = 'ag-theme-balham';
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
@@ -206,6 +207,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
+        this._themeClass = context.parameters.ThemeClass.raw || 'ag-theme-balham';
         this._showEdited = context.parameters.ShowEdited.raw === true;
         let selectedKeys: string[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
@@ -381,6 +383,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 paginationColor: context.parameters.PaginationColor.raw || undefined,
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
                 fontSize: this._fontSize,
+                themeClass: this._themeClass,
                 enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
                 readOnly: this._readOnly,

@@ -32,6 +32,7 @@
     <property name="PaginationColor" display-name-key="PaginationColor" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="FontSize" display-name-key="FontSize" of-type="Decimal" usage="input" default-value="13" />
+      <property name="ThemeClass" display-name-key="ThemeClass" of-type="SingleLine.Text" usage="input" default-value="ag-theme-balham" />
       <property name="EnableBlur" display-name-key="EnableBlur" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true" />
     <property name="RowKey" display-name-key="RowKey" of-type="SingleLine.Text" usage="input" default-value="" />
@@ -56,6 +57,7 @@
     <resources>
       <code path="index.ts" order="1"/>
       <css path="styles/custom.css" order="1" />
+      <css path="styles/theme-builder.css" order="2" />
       <!-- <code path="css/grid.css" order="1"/> -->
       <!-- UNCOMMENT TO ADD MORE RESOURCES
       <css path="css/AgGrid.css" order="1" />
