@@ -9,7 +9,7 @@
     --ag-borders: none;
     --ag-row-border-color: transparent;
     --ag-border-radius: 0px;
-    --ag-checkbox-unchecked-border-color: black;
+    --ag-checkbox-unchecked-border-color: transparent;
 }
 
 .ag-theme-balham .ag-header {
@@ -67,7 +67,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 0px;
+    width: 100%;
 }
 
 /* Ensure grid body background uses theme variable */
@@ -137,8 +137,8 @@
 }
 
 [class*="ag-theme-"] {
-    --ag-background-color: none !important;
-    --ag-selected-row-background-color: #d0e9ff !important;
+    --ag-background-color: transparent !important;
+    --ag-selected-row-background-color: transparent !important;
 }
 
 [class^="ag-"], [class^="ag-"]:focus, [class^="ag-"]::after, [class^="ag-"]::before {
@@ -147,7 +147,7 @@
 
 
 [class*="ag-theme-"] {
-    --ag-borders: solid 1px;
+    --ag-borders: none;
     --ag-border-radius: var(--ag-border-radius);
 }
 
