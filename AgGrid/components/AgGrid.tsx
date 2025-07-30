@@ -31,6 +31,7 @@ interface MyAgGridProps {
     paginationColor?: string;
     gridBackgroundColor?: string;
     fontSize?: number | string;
+    themeClass?: string;
     enableBlur?: boolean;
     multiSelect?: boolean;
     readOnly?: boolean;
@@ -38,9 +39,9 @@ interface MyAgGridProps {
     resetVersion?: number;
 }
     
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
-    const divClass = 'ag-theme-balham';
+    const divClass = themeClass;
     const [autoDefName, setAutoDefName] = useState('');
     // Always use 'multiple' selection to keep checkbox column visible
     // When multiSelect is false we will enforce single selection manually

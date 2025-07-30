@@ -194,3 +194,9 @@ The `custom.css` file imports AG Grid's core and Balham theme styles so the them
 ```
 
 This theme uses CSS variables for its colors, fonts and spacing. If your grid does not match the examples shown in the [AG Grid Themes guide](https://www.ag-grid.com/javascript-data-grid/themes/), verify that this stylesheet is included in the build output. You can override Balham's variables using the input properties `HeaderColor`, `PaginationColor` and `GridBackgroundColor` or by adding your own CSS rules.
+
+### Custom themes with the AG Grid Theme Builder
+
+The control also supports themes generated with the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).  
+Add the exported CSS file to the `styles` folder (for example `theme-builder.css`) and reference it in the manifest.  
+Use the new `ThemeClass` input property to specify the class name of your custom theme, such as `ag-theme-builder`.
