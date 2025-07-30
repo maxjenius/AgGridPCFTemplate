@@ -9,7 +9,7 @@
     --ag-borders: none;
     --ag-row-border-color: transparent;
     --ag-border-radius: 0px;
-    --ag-checkbox-unchecked-border-color: transparent;
+    --ag-checkbox-unchecked-border-color: #8a8886;
     /* Keep checkbox shape consistent between states */
     --ag-checkbox-border-radius: 3px;
 }
@@ -85,6 +85,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--ag-checkbox-unchecked-border-color);
+    border-radius: var(--ag-checkbox-border-radius);
+}
+
+.ag-theme-balham .ag-checkbox-input-wrapper.ag-checked input {
+    border: 1px solid var(--ag-checkbox-unchecked-border-color);
     border-radius: var(--ag-checkbox-border-radius);
 }
 
@@ -134,6 +140,15 @@
 .ag-row {
     background-color: transparent;
     margin-right: 10px;
+}
+
+.ag-theme-balham .ag-row:hover,
+.ag-theme-balham .ag-row.ag-row-hover {
+    background-color: var(--ag-row-hover-color) !important;
+}
+
+.ag-theme-balham .ag-row.ag-row-selected {
+    background-color: var(--ag-selected-row-background-color) !important;
 }
 
 .ag-theme-balham, .ag-theme-balham-dark, .ag-theme-balham-auto-dark {
@@ -195,9 +210,6 @@
     margin-right: 0px !important;
 }
 
-div.ag-header-cell.ag-column-first.ag-header-parent-hidden.ag-header-cell-sortable.selection-checkbox-header.ag-focus-managed {
-    margin-left: 14px;
-}
 
 /* Hide seconds from native datetime pickers */
 input[type="datetime-local"]::-webkit-datetime-edit-second-field,
