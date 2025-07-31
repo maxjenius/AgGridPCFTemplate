@@ -205,3 +205,28 @@ You can also choose a built-in theme object via the `ThemeBase` input. When set 
 
 You can further customize the appearance using CSS from the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).
 Paste the generated CSS into the new `CustomThemeCss` input property. The styles are injected at runtime so you can tweak variables without modifying the manifest.
+
+### Full input reference
+
+Each input is configured as a control property within your canvas app. The table below lists every option and shows an example formula.
+
+| Property | Options | Canvas example |
+| --- | --- | --- |
+| `HeaderColor` | CSS color string | `"#0078D4"` |
+| `PaginationColor` | CSS color string | `"#F3F2F1"` |
+| `GridBackgroundColor` | CSS color string | `"white"` |
+| `FontSize` | numeric size in pixels | `14` |
+| `ThemeClass` | `alpine`, `balham`, `material`, `quartz` or full `ag-theme-*` class | `"balham"` |
+| `ThemeBase` | built-in theme object: `alpine`, `balham`, `material`, `quartz` | `"material"` |
+| `CustomThemeCss` | CSS text for theme overrides | `"--ag-odd-row-background-color:pink;"` |
+| `EnableBlur` | `true` or `false` | `true` |
+| `MultiSelect` | `true` for multi-select, `false` for single | `true` |
+| `RowKey` | dataset column providing unique key | `"accountid"` |
+| `SelectedRowKeys` | JSON array of keys to preselect | `"[1,2]"` |
+| `ReadOnly` | `true` or `false` | `false` |
+| `ColumnDefinitions` | JSON array of column definitions | `JSON([{field:"name"}])` |
+| `ShowEdited` | `true` or `false` | `false` |
+| `ShowPagination` | `true` or `false` | `true` |
+| `ShowSelectionToggle` | `true` or `false` | `true` |
+| `ResetChanges` | toggle to `true` to discard edits | `ResetBtn.Pressed` |
+| `ResetSelection` | toggle to `true` to clear selection | `ClearBtn.Pressed` |
