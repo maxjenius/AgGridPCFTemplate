@@ -33,6 +33,10 @@
       <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="FontSize" display-name-key="FontSize" of-type="Decimal" usage="input" default-value="13" />
       <property name="ThemeClass" display-name-key="ThemeClass" of-type="SingleLine.Text" usage="input" default-value="balham" />
+      <!-- Name of the built-in theme object such as 'alpine', 'balham',
+           'material' or 'quartz'. When provided the control passes the
+           corresponding theme object to AgGridReact. -->
+      <property name="ThemeBase" display-name-key="ThemeBase" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="CustomThemeCss" display-name-key="CustomThemeCss" of-type="SingleLine.TextArea" usage="input" default-value="" />
       <property name="EnableBlur" display-name-key="EnableBlur" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true" />

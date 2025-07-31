@@ -36,6 +36,11 @@ interface MyAgGridProps {
     gridBackgroundColor?: string;
     fontSize?: number | string;
     themeClass?: string;
+    /**
+     * Optional theme object from ag-grid-community. When provided this is
+     * passed directly to AgGridReact via the `theme` prop.
+     */
+    theme?: unknown;
     customThemeCss?: string;
     enableBlur?: boolean;
     multiSelect?: boolean;
@@ -45,7 +50,7 @@ interface MyAgGridProps {
     resetVersion?: number;
 }
     
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', customThemeCss, enableBlur = false, multiSelect = true, showSelectionToggle = false, readOnly = false, showPagination = true, resetVersion }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', theme, customThemeCss, enableBlur = false, multiSelect = true, showSelectionToggle = false, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
     const divClass = themeClass;
     const [autoDefName, setAutoDefName] = useState('');
@@ -366,6 +371,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
                 gridOptions={gridOptions}
                 defaultColDef={defaultColDef}
                 getRowId={getRowId}
+                theme={theme as any}
                 pagination={showPagination}
                 rowSelection={rowSelectionMode}
                 rowMultiSelectWithClick={false}

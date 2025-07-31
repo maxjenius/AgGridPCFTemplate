@@ -3,7 +3,15 @@ import MyAgGrid from './components/AgGrid'
 import React from "react";
 import ReactDOM from 'react-dom';
 import '@fluentui/react/dist/css/fabric.css';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import {
+    ModuleRegistry,
+    AllCommunityModule,
+    themeAlpine,
+    themeBalham,
+    themeMaterial,
+    themeQuartz,
+    type Theme
+} from 'ag-grid-community';
 import { toLocalIsoMinutes } from './utils/date';
 
 // Ensure all community grid modules are registered for compatibility with
@@ -73,6 +81,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _resetVersion: number = 0;
     private _fontSize?: number;
     private _themeClass: string = 'ag-theme-balham';
+    private _baseTheme?: Theme;
     private _customThemeCss?: string;
 
     private formatToMinutes(val: unknown): unknown {
@@ -215,6 +224,14 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._themeClass = themeInput.startsWith('ag-theme-')
             ? themeInput
             : `ag-theme-${themeInput}`;
+        const baseInput = (context.parameters.ThemeBase.raw || '').trim().toLowerCase();
+        const themeMap: Record<string, Theme> = {
+            alpine: themeAlpine,
+            balham: themeBalham,
+            material: themeMaterial,
+            quartz: themeQuartz
+        };
+        this._baseTheme = themeMap[baseInput];
         this._customThemeCss = context.parameters.CustomThemeCss.raw || undefined;
         this._showEdited = context.parameters.ShowEdited.raw === true;
         let selectedKeys: string[] | undefined;
@@ -392,6 +409,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
                 fontSize: this._fontSize,
                 themeClass: this._themeClass,
+                theme: this._baseTheme,
                 customThemeCss: this._customThemeCss,
                 enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
