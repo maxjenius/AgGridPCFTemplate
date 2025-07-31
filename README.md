@@ -196,7 +196,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 ```
 
-Select the theme at runtime using the `ThemeClass` input. Provide the theme name only (for example `balham` or `material`) and the control will apply the corresponding `ag-theme-*` class.
+Select the theme at runtime using the `ThemeClass` input. Provide the theme name only (for example `balham` or `material`) and the control will apply the corresponding `ag-theme-*` class. The value is case-insensitive and leading/trailing spaces are ignored.
 
 ### Custom themes with the AG Grid Theme Builder
 
