@@ -12,7 +12,6 @@ import FluentDateTimeCellEditor from './FluentDateTimeCellEditor';
 import FluentDateInput from './FluentDateInput';
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
-import 'ag-grid-community/styles/ag-theme-balham.css';
 
 interface EditedCell {
     rowId: string;
@@ -32,6 +31,7 @@ interface MyAgGridProps {
     gridBackgroundColor?: string;
     fontSize?: number | string;
     themeClass?: string;
+    customThemeCss?: string;
     enableBlur?: boolean;
     multiSelect?: boolean;
     readOnly?: boolean;
@@ -39,7 +39,7 @@ interface MyAgGridProps {
     resetVersion?: number;
 }
     
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', customThemeCss, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
     const divClass = themeClass;
     const [autoDefName, setAutoDefName] = useState('');
@@ -48,6 +48,26 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
     const rowSelectionMode = 'multiple';
     const editedCellsRef = useRef<Set<string>>(new Set());
     const originalDataRef = useRef<Record<string, any>>({});
+    const styleRef = useRef<HTMLStyleElement>();
+
+    useEffect(() => {
+        if (customThemeCss) {
+            if (!styleRef.current) {
+                styleRef.current = document.createElement('style');
+                document.head.appendChild(styleRef.current);
+            }
+            styleRef.current.textContent = customThemeCss;
+        } else if (styleRef.current) {
+            styleRef.current.remove();
+            styleRef.current = undefined;
+        }
+        return () => {
+            if (styleRef.current) {
+                styleRef.current.remove();
+                styleRef.current = undefined;
+            }
+        };
+    }, [customThemeCss]);
 
     const valuesAreEqual = (a: unknown, b: unknown): boolean => {
         if (a === b) return true;
