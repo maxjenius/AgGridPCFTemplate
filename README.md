@@ -199,6 +199,8 @@ import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 Select the theme at runtime using the `ThemeClass` input. Provide the theme name only (for example `balham` or `material`) and the control will apply the corresponding `ag-theme-*` class. The value is case-insensitive and leading/trailing spaces are ignored.
 
+You can also choose a built-in theme object via the `ThemeBase` input. When set to one of `alpine`, `balham`, `material` or `quartz` the corresponding theme is passed to `AgGridReact` through the `theme` prop. This enables dynamic theming with the new AG Grid style API.
+
 ### Custom themes with the AG Grid Theme Builder
 
 You can further customize the appearance using CSS from the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).
