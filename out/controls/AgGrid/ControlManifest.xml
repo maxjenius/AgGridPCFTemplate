@@ -27,7 +27,7 @@
     </property-dependencies>
     <resources>
       <code path="bundle.js" order="1"/>
-      <css path="styles/custom.css" order="1"/>
+      <css path="styles/theme-builder.css" order="1"/>
     </resources>
     <feature-usage/>
     <built-by name="pac" version="1.45.2"/>
