@@ -202,3 +202,20 @@ Select the theme at runtime using the `ThemeClass` input. Provide the theme name
 
 You can further customize the appearance using CSS from the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).
 Paste the generated CSS into the new `CustomThemeCss` input property. The styles are injected at runtime so you can tweak variables without modifying the manifest.
+
+#### Example `CustomThemeCss`
+
+The snippet below customizes the Balham theme. Set `ThemeClass` to `balham` and paste this CSS string into the `CustomThemeCss` input:
+
+```PowerApps
+@".ag-theme-balham {
+    --ag-balham-active-color: #008272;
+    --ag-header-background-color: #f3f2f1;
+    --ag-control-panel-background-color: #f3f2f1;
+    --ag-odd-row-background-color: #fafafa;
+    --ag-background-color: #ffffff;
+    --ag-grid-size: 6px;
+}"
+```
+
+These variables override the built-in Balham theme at runtime, allowing you to adjust the grid's look without updating the component.
