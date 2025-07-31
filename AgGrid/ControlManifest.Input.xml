@@ -32,7 +32,8 @@
     <property name="PaginationColor" display-name-key="PaginationColor" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="GridBackgroundColor" display-name-key="GridBackgroundColor" of-type="SingleLine.Text" usage="input" default-value="" />
       <property name="FontSize" display-name-key="FontSize" of-type="Decimal" usage="input" default-value="13" />
-      <property name="ThemeClass" display-name-key="ThemeClass" of-type="SingleLine.Text" usage="input" default-value="ag-theme-balham" />
+      <property name="ThemeClass" display-name-key="ThemeClass" of-type="SingleLine.Text" usage="input" default-value="balham" />
+      <property name="CustomThemeCss" display-name-key="CustomThemeCss" of-type="SingleLine.TextArea" usage="input" default-value="" />
       <property name="EnableBlur" display-name-key="EnableBlur" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="MultiSelect" display-name-key="MultiSelect" of-type="TwoOptions" usage="input" default-value="true" />
     <property name="RowKey" display-name-key="RowKey" of-type="SingleLine.Text" usage="input" default-value="" />

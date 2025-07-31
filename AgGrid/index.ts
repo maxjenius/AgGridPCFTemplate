@@ -72,6 +72,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     private _resetVersion: number = 0;
     private _fontSize?: number;
     private _themeClass: string = 'ag-theme-balham';
+    private _customThemeCss?: string;
 
     private formatToMinutes(val: unknown): unknown {
         if (val instanceof Date) {
@@ -207,7 +208,9 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
-        this._themeClass = context.parameters.ThemeClass.raw || 'ag-theme-balham';
+        const themeInput = context.parameters.ThemeClass.raw || 'balham';
+        this._themeClass = themeInput.startsWith('ag-theme-') ? themeInput : `ag-theme-${themeInput}`;
+        this._customThemeCss = context.parameters.CustomThemeCss.raw || undefined;
         this._showEdited = context.parameters.ShowEdited.raw === true;
         let selectedKeys: string[] | undefined;
         const selectedKeysInput = context.parameters.SelectedRowKeys.raw;
@@ -384,6 +387,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 gridBackgroundColor: context.parameters.GridBackgroundColor.raw || undefined,
                 fontSize: this._fontSize,
                 themeClass: this._themeClass,
+                customThemeCss: this._customThemeCss,
                 enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
                 readOnly: this._readOnly,

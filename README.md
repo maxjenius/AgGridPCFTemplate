@@ -185,18 +185,20 @@ On Windows, run the PowerShell script:
 ./BuildSolution.ps1
 ```
 
-### Balham theme styling
-The `custom.css` file imports AG Grid's core and Balham theme styles so the theme is bundled with the control:
+### Theme styling
+The `custom.css` file now bundles AG Grid's core styles along with all built-in themes:
 
 ```css
 @import "~ag-grid-community/styles/ag-grid.css";
+@import "~ag-grid-community/styles/ag-theme-alpine.css";
 @import "~ag-grid-community/styles/ag-theme-balham.css";
+@import "~ag-grid-community/styles/ag-theme-material.css";
+@import "~ag-grid-community/styles/ag-theme-quartz.css";
 ```
 
-This theme uses CSS variables for its colors, fonts and spacing. If your grid does not match the examples shown in the [AG Grid Themes guide](https://www.ag-grid.com/javascript-data-grid/themes/), verify that this stylesheet is included in the build output. You can override Balham's variables using the input properties `HeaderColor`, `PaginationColor` and `GridBackgroundColor` or by adding your own CSS rules.
+Select the theme at runtime using the `ThemeClass` input. Provide the theme name only (for example `balham` or `material`) and the control will apply the corresponding `ag-theme-*` class.
 
 ### Custom themes with the AG Grid Theme Builder
 
-The control also supports themes generated with the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).  
-Add the exported CSS file to the `styles` folder (for example `theme-builder.css`) and reference it in the manifest.  
-Use the new `ThemeClass` input property to specify the class name of your custom theme, such as `ag-theme-builder`.
+You can further customize the appearance using CSS from the [AG Grid Theme Builder](https://www.ag-grid.com/theme-builder/).
+Paste the generated CSS into the new `CustomThemeCss` input property. The styles are injected at runtime so you can tweak variables without modifying the manifest.

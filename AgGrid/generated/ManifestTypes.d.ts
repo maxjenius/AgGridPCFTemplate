@@ -11,6 +11,7 @@ export interface IInputs {
     GridBackgroundColor: ComponentFramework.PropertyTypes.StringProperty;
     FontSize: ComponentFramework.PropertyTypes.DecimalNumberProperty;
     ThemeClass: ComponentFramework.PropertyTypes.StringProperty;
+    CustomThemeCss: ComponentFramework.PropertyTypes.StringProperty;
     EnableBlur: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     MultiSelect: ComponentFramework.PropertyTypes.TwoOptionsProperty;
     RowKey: ComponentFramework.PropertyTypes.StringProperty;
