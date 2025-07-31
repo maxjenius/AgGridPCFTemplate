@@ -12,6 +12,10 @@ import FluentDateTimeCellEditor from './FluentDateTimeCellEditor';
 import FluentDateInput from './FluentDateInput';
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-community/styles/ag-theme-balham.css';
+import 'ag-grid-community/styles/ag-theme-material.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 interface EditedCell {
     rowId: string;
