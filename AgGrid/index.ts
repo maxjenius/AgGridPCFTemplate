@@ -208,8 +208,11 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
-        const themeInput = context.parameters.ThemeClass.raw || 'balham';
-        this._themeClass = themeInput.startsWith('ag-theme-') ? themeInput : `ag-theme-${themeInput}`;
+        const themeInputRaw = context.parameters.ThemeClass.raw || 'balham';
+        const themeInput = themeInputRaw.trim().toLowerCase();
+        this._themeClass = themeInput.startsWith('ag-theme-')
+            ? themeInput
+            : `ag-theme-${themeInput}`;
         this._customThemeCss = context.parameters.CustomThemeCss.raw || undefined;
         this._showEdited = context.parameters.ShowEdited.raw === true;
         let selectedKeys: string[] | undefined;
