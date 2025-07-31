@@ -1,0 +1,11 @@
+@import "~ag-grid-community/styles/ag-grid.css";
+@import "~ag-grid-community/styles/ag-theme-balham.css";
+
+.ag-theme-builder {
+  --ag-balham-active-color: #008272;
+  --ag-header-background-color: #f3f2f1;
+  --ag-control-panel-background-color: #f3f2f1;
+  --ag-odd-row-background-color: #fafafa;
+  --ag-background-color: #ffffff;
+  --ag-grid-size: 6px;
+}
