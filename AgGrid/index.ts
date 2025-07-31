@@ -64,6 +64,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
     };
     private _context?: ComponentFramework.Context<IInputs>;
     private _multiSelect: boolean = true;
+    private _showSelectionToggle: boolean = false;
     private _rowKeyField?: string;
     private _readOnly: boolean = false;
     private _showEdited: boolean = false;
@@ -205,6 +206,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
         this._lastResetSelectionFlag = resetSelectionFlag;
         const dataset = context.parameters.gridData;
         this._multiSelect = context.parameters.MultiSelect.raw !== false;
+        this._showSelectionToggle = context.parameters.ShowSelectionToggle.raw === true;
         this._rowKeyField = context.parameters.RowKey.raw || undefined;
         this._readOnly = context.parameters.ReadOnly.raw === true;
         this._fontSize = context.parameters.FontSize.raw !== null ? context.parameters.FontSize.raw : undefined;
@@ -393,6 +395,7 @@ export class AgGrid implements ComponentFramework.StandardControl<IInputs, IOutp
                 customThemeCss: this._customThemeCss,
                 enableBlur: context.parameters.EnableBlur.raw === true,
                 multiSelect: this._multiSelect,
+                showSelectionToggle: this._showSelectionToggle,
                 readOnly: this._readOnly,
                 showPagination: context.parameters.ShowPagination.raw !== false,
                 resetVersion: this._resetVersion

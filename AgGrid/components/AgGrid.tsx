@@ -8,6 +8,7 @@
 
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { Toggle } from '@fluentui/react';
 import FluentDateTimeCellEditor from './FluentDateTimeCellEditor';
 import FluentDateInput from './FluentDateInput';
 import type { CellEditingStoppedEvent } from 'ag-grid-community';
@@ -38,18 +39,20 @@ interface MyAgGridProps {
     customThemeCss?: string;
     enableBlur?: boolean;
     multiSelect?: boolean;
+    showSelectionToggle?: boolean;
     readOnly?: boolean;
     showPagination?: boolean;
     resetVersion?: number;
 }
     
-const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', customThemeCss, enableBlur = false, multiSelect = true, readOnly = false, showPagination = true, resetVersion }) => {
+const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selectedRowIds, onSelectionChanged, onCellValueChanged, headerColor, paginationColor, gridBackgroundColor, fontSize, themeClass = 'ag-theme-balham', customThemeCss, enableBlur = false, multiSelect = true, showSelectionToggle = false, readOnly = false, showPagination = true, resetVersion }) => {
     console.log('AG Grid')
     const divClass = themeClass;
     const [autoDefName, setAutoDefName] = useState('');
     // Always use 'multiple' selection to keep checkbox column visible
     // When multiSelect is false we will enforce single selection manually
     const rowSelectionMode = 'multiple';
+    const [isMulti, setIsMulti] = useState<boolean>(multiSelect);
     const editedCellsRef = useRef<Set<string>>(new Set());
     const originalDataRef = useRef<Record<string, any>>({});
     const styleRef = useRef<HTMLStyleElement>();
@@ -72,6 +75,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             }
         };
     }, [customThemeCss]);
+
+    useEffect(() => {
+        setIsMulti(multiSelect);
+    }, [multiSelect]);
+
+    const onToggleSelection = useCallback((_: any, checked?: boolean) => {
+        setIsMulti(!!checked);
+    }, []);
 
     const valuesAreEqual = (a: unknown, b: unknown): boolean => {
         if (a === b) return true;
@@ -170,19 +181,19 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         return {
             minWidth: 270,
             field: autoDefName,
-            headerCheckboxSelection: multiSelect,
+            headerCheckboxSelection: isMulti,
             cellRendererParams: {
                 checkbox: true,
             },
         };
-    }, [autoDefName, multiSelect]);
+    }, [autoDefName, isMulti]);
 
     const finalColumnDefs = useMemo(() => {
         const selectionCol = {
             headerName: '',
             colId: 'selection',
             checkboxSelection: true,
-            headerCheckboxSelection: multiSelect,
+            headerCheckboxSelection: isMulti,
             width: 40,
             minWidth: 40,
             maxWidth: 40,
@@ -193,7 +204,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             suppressHeaderMenuButton: true
         };
         return [selectionCol, ...columnDefs];
-    }, [columnDefs, multiSelect]);
+    }, [columnDefs, isMulti]);
 
     const defaultColDef = useMemo(() => ({
         flex: 1,
@@ -216,14 +227,14 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         columnDefs: finalColumnDefs,
         suppressAggFuncInHeader: true,
         enableRangeSelection: false,
-        suppressRowClickSelection: multiSelect,
+        suppressRowClickSelection: isMulti,
         popupParent: typeof document !== 'undefined' ? document.body : undefined,
         frameworkComponents: {
             fluentDateTimeCellEditor: FluentDateTimeCellEditor,
             fluentDateInput: FluentDateInput,
             agDateInput: FluentDateInput
         }
-    }), [finalColumnDefs, multiSelect]);
+    }), [finalColumnDefs, isMulti]);
 
     const gridRef = useRef<AgGridReact<any>>(null);
     const getRowId = useCallback((params: any) => params.data.__id, []);
@@ -239,7 +250,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
         if (!gridRef.current?.api) {
             return;
         }
-        if (!multiSelect) {
+        if (!isMulti) {
             const nodes = gridRef.current.api.getSelectedNodes();
             if (nodes.length > 1) {
                 const last = nodes[nodes.length - 1];
@@ -251,7 +262,7 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
             const selected = gridRef.current.api.getSelectedRows();
             onSelectionChanged(selected ?? []);
         }
-    }, [onSelectionChanged, multiSelect]);
+    }, [onSelectionChanged, isMulti]);
 
     const onCellValueChangedHandler = useCallback((params: any) => {
         const newVal = stripSeconds(params.newValue);
@@ -344,6 +355,9 @@ const AgGrid: React.FC<MyAgGridProps> = React.memo(({ rowData, columnDefs, selec
 
     return (
         <div className={divClass} style={containerStyle}>
+            {showSelectionToggle && (
+                <Toggle label="Multi-select" checked={isMulti} onChange={onToggleSelection} />
+            )}
             <AgGridReact
                 ref={gridRef}
                 rowData={rowData}
