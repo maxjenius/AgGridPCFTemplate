@@ -42,6 +42,7 @@
     <property name="ColumnDefinitions" display-name-key="ColumnDefinitions" of-type="SingleLine.TextArea" usage="input" default-value="" />
     <property name="ShowEdited" display-name-key="ShowEdited" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="ShowPagination" display-name-key="ShowPagination" of-type="TwoOptions" usage="input" default-value="true" />
+    <property name="ShowSelectionToggle" display-name-key="ShowSelectionToggle" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="ResetChanges" display-name-key="ResetChanges" of-type="TwoOptions" usage="input" default-value="false" />
     <property name="ResetSelection" display-name-key="ResetSelection" of-type="TwoOptions" usage="input" default-value="false" />
     <!--
