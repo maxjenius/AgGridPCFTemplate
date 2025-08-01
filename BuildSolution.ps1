@@ -5,7 +5,7 @@
 $ErrorActionPreference = 'Stop'
 
 # automatically determine the absolute path to the repository root
-$rootDir = (Get-Location).Path
+$rootDir = (Get-Item -Path (Get-Location)).FullName
 
 # create and enter project directory
 if(-not (Test-Path 'AgGridPCF')){

@@ -4,7 +4,7 @@
 set -e
 
 # automatically determine the absolute path to the repository root
-ROOT_DIR="$(pwd)"
+ROOT_DIR="$(realpath "$PWD")"
 
 # create and enter project directory
 if [ ! -d AgGridPCF ]; then
